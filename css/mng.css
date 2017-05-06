@@ -1,0 +1,56 @@
+body {background-color: #f3f7f0; color: black; font-family:"宋体"; margin: 0px 128px;}
+
+h3{
+	color: mintCream;
+	background: purple;
+	padding-bottom: 2px;
+	padding-top: 2px;
+}
+
+table.ng{
+	width: 100%;
+	border-color: purple;
+	border-bottom: none;
+	border-left: none;
+	border-right: none;
+	border-top: none;
+}
+
+.ng td{
+	width:33%;
+}
+
+.prefix{
+	float:left;
+	width:61px;
+}
+
+.prefix img{
+	width:56px;
+	height: 64px;
+	margin-left: 1.5em;
+}
+
+.tds{
+	vertical-align:top;
+	border-left: none;
+	border-right: none;
+	border-top: none;
+}
+
+.tds dl{
+	margin-left:75px;
+	padding-left:10px;
+}
+.tds dt{
+	font-weight:700;
+	color: purple;
+}
+
+a{
+	text-decoration: none;
+}
+
+a:hover{
+	text-decoration: underline;
+}
