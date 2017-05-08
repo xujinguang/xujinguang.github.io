@@ -1,14 +1,43 @@
 div#blog-header{
 	width: 50%;
-	height: 20%;
+	height: 160px;
 	position:relative;
 	margin:0 auto;
 }
 
-div#nav{
-	position:absolute; 
-	bottom:10px;
-	text-align: center;
+h1{
+	margin-left:10px;
+	font-size:40px;
+}
+
+h3{
+	margin-left:10px;
+	font-size:12px;
+}
+button:hover{
+	background: none;
+	color:black;
+	border:1px solid black;
+}
+
+button{
+	background:none;
+	color:black;
+	font-family: "微软雅黑";
+	font-size: 16px;
+	border: 0px;
+	text-align:top;
+	width:60px;
+	height:30px;
+}
+
+button#first{
+	margin-left:30px;
+}
+
+button#active{
+	background: black;
+	color:white;
 }
 
 label#class-name{
@@ -20,9 +49,10 @@ label#class-name{
 }
 
 #line{
-	width: 50%;
-	line-height: 1px;
-	margin-top:25px;
+	margin-top:5px;
+	height:1px;
+	border:none;
+	border-top:1px dashed black;
 }
 
 table{
@@ -31,10 +61,16 @@ table{
 	margin:0 auto;
 }
 
+td{
+	padding-left:5px;
+	padding-right:5px;
+}
+
 td#right-time{
-	width: 100px;
+	width: 80px;
 	text-align: right;
 	font-size: 14px;
+	padding-right:10px;
 }
 
 tr:hover{
@@ -59,16 +95,16 @@ a:hover {
 }
 
 a:link { 
-	color:purple;
+	color:black;
 	text-decoration:none; 
 } 
 
 a:visited { 
-	color:gray; 
+	color:black; 
 	text-decoration:none; 
 } 
 
 a:active { 
-	color:blue; 
+	color:gray; 
 	text-decoration:none; 
 } 
