@@ -15,9 +15,9 @@ h3{
 	font-size:12px;
 }
 button:hover{
-	background: none;
-	color:black;
-	border:1px solid black;
+	background: black;
+	color:white;
+	/*border:1px solid black;*/
 }
 
 button{
