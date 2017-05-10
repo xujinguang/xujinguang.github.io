@@ -1,13 +1,59 @@
-div#blog-header{
+body#blog{
+	background:black;
+}
+div#nav{
 	width: 50%;
 	height: 160px;
 	position:relative;
 	margin:0 auto;
 }
 
+div#blog-header{
+	width: 50%;
+	margin:0 auto;
+}
+
+div#blog-body{
+	background:white;
+	width: 45%;
+	margin:0 auto;
+	height:auto;
+	min-height:600px;
+	box-shadow: 4px 4px 3px 4px rgba(0, 0, 0, 0.35);
+}
+
+div#blog-footer{
+	margin-top:80px; 
+	padding-bottom:50px;
+}
+
+div#sign{
+	float:right;
+	font-size:14px;
+	margin-right:100px;
+}
+
+p{
+	margin-left:60px;
+	margin-right:60px;
+	margin-bottom:10px;
+	font-size:14px;
+	line-height:1.5;
+	text-indent:30px;
+}
+
 h1{
 	margin-left:10px;
 	font-size:40px;
+}
+
+h2{
+	padding:0px;
+	margin:0px;
+	padding-top:20px;
+	font-size:24px;
+	font-weight:100;
+	font-family:"宋体";
 }
 
 h3{
@@ -78,6 +124,15 @@ tr:hover{
 	background:lightgray;
 }
 
+span{
+	font-size:15px;
+	font-weight:bold;
+}
+
+span#footer{
+	margin-left:30px;
+}
+
 a{
 	border:1px dashed #000; 
 	border-top-width: 0px;
@@ -85,6 +140,8 @@ a{
 	border-right-width: 0px;
 	text-decoration: none;
 	font-size: 14px;
+	font-weight:100;
+	font-family:"SimSun";
 }
 
 a:hover {
@@ -92,6 +149,7 @@ a:hover {
 	border-top-width: 0px;
 	border-left-width: 0px;
 	border-right-width: 0px;
+	font-size: 14px;
 	text-decoration: none;
 }
 
@@ -109,3 +167,4 @@ a:active {
 	color:gray; 
 	text-decoration:none; 
 } 
+
