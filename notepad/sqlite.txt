@@ -1,0 +1,18 @@
+sqlite使用的是文件锁，能够锁定区段。
+SQLITE_BUSY:
+	1.轮询：自己写个循环执行，直到 SQLITE_OK；
+	2.中断：设置sqlite3_busy_handler，回调执行；
+		http://sqlite.org/c3ref/busy_handler.html
+
+多线程编程：
+	http://www.sqlite.org/sharedcache.html
+架构：
+	http://sqlite.org/arch.html
+异步写：
+	http://www.sqlite.org/asyncvfs.html
+配置控制：
+	http://www.sqlite.org/pragma.html#syntax
+优化：
+	1. 插入，修改采用批量事务；
+	2. 采取bind方式来插入
+	3. 文件碎片整理；VACUUM
