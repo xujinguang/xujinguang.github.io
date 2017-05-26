@@ -415,17 +415,18 @@ a:hover, a:active {
 }
 
 .wrapper header {
-  padding: 50px 0 15px;
+  padding: 20px 0 15px;
 }
 
 .wrapper header h1 {
-  width: 280px;
+  width: 271px;
   margin: 0 auto;
-  padding: 130px 0 0 0;
+  padding: 90px 0 0 0;
   background-position: 4px 0;
-  background-image: url("../images/evolution.jpg");
+  background-image: url("../images/evolution.png");
   background-repeat: no-repeat;
-  background-size: 264px 107px;
+  background-size: 271px 90px;
+  border:none;
 }
 @media all and (-webkit-min-device-pixel-ratio: 1.5), all and (-o-min-device-pixel-ratio: 3 / 2), all and (min--moz-device-pixel-ratio: 1.5), all and (min-device-pixel-ratio: 1.5) {
   .wrapper header h1 {
@@ -495,12 +496,12 @@ a:hover, a:active {
   right: 0;
 }
 
-.submit {
+form.submit {
   margin-top: 40px;
   text-align: center;
 }
 
-.submit input {
+form.submit input {
   width: 160px;
   height: 50px;
   font-size: 16px;
@@ -509,15 +510,16 @@ a:hover, a:active {
   background-color: white;
   border:1px solid lightgray;
   outline: medium;
+  margin: 0;
 }
 
-.submit input:hover, input visited {
+form.submit input:hover, input visited {
   color: white;
   background-color: black;
   border:1px solid lightgray;
 }
 
-.submit input:active {
+form.submit input:active {
   color: white;
   background-color: gray;
   border:1px solid lightgray;
