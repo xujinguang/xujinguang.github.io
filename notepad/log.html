@@ -1,29 +1,38 @@
+<!DOCTYPE html>
 <html>
 <head>
-   <title>记忆转储</title>
-   <meta charset="utf-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link media="all" rel="stylesheet" type="text/css" href="simditor-2.3.6/styles/app.css" />
+    <link media="all" rel="stylesheet" type="text/css" href="simditor-2.3.6/styles/simditor.css" />
 </head>
-
 <body>
-   <style type="text/css">
-      label#title{
-         margin-top: 5px;
-      }
-   </style>
-   <form>
-      <label id="title">标题</label>
-      <input type="text" name="title">
-      <br/>
-      <label>子标题</label>
-      <input type="text" name="subtitle">
-      <br/>
-      <label>文章</label>
-      <input type="text" name="content">
-      <br/>
+   <div class="wrapper">
+      <header>
+         <h1><a href="#">裸猿人生</a></h1>
+         <p class="desc">好好写</p>
+      </header>
+      <label>标题</label>
+      <input type="text" name="title"><br/>
+      <label>子题</label>
+      <input type="text" name="subtitle"><br/>
       <label>签名</label>
-      <input type="text" name="sign">
-      <br/>
-      <input type="submit" name="sign" value="提交">
-   </form>
+      <input type="text" name="sign" id="log">
+      <section id="blog-page">
+          <textarea id="txt-content"  autofocus required></textarea>
+      </section>
+   </div>
+
+   <div class="submit">
+      <form>
+         <input type="submit" name="sign" value="Submit">
+      </form>
+   </div>
+   <script type="text/javascript" src="simditor-2.3.6/scripts/jquery.min.js"></script>
+   <script type="text/javascript" src="simditor-2.3.6/scripts/module.js"></script>
+   <script type="text/javascript" src="simditor-2.3.6/scripts/uploader.js"></script>
+   <script type="text/javascript" src="simditor-2.3.6/scripts/hotkeys.js"></script>
+   <script type="text/javascript" src="simditor-2.3.6/scripts/simditor.js"></script>
+   <script type="text/javascript" src="simditor-2.3.6/scripts/blog-editor.js"></script>
 </body>
 </html>
