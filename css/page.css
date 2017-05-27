@@ -23,6 +23,11 @@ div#blog-body{
 	font-family:"Times New Roman", "宋体";
 }
 
+div#blog-body code {
+	margin-left:60px;
+	margin-right:60px;
+}
+
 div#blog-footer{
 	margin-top:80px; 
 	padding-bottom:50px;
