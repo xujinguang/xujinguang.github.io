@@ -163,7 +163,9 @@ function submit_blog(editor){
     $('#subtitle').focus(function() {
         $('#where').hide();
     });
-
+    $('#sign').focus(function() {
+        $('#where').show();
+    });
     $('#where').change(function(){
         var sign = $('#sign').val();
         sign = sign + document.getElementById('where').options[document.getElementById('where').selectedIndex].value;

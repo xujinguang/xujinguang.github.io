@@ -396,7 +396,7 @@ a:hover, a:active {
 }
 
 .wrapper input {
-  width: 800px;
+  width: 700px;
   height: 25px;
   margin-top: 5px;
   margin-bottom: 10px;
@@ -411,6 +411,15 @@ a:hover, a:active {
   border-right-style: none;
 
   /*取消输入时的边框*/
+  outline:medium;
+}
+
+.wrapper select {
+  font-size: 16px;
+  background: transparent;
+  border:1px solid lightgray;
+  width: 60px;
+  height: 30px;
   outline:medium;
 }
 
