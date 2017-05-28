@@ -14,23 +14,31 @@
     </header>
 
     <label>标题</label>
-    <input type="text" name="title"><br/>
+    <input type="text" id="title" placeholder="请输入文章标题"><br/>
     <label>子题</label>
-    <input type="text" name="subtitle"><br/>
+    <input type="text" id="subtitle" placeholder="请输入文章子标题"><br/>
     <label>签名</label>
-    <input type="text" name="sign" id="log">
+    <input type="text" id="sign" placeholder="请输入地点">
 
     <section id="blog-page">
-        <textarea id="txt-content"  autofocus required></textarea>
+        <textarea id="txt-content"  autofocus required>
+          <p><img alt="Image" src="F:\blog\xujinguang.github.io\notepad\simditor-2.3.6\images\evolution.png" width="509" height="169"><br></p>
+        </textarea>
     </section>
-
-    <form class="submit">
-      <input type="submit" name="sign" value="Submit">
+    <iframe style="display:none" name="no-flush"></iframe>
+    <form class="submit" target="no-flush">
+      <input type="submit" name="submit" value="Submit">
     </form>
 
     <footer>
         @<a href="">金光设计</a>
     </footer>
+<select id="where">
+  <option value ="成都">成都</option>
+  <option value ="深圳">深圳</option>
+  <option value="商丘">商丘</option>
+  <option value="徐营">徐营</option>
+</select>
   </div>
 
   <script type="text/javascript" src="simditor-2.3.6/scripts/jquery.min.js"></script>
