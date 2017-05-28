@@ -496,12 +496,12 @@ a:hover, a:active {
   right: 0;
 }
 
-form.submit {
+.submit {
   margin-top: 40px;
   text-align: center;
 }
 
-form.submit input {
+.submit input {
   width: 160px;
   height: 50px;
   font-size: 16px;
@@ -513,13 +513,13 @@ form.submit input {
   margin: 0;
 }
 
-form.submit input:hover, input visited {
+.submit input:hover, input visited {
   color: white;
   background-color: black;
   border:1px solid lightgray;
 }
 
-form.submit input:active {
+.submit input:active {
   color: white;
   background-color: gray;
   border:1px solid lightgray;

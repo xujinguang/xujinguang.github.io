@@ -14,11 +14,21 @@
         url: '/upload'
       } : false
     });
+
     $preview = $('#preview');
     if ($preview.length > 0) {
       return editor.on('valuechanged', function(e) {
         return $preview.html(editor.getValue());
       });
     }
+    myfunction(editor);
   });
 }).call(this);
+
+function myfunction(editor){
+   $('form').submit(function(e){
+      var blog = editor.getValue();
+      alert(blog);
+     
+    });
+}
