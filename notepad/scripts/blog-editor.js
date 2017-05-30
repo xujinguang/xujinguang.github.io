@@ -41,6 +41,35 @@
 //定义XMLHttpRequest对象实例
 var xhttp = false;
 
+/*
+//测试回调
+function process_response(){
+    //响应完成且响应正常
+    if(xhttp.readyState == 1){
+        alert("XMLHttpRequest对象开始发送请求");
+    }else if(xhttp.readyState == 2){
+        alert("XMLHttpRequest对象的请求发送完成");
+    }else if(xhttp.readyState == 3){
+        alert("XMLHttpRequest对象开始读取服务器的响应");
+    }else if(xhttp.readyState == 4){
+        alert("XMLHttpRequest对象读取服务器响应结束");
+        //if(xhttp.status == 200 || xhttp.status == 0){
+        alert("xhttp="+xhttp);
+        if(xhttp.status == 200) {
+            //信息已经成功返回，开始处理信息
+            //先捕获下所有的请求头
+            var headers = xhttp.getAllResponseHeaders();
+            alert("所有的请求头= "+headers);
+            //得到服务器返回的信息
+            var infor = xhttp.responseText;
+            alert("服务器端的响应 = "+infor);
+        }else{
+            alert("所请求的服务器端出了问题"+xhttp.status);
+        }
+    }
+}
+*/
+
 function send_request(method, url, content, responseType, callback) {
     xhttp = false;
     //初始化XMLHttpRequest对象
@@ -67,12 +96,6 @@ function send_request(method, url, content, responseType, callback) {
         return false;
     }
 
-    if (responseType.toLowerCase() == "text" || responseType.toLowerCase() == "xml") {
-        xhttp.onreadystatechange = callback;
-    } else {//"响应类别参数错误"
-        return false;
-    }
- 
     // 确定发送请求的方式和URL以及是否异步执行下段代码
     if (method.toLowerCase() == "get") {
         xhttp.open(method, url, true);
@@ -82,9 +105,18 @@ function send_request(method, url, content, responseType, callback) {
     } else {//http请求类别参数错误
         return false;
     }
+    //设置回调
+    if (responseType.toLowerCase() == "text" || responseType.toLowerCase() == "xml") {
+        xhttp.onreadystatechange = callback;
+        //xhttp.onreadystatechange = process_response;
+    } else {//"响应类别参数错误"
+        return false;
+    }
+ 
     //发起请求
     xhttp.send(content);
 }
+
 
 function submit_blog(editor){
     Date.prototype.pattern = function(fmt) {         
@@ -173,9 +205,20 @@ function submit_blog(editor){
         $('#where').hide();
     });
 
+    var type_name = 1;  //默认博客
+    var class_name = 7; //默认IT
+    $('#type-name').change(function(){
+        type_name = document.getElementById('type-name').selectedIndex;
+    });
+    $('#class-name').change(function(){
+       class_name = document.getElementById('class-name').selectedIndex;
+    });
+
     //提交文章
     $('form').submit(function(e){
-        var blog = editor.getValue();
+        //阻止默认行为，也可以用隐藏ifream
+        //e.preventDefault();
+        //设置5s刷新页面
         var title = $('#title').val();
         if(title == "") {
             alert("请输入文章标题");
@@ -188,6 +231,10 @@ function submit_blog(editor){
             $('#subtitle').val(subtitle);
         }
 
+        var blog = editor.getValue();
+
+        var key_word = $('#key-word').val();
+
         var sign = $('#sign').val();
         if(sign == "") {
             sign = "火星";
@@ -195,34 +242,60 @@ function submit_blog(editor){
         }
 
         sign = "—— " + gen_weekday() + " 于" + sign;
+
+        var send_data = "op=1" + //保存博客
+                        "_&_title_=" + title +
+                        "_&_subtitle_=" + subtitle +
+                        "_&_key_=" + key_word +
+                        "_&_sign_=" + sign +
+                        "_&_type_=" + type_name +
+                        "_&_class_=" + class_name +
+                        "_&_blog_=" + blog;
+        //alert(send_data);
         
-        var send_data = "_TITLE_=" + title +
-                        "&_SUBTITLE_=" + subtitle +
-                        "&_SIGN_=" + sign +
-                        "&_BLOG_=" + blog;
-        var url = "http://127.0.0.1:9999";
-        alert(send_data);
-        
-        var response_callback = function() {
-            if (xhttp.readyState !== 4) 
-                return;
-            if (xhttp.status !== 200) {
-                alert("server error!");
-                return;
-            }   
-            var response_str = eval('('+xhttp.responseText+')');
-            // operation type 
-            if (response_str.error_code === 3) {
-                // not login
-                document.location.href="../index.html";
-                return;
-            } else if (response_str.error_code !== 0) {
-                alert(response_str.error_msg);
-                return;
-            } 
-            alert('sucess');
+        //var url = "http://192.168.1.2:8080";
+        var url = "http://localhost:8080";
+        var callback = function() {
+            if (xhttp.readyState == 4){ //4表示和服务器端的交互已经完成
+                if (xhttp.status == 200) {
+                    var response_str = xhttp.responseText; //服务器端需要设置content-type为text/xml
+                    ret = response_str.split('=');
+                    if(ret[1] == 0) {
+                        swal("提交成功", "赶紧到Github发布吧！", "success", "Cool");
+                        //定时刷新编辑器和打开分类主页
+                        setTimeout(function(){
+                                url = '../index.html';
+                                switch(type_name) {
+                                case 1:
+                                url = '../blog.html';
+                                break;
+                                case 2:
+                                url = '../read.html';
+                                break;
+                                case 3:
+                                url = '../scope.html';
+                                break;
+                                case 4:
+                                url = '../science.html';
+                                break;
+                                case 5:
+                                url = '../literature.html';
+                                break;
+                                }
+                                window.location.href = "notepad.html";
+                                window.open(url);
+                                }, 3000);
+                    }else {
+                        swal("提交失败", "服务器处理出错！", "error", "Cool");
+                    }
+
+                } else {
+                    //本地运行status=0,跨域名访问，在server端加上域名控制
+                    swal("提交失败", "服务器完蛋了，请重启服务！", "error", "Cool");
+                }   
+            }
         }   
 
-        send_request("POST", url, encodeURI(send_data), "TEXT", response_callback); 
+        send_request("POST", url, send_data, "TEXT", callback); 
     });
 }

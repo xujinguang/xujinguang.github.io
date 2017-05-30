@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta http-equiv="Cache-control" content="no-cache">
+  <meta http-equiv="Cache" content="no-cache">
+  <link media="all" rel="stylesheet" type="text/css" href="./styles/app.css" />
+  <link media="all" rel="stylesheet" type="text/css" href="./styles/simditor.css" />
+  <link media="all" rel="stylesheet" type="text/css" href="./styles/sweet-alert.css" />
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <h1><a href="#">裸猿人生</a></h1>
+      <p class="desc">好好写</p>
+    </header>
+
+    <label>标题</label>
+    <input type="text" id="title" placeholder="请输入文章标题"><br/>
+    <label>子题</label>
+    <input type="text" id="subtitle" placeholder="请输入文章子标题"><br/>
+    <section id="blog-page">
+        <textarea id="txt-content"  autofocus required>
+        </textarea>
+    </section>
+    <label>摘要</label>
+    <input type="text" id="key-word" autocomplete="on" placeholder="关键字/书名"><br/>
+    <label>签名</label>
+    <input type="text" id="sign" placeholder="请输入签名/地点">
+    <select id="where">
+      <option value ="----">----</option>
+      <option value ="成都">成都</option>
+      <option value ="深圳">深圳</option>
+      <option value="郑州">郑州</option>
+      <option value="徐营">徐营</option>
+    </select><br/>
+
+    <label>分类</label>
+    <select id="type-name">
+      <option value ="----">----</option>
+      <option value ="博客">博客</option>
+      <option value ="读书">读书</option>
+      <option value ="视野">视野</option>
+      <option value ="科学">科学</option>
+      <option value ="文哲">文哲</option>
+    </select>
+
+    <select id="class-name">
+      <option value ="----">----</option>
+      <option value ="艺术">艺术</option>
+      <option value ="生物">生物</option>
+      <option value ="化学">化学</option>
+      <option value ="经济">经济</option>
+      <option value ="宗教">宗教</option>
+      <option value ="历史">历史</option>
+      <option value =" IT "> IT </option>
+      <option value ="传记">传记</option>
+      <option value ="逻辑">逻辑</option>
+      <option value ="数学">数学</option>
+      <option value ="自然科学">自然科学</option>
+      <option value ="物理">物理</option>
+      <option value ="人类学">人类学</option>
+      <option value ="社会科学">社会科学</option>
+      <option value ="土木工程">土木工程</option>
+      <option value ="天文学">天文学</option>
+      <option value ="文学">文学</option>
+      <option value ="心里学">心里学</option>
+      <option value ="医学">医学</option>
+      <option value ="哲学">哲学</option>
+    </select><br/>
+    <iframe style="display:none" name="no-flush"></iframe>
+    <form class="submit" target="no-flush">
+      <input type="submit" name="submit" value="Submit">
+    </form>
+
+    <footer>
+        @<a href="">金光设计</a>
+    </footer>
+  </div>
+
+  <script type="text/javascript" src="./scripts/jquery.min.js"></script>
+  <script type="text/javascript" src="./scripts/module.js"></script>
+  <script type="text/javascript" src="./scripts/uploader.js"></script>
+  <script type="text/javascript" src="./scripts/hotkeys.js"></script>
+  <script type="text/javascript" src="./scripts/simditor.js"></script>
+  <script type="text/javascript" src="./scripts/sweet-alert.js"></script>
+  <script type="text/javascript" src="./scripts/blog-editor.js"></script>
+</body>
+</html>

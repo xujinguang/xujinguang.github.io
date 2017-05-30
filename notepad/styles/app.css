@@ -391,7 +391,7 @@ a:hover, a:active {
 }
 
 .wrapper label {
-  margin-left: 30px;
+  margin-left: 20px;
 
 }
 
@@ -414,6 +414,10 @@ a:hover, a:active {
   outline:medium;
 }
 
+.wrapper input#key-word{
+    margin-top:20px;
+}
+
 .wrapper select {
   font-size: 16px;
   background: transparent;
@@ -421,6 +425,15 @@ a:hover, a:active {
   width: 60px;
   height: 30px;
   outline:medium;
+}
+
+.wrapper select#type-name {
+    margin-left:30px;
+}
+
+.wrapper select#class-name {
+    margin-left:5px;
+    width:90px;
 }
 
 .wrapper header {

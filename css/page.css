@@ -1,14 +1,133 @@
-body#blog{
+body{
 	background:black;
-}
-div#nav{
-	width: 50%;
-	height: 160px;
-	position:relative;
-	margin:0 auto;
+    margin-top:0px;
 }
 
-div#blog-header{
+button:hover{
+	background: black;
+	color:white;
+	/*border:1px solid black;*/
+}
+
+button{
+	background:none;
+	color:black;
+	font-family: "微软雅黑";
+	font-size: 16px;
+    font-weight:400;
+	border: 0px;
+	margin-left:1px;
+	width:80px;
+	height:35px;
+}
+
+button#active{
+	background: black;
+	color:white;
+    border:0px;
+}
+
+.nav{
+	width: 60%;
+    min-width:800px;
+    height:auto;
+    min-height:600px;
+	margin:0 auto;
+	background:white;
+    padding-top:30px;
+    padding-bottom:60px;
+    position:relative;
+}
+
+.nav h1 {
+    font-size:36px;
+    font-family：'微软雅黑';
+    font-weight:400;
+    color: #3b5f6d;
+    margin:0, auto;
+    margin-top:0px;
+    padding:90px 0 0 0;
+    background-position: center 0;
+    background-image: url("../notepad/simditor-2.3.6/images/evolution.png");
+    background-repeat: no-repeat;
+    background-size: 271px 90px;
+    border:none;
+    text-align:center;
+}
+
+.nav h3 {
+    font-size:16px;
+    font-family：'微软雅黑';
+    font-weight:400;
+    text-align:center;
+}
+
+.nav hr {
+    margin-top:0px;
+    margin-bottom:0px;
+    padding-top:2px;
+    padding-bottom:2px;
+	height:1px;
+	border:none;
+}
+
+.nav hr#up {
+	border-top:1px dashed black;
+}
+
+.nav hr#down {
+	border-bottom:1px dashed black;
+    margin-bottom:15px;
+}
+
+.nav button#first{
+	margin-left:120px;
+}
+
+.nav table{
+	width: 85%;
+	line-height:20px;
+	margin:0 60 30 60;
+	font-family:"Times New Roman", "宋体";
+	font-size: 14px;
+}
+
+.nav td{
+	padding-left:15px;
+	padding-right:15px;
+}
+
+.nav td#book-name{
+	width: 40%;
+}
+
+.nav td#right-time{
+	width: 10%;
+}
+
+.nav tr:hover{
+	background:lightgray;
+}
+
+.nav footer {
+    position:absolute;
+    bottom:0px;
+    font-size: 14px;
+    width:100%;
+    margin: 20px auto;
+    color: #999999;
+    text-align: center;
+}
+
+.nav footer a {
+    color: #999999;
+}
+
+.nav footer a:hover {
+    color:black;
+}
+
+.blog-header{
 	width: 50%;
 	margin:0 auto;
 }
@@ -20,41 +139,28 @@ div#blog-header{
 	width: 45%;
 	min-width: 800px;
 	margin:0 auto;
-	
-}
-
-.blog-nav button:hover{
-	background: black;
-	color:white;
-	/*border:1px solid black;*/
-}
-
-.blog-nav button{
-	background:none;
-	color:black;
-	font-family: "微软雅黑";
-	font-size: 16px;
-	border: 0px;
-	text-align:top;
-	margin-left:1px;
-	width:60px;
-	height:30px;
 }
 
 .blog-nav button#first{
-	margin-left:100px;
+	margin-left:120px;
 }
 
-.blog-nav button#active{
-	background: black;
-	color:white;
-}
 
 .blog-nav hr {
-	margin-top:5px;
+    margin-top:0px;
+    margin-bottom:0px;
+    padding-top:2px;
+    padding-bottom:2px;
 	height:1px;
 	border:none;
+}
+
+.blog-nav hr#up {
 	border-top:1px dashed black;
+}
+
+.blog-nav hr#down {
+	border-bottom:1px dashed black;
 }
 
 .blog-body{
@@ -135,6 +241,14 @@ div#blog-header{
 	float: right;
 }
 
+.blog-body span#back-top{
+	margin-left:30px;
+}
+
+.blog-body span#next-blog{
+	margin-left:30px;
+}
+
 div#title{
 	padding:0px;
 	margin:0px;
@@ -169,37 +283,6 @@ label#class-name{
 
 
 
-table{
-	width: 50%;
-	line-height:20px;
-	margin:0 auto;
-}
-
-td{
-	padding-left:5px;
-	padding-right:5px;
-	font-family:"Times New Roman";
-}
-
-td#right-time{
-	width: 80px;
-	text-align: right;
-	font-size: 14px;
-	padding-right:10px;
-}
-
-tr:hover{
-	background:lightgray;
-}
-
-span{
-	font-size:15px;
-	font-weight:bold;
-}
-
-span#footer{
-	margin-left:30px;
-}
 
 a{
 	border:1px dashed #000; 
@@ -208,8 +291,8 @@ a{
 	border-right-width: 0px;
 	text-decoration: none;
 	font-size: 14px;
-	font-weight:100;
-	font-family:"Times New Roman";
+	font-weight:400;
+	font-family:"Times New Roman", "宋体";
 }
 
 a:hover {
