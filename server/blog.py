@@ -330,9 +330,10 @@ def get_blogs(cursor, conf, html_dict):
     for blog in blogs:
         curr_html = {}
         i = blog[TYPE]
+        j = blog[CLASS]
         curr_html['type'] = i
         curr_html['type_name'] = type_name[i][0]
-        curr_html['class'] = blog[CLASS]
+        curr_html['class'] = j
         title = blog[TITLE].encode('utf-8')
         curr_html['title'] = title
         curr_html['html_title'] = str(type_name[i][0]) + '-' + title
@@ -340,7 +341,7 @@ def get_blogs(cursor, conf, html_dict):
         curr_html['subtitle'] = blog[SUBTITLE].encode('utf-8')
         curr_html['date'] = blog[DATE].encode('utf-8')
         curr_html['abstruct'] = blog[ABSTRUCT].encode('utf-8')
-        curr_html['file_name'] = today + '_' + type_name[i][0] + '_' + class_name[i][0]
+        curr_html['file_name'] = today + '_' + type_name[i][0] + '_' + class_name[j][0]
         curr_html['content_id'] = blog[CONTENT_ID] 
         curr_html['sign'] = blog[SIGN].encode('utf-8')
         curr_html['prev_html'] = ""
@@ -457,4 +458,3 @@ def init_blog(date, blog_id):
 
 if __name__ == "__main__":
     gen_blog()
-

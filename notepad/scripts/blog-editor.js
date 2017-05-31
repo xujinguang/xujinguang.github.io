@@ -243,14 +243,14 @@ function submit_blog(editor){
 
         sign = "—— " + gen_weekday() + " 于" + sign;
 
-        var send_data = "op=1" + //保存博客
-                        "_&_title_=" + title +
-                        "_&_subtitle_=" + subtitle +
-                        "_&_key_=" + key_word +
-                        "_&_sign_=" + sign +
-                        "_&_type_=" + type_name +
-                        "_&_class_=" + class_name +
-                        "_&_blog_=" + blog;
+        var send_data = "op_=1" + //保存博客
+                        "_&_title__=" + title +
+                        "_&_subtitle__=" + subtitle +
+                        "_&_key__=" + key_word +
+                        "_&_sign__=" + sign +
+                        "_&_type__=" + type_name +
+                        "_&_class__=" + class_name +
+                        "_&_blog__=" + blog;
         //alert(send_data);
         
         //var url = "http://192.168.1.2:8080";

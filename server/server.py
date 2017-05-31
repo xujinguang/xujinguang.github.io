@@ -9,7 +9,7 @@ def decode_value(data, blog):
     print len(body)
     values = body.split('_&')
     for value in values: 
-        kv = value.split('=')
+        kv = value.split('_=')
         print len(kv)
         blog[kv[0]] = kv[1]
     print blog
@@ -43,7 +43,9 @@ def save_blog(conn, blog):
             modify_time)
         values
             (%s, %s, '%s', '%s', '%s', %s, '%s', 
-            date('now'), time('now'), datetime('now')); 
+            date('now', 'localtime'), 
+            time('now', 'localtime'), 
+            datetime('now', 'localtime')); 
     ''' % (blog['_type_'], 
         blog['_class_'],
         blog['_title_'],
