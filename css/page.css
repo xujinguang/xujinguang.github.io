@@ -102,7 +102,7 @@ button#active{
 }
 
 .nav td#right-time{
-	width: 10%;
+	width: 15%;
 }
 
 .nav tr:hover{
@@ -194,7 +194,7 @@ button#active{
 }
 
 .blog-body ol, ul{
-	
+    font-size:14px;	
 }
 
 .blog-body blockquote {
