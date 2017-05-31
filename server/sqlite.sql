@@ -1,14 +1,22 @@
+---警告：sqlite不支持表的字段alter功能，因此，如果下面任何表的字段需要修订只有一个方式
+---创建临时表导出数据->丢弃旧表->创建修订后的新表->从临时表导入数据
+create temp table tmp as select * from blog_index_tb;
+drop table blog_index_tb;
+create table blog_index_tb ...
+insert into blog_index_tb select * from tmp;
+drop table tmp;
+
 create table blog_index_tb(
 	id integer primary key autoincrement,
 	type tinyint,
 	class tinyint,
-	title varchar(32) not null default (date('now')),
+	title varchar(32) not null default (date('now', 'localtime')),
 	subtitle varchar(64) default null,
 	abstruct varchar(128) default null,
 	content_id int,
-	sign varchar(16) not null default (datetime('now')),
-	date date not null default (date('now')),
-	time time not null default (time('now')),
+	sign varchar(16) not null default (datetime('now', 'localtime')),
+	date date not null default (date('now', 'localtime')),
+	time time not null default (time('now', 'localtime')),
 	modify_time datetime
 );
 
@@ -29,7 +37,7 @@ create table class_name_tb(
 
 create table html_tb(
 	id integer primary key autoincrement,
-	time datetime not null default (datetime('now')),
+	time datetime not null default (datetime('now', 'localtime')),
 	type tinyint,
 	class tinyint,
 	html varchar(64)
