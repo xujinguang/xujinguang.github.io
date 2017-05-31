@@ -31,7 +31,7 @@ button#active{
 	width: 60%;
     min-width:800px;
     height:auto;
-    min-height:600px;
+    min-height:800px;
 	margin:0 auto;
 	background:white;
     padding-top:30px;
@@ -170,7 +170,7 @@ button#active{
 	min-width: 600px;
 	margin:0 auto;
 	height:auto;
-	min-height:600px;
+	min-height:800px;
 	box-shadow: 4px 4px 3px 4px rgba(0, 0, 0, 0.35);
 	font-family:"Times New Roman", "宋体";
 }
@@ -195,6 +195,8 @@ button#active{
 
 .blog-body ol, ul{
     font-size:14px;	
+    margin-left:50px;
+    padding-left:0px;
 }
 
 .blog-body blockquote {
@@ -253,7 +255,7 @@ div#title{
 	padding:0px;
 	margin:0px;
 	padding-top:20px;
-	font-size:24px;
+	font-size:18px;
 	font-weight:100;
 	font-family:"黑体";
 	text-align:center;
@@ -263,6 +265,8 @@ div#subtitle{
 	font-size:14px;
 	font-family:"Times New Roman";
 	text-align:center;
+    margin-top:8px;
+    padding-bottom:10px;
 }
 
 div#sign{
