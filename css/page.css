@@ -4,7 +4,8 @@ body{
 }
 
 button:hover{
-	background: black;
+	//background: black;
+	background: purple;
 	color:white;
 	/*border:1px solid black;*/
 }
@@ -22,7 +23,8 @@ button{
 }
 
 button#active{
-	background: black;
+	//background: black;
+	background: purple;
 	color:white;
     border:0px;
 }
@@ -128,8 +130,9 @@ button#active{
 }
 
 .blog-header{
-	padding:10px 100px 10px 100px;
-	background:white;
+	padding:0px 100px 0px 100px;
+    height:40px;
+	background:purple;
 	width: 34%;
 	min-width: 600px;
 	margin:0 auto;
