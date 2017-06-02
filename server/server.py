@@ -92,7 +92,7 @@ def process(data):
 class MyTCPHandler(SocketServer.BaseRequestHandler):
 
     def handle(self):
-        self.data = self.request.recv(4096).strip()
+        self.data = self.request.recv(8192).strip()
         print self.data
         ret = process(self.data)
         status = "HTTP/1.1 200 OK\r\n"
