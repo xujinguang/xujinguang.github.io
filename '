@@ -107,14 +107,8 @@ button#active{
 	width: 15%;
 }
 
-.nav tr:hover {
-    //background:lightgray;
-	//background:purple;
-    //color:white;
-}
-.nav a:hover{
-	background:purple;
-    color:white;
+.nav tr:hover{
+	background:lightgray;
 }
 
 .nav footer {
@@ -132,7 +126,7 @@ button#active{
 }
 
 .nav footer a:hover {
-    color:white;
+    color:black;
 }
 
 .blog-header{
@@ -312,7 +306,7 @@ a{
 }
 
 a:hover {
-	border:1px dashed green; 
+	border:1px dashed red; 
 	border-top-width: 0px;
 	border-left-width: 0px;
 	border-right-width: 0px;
@@ -335,15 +329,8 @@ a:active {
 	text-decoration:none; 
 } 
 
-.nav img{
-    width:100px;
-    height:140px;
-}
-
 .blog-chief{
-    margin:0 auto;
-    margin-top:60px;
-    margin-bottom:180px;
+    margin:60 auto;
     width:60%;
     text-align:center;
 }
@@ -352,43 +339,23 @@ a:active {
     width:180px;
     height:260px;
     float:left;
-    padding:0 0 10px 30px;
+    padding:0 0 0 40px;
 }
 
 .blog-chief pre{
-    font-size:14px;
     font-family:"Times New Roman";
-    font-weight:400;
-    text-align:left;
-    padding-top:10px;
+    font-weight:800;
+    text-align:center;
+    padding:20px 0 0 0;
     margin:0px;
-    margin-left:260px;
 }
 
 .blog-chief pre#english{
     font-family:"Times New Roman";
     font-size:12px;
-    font-weight:400;
+    font-weight:800;
+    text-align:center;
     text-transform:Capitalize;
     padding:0px;
-    //color:#7d7dff;
-    color:purple;
-}
-
-.blog-chief p{
-    font-size:14px;
-    font-family:"Times New Roman";
-    font-weight:400;
-    text-align:left;
     margin:0px;
-    line-height:25px;
-}
-
-.blog-chief p#english{
-    margin-top:5px; 
-    text-indent:2em;
-    font-family:"Times New Roman";
-    line-height:22px;
-    //color:#7d7dff;
-    color:purple;
 }
