@@ -25,7 +25,7 @@ TEMPLATE = '''<html lang="zh-cn">
         </button><button  %s onclick="window.location.href='../scope.html'">视 野
         </button><button  %s onclick="window.location.href='../science.html'">科 学
         </button><button  %s onclick="window.location.href='../literature.html'">文 哲
-        </button><button  onclick="window.location.href='../index.html'">首 领</button>
+        </button><button  onclick="window.location.href='../chief_engineer.html'">首 领</button>
         <hr id="down"/>
     </div>
     <div class="blog-body">
