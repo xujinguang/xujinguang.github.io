@@ -23,6 +23,7 @@
     }
 
     $('#where').hide();
+    $('#subclass-name').hide();
     submit_blog(editor);
      
   });
@@ -205,13 +206,52 @@ function submit_blog(editor){
         $('#where').hide();
     });
 
-    var type_name = 1;  //默认博客
-    var class_name = 7; //默认IT
+
+    var gen_subclass = function(class_id) {
+        var subclass = document.getElementById('subclass-name');
+        //清空
+        subclass.options.length = 0;
+        var subclass_name = [];
+        switch(class_id) {
+            case 7:
+                subclass_name = ['----', '数据结构','算法','编译','Lisp','C', 'C++','Python','PHP','Shell','Linux','网络','数据库','操作系统','机器学习','人工智能','web','黑客'];
+                break;
+            case 10:
+                subclass_name = ['----','矩阵','数值分析','运筹学','算法','代数','几何学','概率统计'];
+                break;
+            case 17:
+                subclass_name = ['----','小说','诗词','散文','名著'];
+                break;
+            default:
+                break;
+        }
+        for(var i = 0; i < subclass_name.length; ++i) {
+            subclass.add(new Option(subclass_name[i], subclass_name[i]));
+        }
+    }
+
+    var type_id = 1;  //默认博客
+    var class_id = 0; //默认其他
+    var subclass_id = 0; //默认其他
+
     $('#type-name').change(function(){
         type_name = document.getElementById('type-name').selectedIndex;
     });
+
     $('#class-name').change(function(){
-       class_name = document.getElementById('class-name').selectedIndex;
+       class_id = document.getElementById('class-name').selectedIndex;
+       //alert(class_id);
+       subclass_id = 0;
+       if(class_id == 7 || class_id == 10 || class_id == 17) {
+            gen_subclass(class_id);
+            $('#subclass-name').show();
+       } else {
+            $('#subclass-name').hide();
+       }
+    });
+
+    $('#subclass-name').change(function(){
+        subclass_id = document.getElementById('subclass-name').selectedIndex;
     });
 
     //提交文章
@@ -248,10 +288,11 @@ function submit_blog(editor){
                         "_&_subtitle__=" + subtitle +
                         "_&_key__=" + key_word +
                         "_&_sign__=" + sign +
-                        "_&_type__=" + type_name +
-                        "_&_class__=" + class_name +
+                        "_&_type__=" + type_id +
+                        "_&_class__=" + class_id +
+                        "_&_subclass__=" + subclass_id +
                         "_&_blog__=" + blog;
-        //alert(send_data);
+        alert(send_data);
         
         //var url = "http://192.168.1.2:8080";
         var url = "http://localhost:8080";

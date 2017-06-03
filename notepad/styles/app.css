@@ -436,6 +436,11 @@ a:hover, a:active {
     width:90px;
 }
 
+.wrapper select#subclass-name {
+    margin-left:5px;
+    width:100px;
+}
+
 .wrapper header {
   padding: 20px 0 15px;
 }

@@ -57,6 +57,27 @@ button#active{
     text-align:center;
 }
 
+.nav h1 a{
+    font-size:36px;
+    font-family：'微软雅黑';
+    font-weight:400;
+    color: #3b5f6d;
+    border:none;
+}
+
+.nav h2{
+    text-align:center;
+    text-transform:Capitalize;
+    color: #3b5f6d;
+}
+
+.nav h2 a{
+    color: #3b5f6d;
+    font-size:24px;
+    font-family：'微软雅黑';
+    font-weight:600;
+}
+
 .nav h3 {
     font-size:16px;
     font-family：'微软雅黑';
@@ -86,10 +107,30 @@ button#active{
 	margin-left:120px;
 }
 
+.nav ul {
+    font-size:22px;
+    text-transform:Capitalize;
+    text-align:left;
+    margin:0 auto;
+    width:60%;
+    margin-bottom:60px;
+}
+
+.nav li {
+    height:30px;
+}
+
+.nav ul a{
+    color: #3b5f6d;
+    font-size:20px;
+    font-family：'微软雅黑';
+    font-weight:400;
+}
 .nav table{
-	width: 85%;
+	width: 75%;
 	line-height:20px;
-	margin:0 60 30 60;
+    margin:0 auto;
+    margin-bottom:30px;
 	font-family:"Times New Roman", "宋体";
 	font-size: 14px;
 }

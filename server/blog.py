@@ -43,6 +43,28 @@ TEMPLATE = '''<html lang="zh-cn">
 </html>
 '''
 
+INDEX_TEMPLATE = '''<html lang="zh-cn">
+<head>
+	<title>裸猿森林</title>
+	<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="./css/page.css">
+</head>
+<body>
+    <div class="nav">
+        <h1><a href="index.html">裸猿森林</a></h1>
+        <hr id="up"/>
+        <h2>目录</h2>
+        <ul>%s
+        </ul>
+        %s
+        <footer>
+            <a href="">CopyLift: 所有文章转载请注明出处，侵权必究！| @X光设计 | Email: zqbxsx@126.com</a>
+        </footer>
+    </div>
+</body>
+</html>
+'''
+
 today = datetime.date.today()
 curr_id = 0
 
@@ -69,15 +91,32 @@ def get_blog_content(cursor, content_id):
     cursor.execute(sql % content_id)
     return cursor.fetchone()[0]
 
-def get_blog_type_name(cursor, tb):
+def get_blog_type_name(cursor, type_name):
     sql = '''
         select
             name
         from
-            %s
+            type_name_tb 
     '''
-    cursor.execute(sql % tb)
-    return cursor.fetchall()
+    cursor.execute(sql)
+    for row in cursor.fetchall():
+        type_name.append(row[0])
+
+def get_blog_class_name(cursor, class_name):
+    sql = '''
+        select
+            type,
+            subtype,
+            name
+        from
+            class_name_tb 
+        order by type, subtype asc
+    '''
+    cursor.execute(sql)
+    for row in cursor.fetchall():
+        if not class_name.has_key(row[0]):
+            class_name[row[0]] = {}
+        class_name[row[0]][row[1]] = row[2]
 
 def get_last_html(cursor, last_html):
     sql = '''
@@ -206,19 +245,22 @@ def insert_html_tb(conn, html_dict):
     cursor = conn.cursor()
     sql = '''
         insert into html_tb
-            (time, type, class, html)
+            (time, type, class, subclass, title, html)
         values
         (
              datetime('now'),
-              %s,
              %s,
+             %s,
+             %s,
+            '%s',
             '%s'
         );
     ''' 
     for i in html_dict.keys():
         for j in range(len(html_dict[i])):
             curr_html = html_dict[i][j]
-            cursor.execute(sql% (curr_html['type'], curr_html['class'], curr_html['file_name']))
+            cursor.execute(sql% (curr_html['type'], curr_html['class'], curr_html['subclass'], 
+                                curr_html['title'], curr_html['file_name']))
     conn.commit()
 
 
@@ -262,6 +304,7 @@ def select_blogs(cursor):
                 id,
                 type, 
                 class, 
+                subclass, 
                 title, 
                 subtitle, 
                 abstruct,
@@ -280,6 +323,7 @@ def select_blogs(cursor):
                 id,
                 type, 
                 class, 
+                subclass, 
                 title, 
                 subtitle, 
                 abstruct,
@@ -310,8 +354,10 @@ def get_blogs(cursor, conf, html_dict):
         5:('', '', '', '', ACTIVE)
     }
 
-    type_name = get_blog_type_name(cursor, 'type_name_tb')
-    class_name = get_blog_type_name(cursor, 'class_name_tb')
+    type_name = []
+    get_blog_type_name(cursor, type_name)
+    class_name = {}
+    get_blog_class_name(cursor, class_name)
     if type(today) == type('str'):
         today = datetime.datetime.strptime(today, "%Y-%m-%d") 
     today = today.strftime("%Y%m%d")
@@ -319,29 +365,36 @@ def get_blogs(cursor, conf, html_dict):
     ID = 0
     TYPE = 1 
     CLASS = 2 
-    TITLE = 3 
-    SUBTITLE = 4 
-    ABSTRUCT = 5
-    CONTENT_ID = 6
-    SIGN = 7
-    DATE = 8
-    TIME = 9
+    SUBCLASS = 3 
+    TITLE = 4 
+    SUBTITLE = 5 
+    ABSTRUCT = 6
+    CONTENT_ID = 7
+    SIGN = 8
+    DATE = 9
+    TIME = 10
 
     for blog in blogs:
         curr_html = {}
         i = blog[TYPE]
         j = blog[CLASS]
+        k = blog[SUBCLASS]
         curr_html['type'] = i
-        curr_html['type_name'] = type_name[i][0]
+        curr_html['type_name'] = type_name[i]
         curr_html['class'] = j
+        curr_html['subclass'] = k 
         title = blog[TITLE].encode('utf-8')
         curr_html['title'] = title
-        curr_html['html_title'] = str(type_name[i][0]) + '-' + title
+        curr_html['html_title'] = str(type_name[i]) + '-' + title
         curr_html['nav'] = nav[i]
         curr_html['subtitle'] = blog[SUBTITLE].encode('utf-8')
         curr_html['date'] = blog[DATE].encode('utf-8')
         curr_html['abstruct'] = blog[ABSTRUCT].encode('utf-8')
-        curr_html['file_name'] = today + '_' + type_name[i][0] + '_' + class_name[j][0]
+        if k != 0:
+            file_name = today + '_' + type_name[i] + '_' + class_name[j][0] + '_' + class_name[j][k]
+        else:
+            file_name = today + '_' + type_name[i] + '_' + class_name[j][0] 
+        curr_html['file_name'] = file_name
         curr_html['content_id'] = blog[CONTENT_ID] 
         curr_html['sign'] = blog[SIGN].encode('utf-8')
         curr_html['prev_html'] = ""
@@ -404,7 +457,96 @@ def output_html(conf, html_dict):
             DEBUG(text)
             html.write(text)
             html.close()
-            
+
+def get_all_html(cursor, all_html):
+    class_name = {}
+    get_blog_class_name(cursor, class_name)
+
+    sql = '''
+        select
+            t.time,
+            t.class,
+            t.subclass,
+            t.title,
+            t.html
+        from
+        (
+            select
+                time,
+                class,
+                subclass,
+                title,
+                html
+            from
+                html_tb
+            order by time desc
+        )t
+        order by class, subclass asc
+    '''
+    cursor.execute(sql)
+    for row in cursor.fetchall():
+        curr_class_name =  class_name[row[1]][row[2]]
+        if not all_html.has_key(curr_class_name):
+            all_html[curr_class_name] = [] 
+        record = (row[0].split(' ')[0], row[3], row[4])
+        all_html[curr_class_name].append(record)
+
+def output_all_html(conf, all_html):
+    index_str = '''
+            <li><a href="#%s">%s</a></li>'''
+    class_index_str = '''
+        <div id="%s">
+        <hr id="up"/>
+        <h2><a href="#%s">%s</a></h2>
+            <table>%s
+            </table>
+        </div>'''
+    record_str = '''
+                <tr>
+                    <td><a href="./blog/%s" target="_blank">%s</a></td>
+                    <td id="right-time">%s</td>
+                </tr>'''
+    all_index = ""
+    all_class_index = ""
+
+    for class_name in all_html.keys():
+        all_index += index_str % ((class_name, ) * 2)
+        records = all_html[class_name]
+        all_record = ""
+        for record in records:
+            all_record += record_str % (str(record[2]), record[1], str(record[0]))
+        all_class_index += class_index_str % ((class_name,) * 3 + (all_record,))
+    all_index_html = INDEX_TEMPLATE % (all_index, all_class_index)
+
+    print all_index_html
+    with io.open(conf['html_path'][0:-5] + 'all_index.html', 'w') as html:
+        html.write(all_index_html)
+        html.close()
+
+def test():
+    reload(sys)  
+    sys.setdefaultencoding('utf8')  
+    conf = {}
+    read_conf(conf)
+    conn = sqlite3.connect(conf['db_path'])
+    cursor = conn.cursor()
+
+    #type_name = []
+    #get_blog_type_name(cursor, type_name)
+    #print type_name[2]
+    #class_name = {}
+    #get_blog_class_name(cursor, class_name)
+    #print class_name[7][8]
+    #print class_name[7][0]
+
+    all_html = {}
+    get_all_html(cursor, all_html)
+    print all_html
+
+    output_all_html(conf, all_html)
+
+    conn.close()
+    
 def gen_blog():
     reload(sys)  
     sys.setdefaultencoding('utf8')  
@@ -420,12 +562,14 @@ def gen_blog():
 
     conn = sqlite3.connect(conf['db_path'])
     cursor = conn.cursor()
-    html_dict = {}
 
+    html_dict = {}
     get_blogs(cursor, conf, html_dict)
 
     #按照格式拼接文件名:日期-分类-学科-编号.html
     set_file_name(cursor, html_dict)
+    #print html_dict
+    #return
 
     #获取上一篇的文章,用于下文的set_prev_next_html
     last_html = {}
@@ -447,6 +591,10 @@ def gen_blog():
     #插入的目的是为了方便生成目录
     insert_html_tb(conn, html_dict)
 
+    all_html = {}
+    get_all_html(cursor, all_html)
+    #print all_html
+    output_all_html(conf, all_html)
 
     conn.close()
 
@@ -458,3 +606,4 @@ def init_blog(date, blog_id):
 
 if __name__ == "__main__":
     gen_blog()
+    #test()

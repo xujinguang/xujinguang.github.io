@@ -33,6 +33,7 @@ def save_blog(conn, blog):
         insert into blog_index_tb 
             (type,
             class,
+            subclass,
             title,
             subtitle,
             abstruct,
@@ -42,12 +43,13 @@ def save_blog(conn, blog):
             time,
             modify_time)
         values
-            (%s, %s, '%s', '%s', '%s', %s, '%s', 
+            (%s, %s, %s, '%s', '%s', '%s', %s, '%s', 
             date('now', 'localtime'), 
             time('now', 'localtime'), 
             datetime('now', 'localtime')); 
     ''' % (blog['_type_'], 
         blog['_class_'],
+        blog['_subclass_'],
         blog['_title_'],
         blog['_subtitle_'],
         blog['_key_'],

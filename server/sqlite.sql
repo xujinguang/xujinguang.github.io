@@ -6,10 +6,14 @@ create table blog_index_tb ...
 insert into blog_index_tb select * from tmp;
 drop table tmp;
 
+--增加子类型子段
+insert into blog_index_tb (id, type, class, title, subtitle, abstruct, content_id, sign, date, time, modify_time) select * from tmp;
+
 create table blog_index_tb(
 	id integer primary key autoincrement,
 	type tinyint,
 	class tinyint,
+    subclass tinyint not null default 0,
 	title varchar(32) not null default (date('now', 'localtime')),
 	subtitle varchar(64) default null,
 	abstruct varchar(128) default null,
@@ -31,15 +35,22 @@ create table type_name_tb(
 );
 
 create table class_name_tb(
-	type tinyint primary key,
-	name varchar(32)
+	type tinyint,
+    subtype tinyint,
+	name varchar(32),
+    primary key (type, subtype)
 );
+
+--增加title
+insert into html_tb (id, time, type, class, subclass, html) select * from tmp;
 
 create table html_tb(
 	id integer primary key autoincrement,
 	time datetime not null default (datetime('now', 'localtime')),
 	type tinyint,
 	class tinyint,
+    subclass tinyint not null default 0,
+    title varchar(32) default null,
 	html varchar(64)
 );
 
@@ -56,27 +67,61 @@ insert into type_name_tb values
 --这个分类是discovery工具的学科分类，直接转移过来编号存入
 --新增学科直接追加
 insert into class_name_tb values
-	(0, 'NULL'),	
-	(1, 'art'),
-	(2, 'biology'),
-	(3, 'chemistry'),
-	(4, 'economics'),
-	(5, 'religious'),
-	(6, 'history'),
-	(7, 'computer'),
-	(8, 'biography'),
-	(9, 'logic'),
-	(10, 'math'),
-	(11, 'natural-science'),
-	(12, 'physics'),
-	(13, 'anthropology'),
-	(14, 'social-science'),
-	(15, 'civil-engineering'),
-	(16, 'universe'),
-	(17, 'literature'),
-	(18, 'psychology'),
-	(19, 'medicine'),
-	(20, 'philosophy');
+	(0, 0, 'other'),	
+	(1, 0, 'music'),
+	(2, 0, 'biology'),
+	(3, 0, 'chemistry'),
+	(4, 0, 'economics'),
+	(5, 0, 'religious'),
+	(6, 0, 'history'),
+
+	(7, 0, 'computer'),
+	(7, 1, 'data-structure'),
+	(7, 2, 'alogrithm'),
+	(7, 3, 'compiler'),
+	(7, 4, 'lisp'),
+	(7, 5, 'C'),
+	(7, 6, 'C++'),
+	(7, 7, 'python'),
+	(7, 8, 'php'),
+	(7, 9, 'shell'),
+	(7, 10, 'linux'),
+	(7, 11, 'network'),
+	(7, 12, 'database'),
+	(7, 13, 'os'),
+	(7, 14, 'machine-learning'),
+	(7, 15, 'ai'),
+	(7, 16, 'web'),
+	(7, 17, 'hack'),
+
+	(8, 0, 'biography'),
+	(9, 0, 'logic'),
+
+	(10, 0, 'math'),
+	(10, 1, 'matrix'),
+	(10, 2, 'numerical-analysis'),
+	(10, 3, 'operational-research'),
+	(10, 4, 'alogrithm'),
+	(10, 5, 'algebra'), 
+	(10, 6, 'geometry'), 
+	(10, 7, 'probability-statistics'), 
+
+	(11, 0, 'natural-science'),
+	(12, 0, 'physics'),
+	(13, 0, 'anthropology'),
+	(14, 0, 'social-science'),
+	(15, 0, 'civil-engineering'),
+	(16, 0, 'universe'),
+
+	(17, 0, 'literature'),
+	(17, 1, 'novel'),
+	(17, 2, 'poem'),
+	(17, 3, 'essay'),
+	(17, 4, 'masterpiece'),
+
+	(18, 0, 'psychology'),
+	(19, 0, 'medicine'),
+	(20, 0, 'philosophy');
 
 --测试数据建立
 insert into content_tb
@@ -93,156 +138,4 @@ values
 	("测试博客9"),
 	("测试博客10"),
 	("测试博客11");
-
-insert into blog_index_tb 
-	(  
-	   type,
-	   class,
-	   title,
-	   subtitle,
-	   abstruct,
-	   content_id,
-	   sign,
-	   date,
-	   time,
-	   modify_time
-	)
-values
-	(
-		1,
-		2,
-		'blog',
-		'',
-		'',
-		1,
-		'于成都',
-		date('now'),
-		time('now'),
-		datetime('now')
-	),
-	(
-		1,
-		4,
-		'blog',
-		'',
-		'',
-		2,
-		'于成都',
-		date('now'),
-		time('now'),
-		datetime('now')
-	),
-	(
-		2,
-		10,
-		'blog',
-		'',
-		'',
-		3,
-		'于成都',
-		date('now'),
-		time('now'),
-		datetime('now')
-	),
-	(
-		3,
-		12,
-		'blog',
-		'',
-		'',
-		4,
-		'于成都',
-		date('now'),
-		time('now'),
-		datetime('now')
-	),
-	(
-		4,
-		20,
-		'blog',
-		'',
-		'',
-		5,
-		'于成都',
-		date('now'),
-		time('now'),
-		datetime('now')
-	),
-	(
-		5,
-		15,
-		'blog',
-		'',
-		'',
-		1,
-		'于成都',
-		date('now'),
-		time('now'),
-		datetime('now')
-	),
-	(
-		1,
-		2,
-		'blog',
-		'',
-		'',
-		11,
-		'于成都',
-		date('now'),
-		time('now'),
-		datetime('now')
-	),
-	(
-		3,
-		2,
-		'blog',
-		'',
-		'',
-		10,
-		'于成都',
-		date('now'),
-		time('now'),
-		datetime('now')
-	),
-	(
-		4,
-		8,
-		'blog',
-		'',
-		'',
-		6,
-		'于成都',
-		date('now'),
-		time('now'),
-		datetime('now')
-	),
-	(
-		2,
-		9,
-		'blog',
-		'',
-		'',
-		8,
-		'于成都',
-		date('now'),
-		time('now'),
-		datetime('now')
-	),
-	(
-		5,
-		5,
-		'blog',
-		'',
-		'',
-		7,
-		'于成都',
-		date('now'),
-		time('now'),
-		datetime('now')
-	);
-
-
-
-		
-
 
