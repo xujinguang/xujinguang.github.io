@@ -134,7 +134,7 @@ button#active{
 }
 .nav table{
 	width: 75%;
-	line-height:20px;
+	line-height:18px;
     margin:0 auto;
     margin-bottom:30px;
 	font-family:"Times New Roman", "宋体";
@@ -151,7 +151,8 @@ button#active{
 }
 
 .nav td#right-time{
-	width: 15%;
+	width: 20%;
+    text-align:center;
 }
 
 .nav tr:hover {
