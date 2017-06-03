@@ -65,6 +65,12 @@ button#active{
     border:none;
 }
 
+.nav h1 a:hover{
+    color: purple;
+    background:white;
+    border:none;
+}
+
 .nav h2{
     text-align:center;
     text-transform:Capitalize;
