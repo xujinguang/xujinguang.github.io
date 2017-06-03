@@ -151,8 +151,10 @@ button#active{
 }
 
 .nav td#right-time{
-	width: 20%;
-    text-align:center;
+	width: 15%;
+    text-align:right;
+    padding:0px;
+    padding-right:10px;
 }
 
 .nav tr:hover {
