@@ -428,11 +428,12 @@ def update_type_html(conf, html_dict):
             with io.open(html_file, 'r') as html:
                 content = html.read()
                 href = str('./blog/' + curr_html['file_name'])
+                title = '《'.encode('utf-8') + curr_html['title'] + '》'.encode('utf-8')
                 if(curr_html['type'] == 2):
-                    txt = read_rep % (href, curr_html['title'], href, curr_html['abstruct'], curr_html['date'])
+                    txt = read_rep % (href, title, href, curr_html['abstruct'], curr_html['date'])
                     body = content.replace(src, txt)
                 else:
-                    body = content.replace(src, other_rep % (href, curr_html['title'], curr_html['date']))
+                    body = content.replace(src, other_rep % (href, title, curr_html['date']))
                 print body
                 html.close()
             with io.open(html_file, 'w') as html:
@@ -514,7 +515,8 @@ def output_all_html(conf, all_html):
         records = all_html[class_name]
         all_record = ""
         for record in records:
-            all_record += record_str % (str(record[2]), record[1], str(record[0]))
+            title = '《'.encode('utf-8') + record[1] + '》'.encode('utf-8')
+            all_record += record_str % (str(record[2]), title, str(record[0]))
         all_class_index += class_index_str % ((class_name,) * 3 + (all_record,))
     all_index_html = INDEX_TEMPLATE % (all_index, all_class_index)
 

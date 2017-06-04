@@ -1,3 +1,6 @@
+#!/urs/bin/python
+# -*- coding: UTF-8 -*-
+
 import SocketServer
 import urllib
 from blog import *
@@ -26,7 +29,10 @@ def save_blog(conn, blog):
             ('%s');
     '''
     cursor = conn.cursor()
-    cursor.execute(sql % blog['_blog_'])
+    content = blog['_blog_']  
+    if blog['_class_'] == '17' and blog['_subclass_'] == '2':
+        content = blog['_blog_'].replace("<p>", '''<p id="poem">''')
+    cursor.execute(sql % content)
     conn.commit()
     content_id = cursor.lastrowid;
     sql = '''

@@ -271,6 +271,11 @@ button#active{
 	text-indent:30px;
 }
 
+.blog-body p#poem{
+    text-indent: 0px;
+    text-align:center;
+}
+
 .blog-body h1{
 	margin-left:10px;
 	font-size:40px;

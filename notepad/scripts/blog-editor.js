@@ -235,7 +235,7 @@ function submit_blog(editor){
     var subclass_id = 0; //默认其他
 
     $('#type-name').change(function(){
-        type_name = document.getElementById('type-name').selectedIndex;
+        type_id = document.getElementById('type-name').selectedIndex;
     });
 
     $('#class-name').change(function(){
@@ -281,7 +281,8 @@ function submit_blog(editor){
             $('#sign').val(sign);
         }
 
-        sign = "—— " + gen_weekday() + " 于" + sign;
+        //sign = "—— " + gen_weekday() + " 于" + sign;
+        sign = "—— " + " 于" + sign;
 
         var send_data = "op_=1" + //保存博客
                         "_&_title__=" + title +
@@ -292,7 +293,7 @@ function submit_blog(editor){
                         "_&_class__=" + class_id +
                         "_&_subclass__=" + subclass_id +
                         "_&_blog__=" + blog;
-        alert(send_data);
+        //alert(send_data);
         
         //var url = "http://192.168.1.2:8080";
         var url = "http://localhost:8080";
@@ -306,7 +307,7 @@ function submit_blog(editor){
                         //定时刷新编辑器和打开分类主页
                         setTimeout(function(){
                                 url = '../index.html';
-                                switch(type_name) {
+                                switch(type_id) {
                                 case 1:
                                 url = '../blog.html';
                                 break;
