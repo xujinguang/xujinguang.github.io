@@ -1,0 +1,684 @@
+tar:
+	创建 
+		$ tar -cvf file.tar dir
+	解压
+		$ tar -xvf file.tar
+
+	.gz格式
+		$ tar -zcvf file.tar.gz dir
+	.bz2格式
+		$ tar -jcvf file.tar.bz2 dir
+	.xz 格式
+	解压
+		$ xz -d file.tar.xz
+		$ tar -xvf file.tar
+	创建
+		1-$ tar -Jcvf file.tar.xz dir
+		2-$ tar -cvf file.tar dir
+		  $ xz -z file.tar
+
+bash:
+	查找文件内容
+	ls | while read LINE; do grep -n 'GroClient' $LINE &&  echo $LINE; done
+
+	查看静态库API
+	nm -g --defined-only vas_key_lib.a
+
+	数值计算：
+	$[] / $(()) / `expr ` / let
+	
+	数值比较
+	[[  -eq -lt -gt -ge -le  ]]
+	(( < > <= >= ==))
+
+	命令参数传递变量，可以使用双引号括起来就可以了，比如sed -n "$start, $end" file动态显示区间
+
+	字符串提取
+	${var%} ${var%%} 左提取
+	${var#} ${var##} 右提取
+
+	-e 文件是否存在
+	-f 文件是否存在
+	-s 文件存在长度不为0
+	-d 目录
+
+vim
+	:set invlist
+
+	换行符的区别：
+		Windows:     '\r\n'
+		Mac:         '\r'
+		Linux:       '\n'
+
+	转换方式：
+
+		Windows->Linux : sed -i 's/\r$//' file.txt
+
+		Windows->Mac : cat old.txt | tr -d "\n" > new.txt
+		Mac->Windows : cat old.txt | tr "\r" "\n" | sed 's/$/\r/' > new.txt
+		Mac->Linux : cat old.txt | tr "\r" "\n" > new.txt
+		Linux->Windows : sed -i 's/$/\r/' file.txt
+		Linux->Mac : cat old.txt | tr "\n" "\r" > new.txt
+
+	:set foldmethod=indent
+	设置折叠
+	method=[indent, manual, expr, syntax, diff, marker]
+
+	vsplit -> vsp
+Linux-CMD:
+
+ 	cscope –Rbq
+ 	ctags -R .
+ 	生成
+
+ 	netstat
+ 		-l 监听socket
+ 		-u UDP连线
+ 		-n 使用ip地址
+ 		-p 正在使用的socket程序识别码程序名称
+
+ 	tcpdump
+ 		-i 指定网络监听端口
+ 		-X 把协议监听到的包原样显示
+ 		-w 写入文件
+ 		-nn ip和port
+ 		src dst net host gateway port
+
+	tcpdump -i any -Xns0 TCP
+	 tcpdump -i any src 10.207.130.147 -Xns0
+	 tcpdump -i any port 80 and  host 10.207.130.147 -Xns0
+
+ 	ctrl + d -- 删除当前字符
+ 	ctrl + k -- 剪切命令
+ 	ctrl + y -- 粘贴
+ 	ctrl + r + key -- 查找历史命令
+ 	ctrl + u -- 清除光标之前的字符
+ 	ctrl + t --调换字符
+ 	Esc + f/b -- 前进/后退一个单词
+ 	Esc + d -- 删除光标后的一个单词
+ 	Esc + u/l -- 光标所在单词一律大写/小写
+ 	Esc + c -- 光标所在单词首字母大写
+
+ 	ctrl + p/n -- 翻找命令
+ 	Esc + 数字 + 输入字符 -- 自动生成重复字符
+
+
+ 	nl - 给输出行加上行号
+
+ 	mtr - ping 和trouce的组合，需要安装
+
+ 	shuf - 随机选择文件行
+
+ 	ss  is  used to dump socket statistics. It allows showing information similar to netstat.  
+ 		It can display more TCP and state informations than other tools.
+ 		简言之，类似netstat，输出更多socket的统计信息
+
+ 	last - 显示用户登录信息
+
+ 	tree - 以树形结构输出当前目录文件结构
+ 	pstree - 进程树
+
+ 	ar 打包文件
+ 		-rv
+ 		-t 输出包内文件列表
+ 		-rav file09 file file10 将file10放入file包的file09之后
+ 		-dv file file10 删除file包中的file10
+ 		建议用tar
+
+ 	arch
+ 		机器体系结构明
+
+ 	arp
+ 		网卡MAC地址映射命令
+ 		解析IP和MAC地址的映射。
+ 	arping
+ 		向邻近主机发送ARP请求
+
+ 	arpwatch
+ 		监听网上的Arp记录，一旦有arop数据包，那么意味一个新host入网。
+ 		arpwatch -i eth0 -s xu@guang.com
+
+ 	at 
+ 		定时任务
+ 		10:55 
+ 		输入命令
+ 		ctrl + D结束输入
+ 		-l 列出将要还行的任务 = atq
+ 		-m xu@guang.com 将结果发送邮件
+ 		-d no 删除no号任务 = atrm
+ 		ep：
+ 		at 5pm+3 days
+ 		at 17:00 tomorrow
+ 		/etc/init.d/atd [start/stop/restart]
+ 		chkconfig atd on
+
+ 	batch
+ 		执行批处理任务
+
+ 	bg/fg
+ 		将进程放入前后台
+
+ 	bind
+ 		显示或设置键盘配置
+
+ 	blackdev
+ 		读取block设备的信息
+ 		blockdev -v ARG /dev/sda1
+ 		ARG：
+ 		--getss 区块大小
+ 		--getsize 大小
+ 		--setro 只读
+ 		--setrw 可读写
+ 		--getro 判断还是否只读
+ 		--getra 输出读写头大小
+ 		--flushbufs 更新缓冲区
+
+ 	bunzip2
+ 		解压缩bz2文件
+ 		-f 覆盖重名文件
+ 		-k 保留原包
+ 		-v 输出解压信息
+ 		-s 解压降低内存使用
+ 		bunzip2 -sk linux.2.6.44.tar.bz2 
+
+ 	bzgrep
+ 		查找bz文件中的字符串，实现不解压能查看
+
+ 	bzip2
+ 		压缩成bz2格式文件
+ 		-d = bunzip2
+ 		-fksv 同上
+
+ 	bzip2recover
+ 		修复损坏的bz2文件
+
+
+ 	bzless/bzmore
+ 		输出bz2格式文件的内容
+
+ 	cat
+ 		-E 显示$结束
+ 		-s 删除重复空白行
+ 		-b 非空白行标上行号
+ 		-n 所有行标上行号，包括空白行
+
+ 	cfdisk
+ 		修改硬盘分区
+ 		-a 界面选择方式箭头
+
+ 	chacl
+ 		设置文件控制权限
+
+ 	chage
+ 		改变用户密码过期信息
+
+ 	chattr
+ 		改变文件属性-lsattr查看
+
+ 	chfn
+ 		修改finger里的信息
+
+ 	chgrp
+ 		改变文件目录所属组
+
+ 	chkconfig
+ 		设置系统在不同运行等级下的服务
+ 		--list/del/add
+ 	chroot
+ 		修改根目录，在安装系统时估计有用
+ 	chsh
+ 		改变用户登录系统所用shell
+ 		-l list
+ 		-s shell user
+ 	cksum
+ 		显示文件标识符和大小
+ 	cmp
+ 		对比两个文件
+ 		-b 输出相差字节
+ 		-i 略过行a:b
+ 		-l 输出不同地方
+ 		-n 限制比对的字节数量
+ 		=diff
+ 	col
+ 		过滤控制字符
+ 	colrm
+ 		删除指定的列
+ 		指定起始和结束，不指定结束则默认
+ 	compress
+ 		压缩或解压Z文件
+ 	cp
+ 		-b 覆盖时先备份
+ 		-i 询问
+ 		-u 复制时间差异的文件
+ 		-f force
+ 		-p 保留原文件属性
+ 		-R/r递归
+
+ 	crontab
+ 		设置计划任务
+ 		-e/l/r/u
+ 		crontab -u guang -r
+ 	csplit
+ 		分割文件
+ 	ctrlaltdel
+ 		组合键
+ 		hard 强制立刻重启
+ 		soft 数据刷新，停止服务，卸载文件系统，重启
+ 	cut
+ 		行处理
+ 		-b 字节范围
+ 		-c 字符范围
+ 		-d 分隔符
+ 		-f 输出字段
+ 		cut -f 1,6 -d : file
+
+ 	date
+ 		Unix时间戳转换成格林时间
+ 		 date -d @1480402379
+ 		 也可以指定格式
+ 		 date -d @1480402379 +"%Y-%m-%d %H-%M-%S"
+ 		 时间转换成时间戳
+ 		 date +%s
+ 	dd
+ 		转换与输出数据
+ 		bs= 为ibs和obs指定大小
+ 		cbs= 为block与unblock指定转换区快大小
+ 		conv=ascii，ebcdic，ibm，block，unblock，lcase，ucase，swab，noerror，notrunc，sync
+ 		if=file 从文件读取
+ 		of=file 输出到文件
+ 		ibs= 每次读取的字节
+ 		obs= 每次输出字节
+ 		count= 区块数目
+ 		seek= 输出跳过的区块数
+ 		skip= 读取条多的区块数
+ 	debugfs
+ 		文件系统调试
+
+ 	declare
+ 		声明shell变量
+ 		-i 计算表达式
+ 		-p shell变量
+ 		-r 只读变量
+ 		-x 环境变量
+
+ 	depmod
+ 		分析可加载模块关联性
+
+ 	df
+ 		显示文件系统使用情况
+ 		-a
+ 		-B=区块大小
+ 		-h 易读显示
+ 		-H 1000而非1024
+ 		-i inode
+ 		-l 本地fs
+ 		-k/m 字节单位
+ 		-t= 显示指定的fs
+ 		-T fs type
+ 		-x= 不显示指定fs
+
+ 	diff
+ 	diffstat
+ 		统计diff的数据
+
+ 	dig
+ 		显示域名的高级数据
+ 		@server
+ 		-b ip
+ 		-f file
+ 		-p port
+ 		-t type
+ 		-x 
+
+ 	dir
+ 		-a all
+ 		-C 字段显示
+ 		-f 写入顺序显示
+ 		-h 易读
+ 		-i inode
+ 		-k KB
+ 		-l list
+ 		-m 水平排列
+ 		-o 长列表
+ 		-r 字母反序
+ 		-R 递归
+ 		-t 修改时间排序
+ 		-u use 使用时间排序
+
+ 	dircolors
+ 		ls时颜色
+
+ 	dirname
+ 		当前路径下的目录明确
+ 	dmesg
+ 	du
+ 		目录或文件的大小
+ 		-bkm 单位
+ 	dump
+ 		ext2 fs backup
+
+ 	e2fsck
+ 		ext2/3 fs check
+ 	e2label
+ 		设置ext2/3 卷标
+ 	edquota
+ 		设置用户或者组所能使用的硬盘容量
+ 	eject
+ 		光驱的弹出与收回
+ 	enable
+ 		启停shell的默认命令
+ 		-a 显示
+ 		-n cmd stop
+ 		启动不加参数
+
+ 	ex = vi -E 
+ 		执行模式下的编辑器
+ 	exit
+ 	export
+
+ 	fc
+ 		修改或使用曾经运行的命令
+ 		-e vim
+ 		-l list
+ 		-n 不输出no
+ 		-r 反向
+ 	fdisk	
+ 		修改硬盘分区
+ 	fgrep = grep -F 
+
+ 	file
+ 	filefrag
+ 		显示文件的破碎状态
+
+ 	find
+ 	findfs
+ 		LABEL=/
+ 	finger
+ 		查询源程主机上用户信息
+ 	fmt
+ 		编排，将分段的合成行
+ 	fold
+ 		文件的显示宽度
+ 		-b byte
+ 		-c character
+ 		-s 空白分割
+ 		-w width默认80
+
+ 	groupadd
+ 	groupmod
+ 	groupdel
+ 	groups
+ 	gunzip
+ 		解压gz文件
+ 		gzip
+ 	halt
+ 		关闭计算机
+ 	help
+ 	host
+ 	hostid
+ 	hostname
+ 		-a 主机别名
+ 		-d 域名
+ 		-f 主机全名
+ 		-i ip
+ 		-v 显示执行过程
+ 	hwclock
+ 		设置硬件时间
+ 		-r 显示硬件时间
+ 		-s 调整系统和硬件一致
+
+ 	iconv
+ 		编码转换
+ 		-f 输入编码
+ 		-t 输出编码
+ 		-o 输出文件
+ 		-l 列出支持的格式
+
+ 	ifconfig
+ 		up、down开启或关闭网卡
+
+ 	info
+ 		类似man，help但是显示的内容不太一样
+
+ 	init
+ 		改变系统的运行等级
+ 		0-6数字
+ 		0-关机
+ 		6-重启系统
+ 	insmod
+ 		内核加载模块
+
+ 	ipcrm
+ 		共享内存的删除ipc+rm
+ 		tips：当进程死亡后，如果内存依然很高，要检查共享内存的使用情况ipcs
+ 		-m id 
+ 		msg/shm/sem id 删除指定id message queueu/share memory/semaphore
+ 		 = -q id/-m id/ -s id
+ 		-M/Q/S key 按照指定的key删除共享内存，消息队列或信号量
+
+ 	iossize
+
+ 	jobs
+ 		后台任务
+ 		-l/p/n/r/s
+ 		list/process/restrict/stop
+ 	join
+ 		将两个文件相同的部分合并
+ 		-i ingnore
+ 		-o 输出格式
+ 		-t 分割字符
+
+ 	kill
+ 		-l 显示所有信号代码
+
+ 	killall
+ 		-e 需要与名称完全符合
+ 		-g 删除程序组
+ 		-i 交互模式
+ 		-q 不在界面输出被删除的进程，安静模式
+ 		-v 显示删除过程
+
+ 	last
+ 		最近登录
+ 	ldd
+ 		链接库
+ 	ln
+ 	lndir
+ 		目录链接
+
+ 	lnstat
+ 		输出网络数据统计
+ 	locate
+ 		搜索文件名包含字符串的文件
+ 		-i 忽略大小写
+ 		-n N N行
+ 		-q 安静
+
+ 	logrotate
+ 		定期定量记录文件压缩备份
+ 	logsave
+ 		将指定程序的输出存储到记录文件中
+ 		ext2、3文件系统有效
+ 	lpq
+ 		打印队列
+ 	lprm
+ 		删除打印任务
+ 	lsmod
+ 		内核模块
+
+ 	lsusb
+ 		显示所有usb设备
+ 	lynx
+ 		终端山读取网页命令
+ 	manpath
+ 		man的路径
+ 	md5sum
+ 		md5校验
+ 		-c correct
+ 		-t 文本模式
+ 		-w warnning不能校验的部分警告
+ 		-b byte二进制模式校验
+ 	mkbootdisk
+ 		创建启动盘
+
+ 	mkdir
+ 		-m 模式
+ 		-p 递归创建
+ 	mke2fs
+ 		格式化分区为ext23文件系统
+ 	mkfs
+ 		格式化分区
+
+ 	mkswap
+ 		添加swap分区
+ 	modinfo
+ 		内核模块信息
+ 	modprobe
+ 		从核心中添加或删除模块
+
+ 	mv
+ 		-b backup 覆盖前先备份
+ 		-f force 强迫覆盖
+ 		-u 按照最新更改时间判断
+ 		-i 交互模式
+ 	netstat
+ 		-c 持续输出
+ 		-e 其他信息
+ 		-l listen的socket
+ 		-M 显示隐藏的联机
+ 		-n 以ip显示
+ 		-p 与程序相关的程序名称及pid
+ 		-r 路由表
+ 		-t tcp
+ 		-u udp
+
+ 	nice
+ 		优先级更改
+ 		-n p
+ 	nohup
+ 		退出系统后仍可继续运行指定的程序
+
+
+ 	od
+ 		八进制输出文件内容
+
+ 	passwd
+ 	paste
+ 		合并文件
+ 		-d=c 替换tab键
+ 	patch	
+
+ 	pidof
+ 		查看一个正在运行的进程pid
+ 	pine
+ 		写邮件
+
+ 	pkill
+ 		给特定进程发信号
+ 	pmap
+ 		显示进程的内存对应
+ 	pwconv
+ 	pwunconv
+ 		密码的映射
+ 	quota
+ 		显示并限制用户的硬盘用量
+ 	quotacheck
+ 		检查用户硬盘空间的限制
+ 	quotaoff/on
+ 		关闭硬盘空间限制
+ 	quotastat
+
+ 	rmmod
+ 		删除内核模块
+ 	route
+ 		显示并设置路由
+ 	rpm
+ 		管理rpm - Red Hat Package Management
+ 	rcp
+ 	rlogin
+ 	rsh
+ 		远程操作
+ 	runlevel
+ 		当前运行等级
+ 	telinit
+ 		切换运行等级
+ 	slogin
+ 	ssh
+ 	scp
+ 		联机加密复制
+ 	sln
+ 		软连接
+ 	sum
+ 		计算并显示统计
+ 	swapoff/on
+ 		开关交换区
+ 	tac
+ 		文件倒过来输出
+ 	touch
+ 		更改文件的时间
+ 	tr str1 str2
+ 		更改文件中的字符
+ 		cat file | tr a-z A-Z
+ 		-c 取代不包含str1的字符
+ 		-d 删除str1
+ 		-s str1连续出现，替换成一个
+ 		-t 12长度不等，1的长度给2
+ 	tail
+ 		-f 持续跟进
+ 	uname
+ 	uncompress
+ 	umask
+ 	umount
+ 	uniq
+ 		删除重复行
+ 	uptime
+ 		系统已经运行时间
+ 	useradd
+ 	usermod
+ 	userdel
+ 	users
+
+ 	vmstat
+ 		虚拟内存状态
+ 	w
+ 		who
+ 	whoami
+ 	wall
+ 		广播消息
+ 	watch
+ 		运行命令的输出全屏幕输出
+ 	whatis
+ 	whereis
+ 	which
+ 	yes
+ 		相应相同的字符
+ 	zcat
+ 	zgrep
+ 	zless
+
+
+其他
+	apt-get ： advanced package tool get
+	
+	windows到服务器拷贝文件
+		pscp -r 源目录 user@ip:目的目录 
+
+Mysql：
+	select as 字段或结果重命名
+	反引号是为识别标识符而不是关键字，`select`，跳脱为普通名字，而不是关键字select
+	 ...where id in (1,2,3) 查询集合
+	 插入多条记录时，括号用逗号分隔
+
+正则表达式
+	正则表达式中的不要为了增加可读性而随便加空格，空格将会被用来匹配。这个小问题
+	花了我半个小时才意识到问题。^_^
+
+------------------------------------
+生成连续编号的文本
+---------------------------------------
+第一步：:r!seq 1 2000
+第二步：ctrl+v 从1，选到2000的第一个数字，shift + i,输入tittle,esc退出，完成
+
+echo a{1..100}
+
+x=1;while [ "$x" != 2000 ]; do echo "tittle$x" >> file; x=`expr $x+1`;done
