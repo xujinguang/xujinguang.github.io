@@ -1,0 +1,10 @@
+抓包
+	tcpdump -i any -Xns0  udp and host 110.110.110.110
+	tcpdump -i any -Xnnlps0 udp and port 8848
+
+字符串转时间戳
+	date -d "2017-01-01 00:00:00" +%s 
+时间戳转字符串
+	date -d @1493568000
+
+	netstat -anup | grep 8848
