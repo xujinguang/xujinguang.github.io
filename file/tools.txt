@@ -650,6 +650,18 @@ Linux-CMD:
  	whatis
  	whereis
  	which
+
+ 	xxd 十六进制查看
+ 		-b 二进制
+ 		-c 每行多少个字节
+ 		-g 几个字节组成一组
+ 		-i 将文件输出c数组的格式
+ 		-l 输出定字节后结束
+ 		-p 以一个整块输出多有hex
+ 		-r 将十六进制转成二进制
+ 		-s seek的意思从第几个字符开始
+ 		-u upper的意思，大写输出hex
+ 		
  	yes
  		相应相同的字符
  	zcat
