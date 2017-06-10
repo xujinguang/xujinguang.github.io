@@ -7,6 +7,7 @@ import datetime
 import io
 import sys
 import types
+import re
 
 ACTIVE=''' id="active" '''
 TEMPLATE = '''<html lang="zh-cn">
@@ -459,6 +460,32 @@ def output_html(conf, html_dict):
             html.write(text)
             html.close()
 
+def update_banner(conf, html_dict):
+    '''
+        更新条幅
+    '''
+    body = ""
+    ref = '''<a href="%s">%s</a>'''
+    href=""
+    #href = '''<a href="./blog/20170610_literature_literature_poem_11.html">《未来》</a>'''
+    for i in html_dict.keys():
+        for j in range(len(html_dict[i])):
+            curr_html = html_dict[i][j]
+            title = '《'+ curr_html['title'] + '》'
+            href += ref %(str('./blog/' + curr_html['file_name']), title)
+
+    pattarn = r'\<marquee.*\>'
+    rep = '''<marquee scrollamount="3" onMouseOut="this.start()" onMouseOver="this.stop()">最新动态：%s</marquee>''' % href
+    with io.open(conf['html_path'][0:-5] + 'index.html', 'r') as html:
+        content = html.read()
+        body = re.sub(pattarn, rep.encode('utf-8'), content)
+        #print body
+        html.close()
+    with io.open(conf['html_path'][0:-5] + 'index.html', 'w') as html:
+        html.write(body)
+        html.close()
+    
+
 def get_all_html(cursor, all_html):
     class_name = {}
     get_blog_class_name(cursor, class_name)
@@ -542,10 +569,11 @@ def test():
     #print class_name[7][0]
 
     all_html = {}
-    get_all_html(cursor, all_html)
-    print all_html
+    #get_all_html(cursor, all_html)
+    #print all_html
 
-    output_all_html(conf, all_html)
+    #output_all_html(conf, all_html)
+    update_banner(conf, all_html)
 
     conn.close()
     
@@ -592,6 +620,9 @@ def gen_blog():
 
     #插入的目的是为了方便生成目录
     insert_html_tb(conn, html_dict)
+
+    #更新主页动态文字横幅
+    update_banner(conf, html_dict)
 
     all_html = {}
     get_all_html(cursor, all_html)

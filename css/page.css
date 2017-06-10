@@ -132,6 +132,18 @@ button#active{
     font-family：'微软雅黑';
     font-weight:400;
 }
+
+.nav marquee {
+	direction:left;
+	font-size: 12px;
+	color: gray;
+	height:20px;
+}
+.nav marquee a{
+	font-size: 12px;
+	color: gray;
+}
+
 .nav table{
 	width: 75%;
 	line-height:18px;
@@ -139,6 +151,25 @@ button#active{
     margin-bottom:30px;
 	font-family:"Times New Roman", "宋体";
 	font-size: 14px;
+}
+
+.nav table#index{
+	width:75%;
+	height: auto;
+	text-align:center;
+}
+
+.nav table#index tr{
+	height: 60px;
+	color: #3b5f6d;
+	vertical-align:middle;
+}
+
+.nav table#index td{
+}
+
+.nav table#index tr:hover{
+	background:plum;
 }
 
 .nav td{
