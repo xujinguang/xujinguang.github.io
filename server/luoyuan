@@ -1,0 +1,39 @@
+#!/bin/bash
+log="/tmp/blog.log" #your log path
+function start()
+{
+    cd /XXX/server#your server path
+    python server.py & 2>&1 >> $log
+}
+
+function stop()
+{
+    ps -aux | grep server.py | awk '{print $2}' | head -1 | xargs kill -9
+}
+
+function usage(){
+    echo 'Usage:'
+    echo '    $ luoyuan start|stop|restart' 
+}
+if [ $# == 1 ]
+then
+	date '+%F %T' >> $log
+	echo $1 >> $log
+    case $1 in
+        restart)
+            stop
+            start
+            ;;
+        stop)
+            stop
+            ;;
+        start)
+            start
+            ;;
+            *)
+            usage
+            ;;
+    esac
+else
+    usage
+fi
