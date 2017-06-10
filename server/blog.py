@@ -510,7 +510,7 @@ def output_all_html(conf, all_html):
     all_index = ""
     all_class_index = ""
 
-    for class_name in all_html.keys():
+    for class_name in sorted(all_html.keys()):
         all_index += index_str % ((class_name, ) * 2)
         records = all_html[class_name]
         all_record = ""
