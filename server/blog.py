@@ -265,16 +265,12 @@ def insert_html_tb(conn, html_dict):
     conn.commit()
 
 
-#def format_content(content):
-#    p = ""
-#    p += "<p>"
-#    for ch in content:
-#        if ch == '\t':
-#            p += "</p>\n\t<p>"
-#        else:
-#            p += ch
-#    p += "</p>\n"
-#    return p 
+def format_content(content):
+    body = ""
+    rep = '</p>\n'
+    pattarn = r'<\/\p>'
+    body = re.sub(pattarn, rep, content)
+    return body
 
 def get_blog_content(cursor, html_dict):
     sql = '''
@@ -449,9 +445,10 @@ def output_html(conf, html_dict):
             DEBUG(curr_html['file_name'])
             DEBUG(curr_html['content'])
             #参数列表，第一个需要有都好，使用+拼接
+            content = format_content(curr_html['content'])
             param = (str(curr_html['html_title']),) + curr_html['nav'] + (curr_html['title'],
                         curr_html['subtitle'],
-                        curr_html['content'],
+                        str(content),
                         curr_html['sign'],
                         str(curr_html['prev_html']),
                         str(curr_html['next_html']))
@@ -547,7 +544,7 @@ def output_all_html(conf, all_html):
         all_class_index += class_index_str % ((class_name,) * 3 + (all_record,))
     all_index_html = INDEX_TEMPLATE % (all_index, all_class_index)
 
-    print all_index_html
+    #print all_index_html
     with io.open(conf['html_path'][0:-5] + 'all_index.html', 'w') as html:
         html.write(all_index_html)
         html.close()

@@ -1,0 +1,45 @@
+<html lang="zh-cn">
+<head>
+    <title>blog-机器学习-1</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="../css/page.css">
+</head>
+<body>
+    <div class="blog-header"></div>
+    <div class="blog-nav">
+        <hr id="up"/>
+        <button id="first" onclick="window.location.href='../index.html'">首 页
+        </button><button   id="active"  onclick="window.location.href='../blog.html'">博 客
+        </button><button   onclick="window.location.href='../read.html'">读 书
+        </button><button   onclick="window.location.href='../scope.html'">视 野
+        </button><button   onclick="window.location.href='../science.html'">科 学
+        </button><button   onclick="window.location.href='../literature.html'">文 哲
+        </button><button  onclick="window.location.href='../chief_engineer.html'">首 领</button>
+        <hr id="down"/>
+    </div>
+    <div class="blog-body">
+        <div id="title">机器学习-1</div>
+        <div id="subtitle">斯坦福-吴恩达公开课</div>
+        <p><b>机器学习两个目标</b></p>
+<ol><li>将机器学习算法应用到感兴趣的方向中去解决实际问题</li><li>继续做机器学习相关的研究</li></ol><p><b>机器学习的定义</b></p>
+<blockquote><p>Field of study that gives computers the ablility to learn without being explictly programmed——Arthur Samuel(1959)</p>
+<p>A computer porgram is said to learn from experience E with respect to some task T and some performance measure P, if its performance on T, as measured by P, improves with experience E.——Tom Mitchell(1998)<br></p>
+</blockquote><p>一直大家都认为，计算机只能做明确告诉它的事情。除此之外，不能完成未知的功能。后者的大致含义：给计算机一个任务T，和一个性能测量方法P，通过经验E，P对T的测量有改善，就认为程序学到了经验E。以AlphaGO来解释的话，任务T就是下围棋，性能测量P是赢得对手，经验E是棋谱。</p>
+<p><b>Supervised Learnig-监督学习</b><br></p>
+<p>给程序提供了一组正确的数据，标准的答案来训练机器，从中找出规律；比如分类问题：二维，三维，无限维</p>
+<p><b>Unupervised Learnig无监督学习</b><br></p>
+<p>给程序提供了一组数据，机器自己从中找出规律，结构，去理解这是什么；比如聚类问题：图像像素分组，分区用于3D重建；市场划分；计算机集群，网络分析，星系分析</p>
+<p>重要工具：MATLAB/OCTAVE</p>
+<p>[W,s,v]=svd((repmat(sum(x.*x,1), size(x,1),1).*x)*x")</p>
+<p><b>Reainforcement Learning-强化学习</b></p>
+<p>通过学习作出一系列决策。核心概念是回报函数的作用，定义“好狗狗”和“坏狗狗”的奖惩机制。<br></p>
+
+        <div id="sign">——  于火星</div>
+        <footer>
+            <a href="20170608_blog_biography_3.html">上一篇</a>
+            <span id="back-top"><a href="#">返回页顶</a></span>
+            <span id="next-blog"><a href="">下一篇</a></span>
+        </footer>
+    </div>
+</body>
+</html>

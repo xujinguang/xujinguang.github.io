@@ -3,7 +3,7 @@ log="/tmp/blog.log" #your log path
 function start()
 {
     cd /XXX/server#your server path
-    python server.py & 2>&1 >> $log
+    python server.py & >> $log 2>&1 
 }
 
 function stop()

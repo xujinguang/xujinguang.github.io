@@ -13,7 +13,7 @@ def decode_value(data, blog):
     values = body.split('_&')
     for value in values: 
         kv = value.split('_=')
-        print len(kv)
+        #print len(kv)
         blog[kv[0]] = kv[1]
     print blog
 
@@ -32,6 +32,7 @@ def save_blog(conn, blog):
     content = blog['_blog_']  
     if blog['_class_'] == '17' and blog['_subclass_'] == '2':
         content = blog['_blog_'].replace("<p>", '''<p id="poem">''')
+    #print sql %content
     cursor.execute(sql % content)
     conn.commit()
     content_id = cursor.lastrowid;
