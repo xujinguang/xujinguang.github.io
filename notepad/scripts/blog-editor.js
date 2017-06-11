@@ -281,8 +281,13 @@ function submit_blog(editor){
             $('#sign').val(sign);
         }
 
-        //sign = "—— " + gen_weekday() + " 于" + sign;
-        sign = "—— " + " 于" + sign;
+        
+        if(class_id == 17) {
+            sign = "—— " + " 于" + sign;
+        } else {
+            sign = "—— " + gen_weekday() + sign;
+        }
+        
 
         var send_data = "op_=1" + //保存博客
                         "_&_title__=" + title +
