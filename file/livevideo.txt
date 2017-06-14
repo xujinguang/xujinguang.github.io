@@ -1,0 +1,6 @@
+视频直播学习
+https://github.com/f2e-journey/xueqianban/issues/61
+《视频直播的技术原理和实现思路方案整理》
+
+http://blog.qiniu.com/archives/7040
+《视频直播技术详解》
