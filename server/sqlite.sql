@@ -60,9 +60,9 @@ insert into type_name_tb values
 	(0, 'index'),
 	(1, 'blog'),
 	(2, 'read'),
-	(3, 'scope'),
-	(4, 'science'),
-	(5, 'literature');
+	(3, 'science'),
+	(4, 'literature'),
+	(5, 'scope');
 
 --这个分类是discovery工具的学科分类，直接转移过来编号存入
 --新增学科直接追加
@@ -93,6 +93,7 @@ insert into class_name_tb values
 	(7, 15, 'ai'),
 	(7, 16, 'web'),
 	(7, 17, 'hack'),
+    (7, 18, 'AV'),
 
 	(8, 0, 'biography'),
 	(9, 0, 'logic'),
@@ -118,10 +119,13 @@ insert into class_name_tb values
 	(17, 2, 'poem'),
 	(17, 3, 'essay'),
 	(17, 4, 'masterpiece'),
+    (17, 5, 'life'),
 
 	(18, 0, 'psychology'),
 	(19, 0, 'medicine'),
 	(20, 0, 'philosophy');
+
+--新增音视频和生活 2017-06-15
 
 --测试数据建立
 insert into content_tb

@@ -214,13 +214,13 @@ function submit_blog(editor){
         var subclass_name = [];
         switch(class_id) {
             case 7:
-                subclass_name = ['----', '数据结构','算法','编译','Lisp','C', 'C++','Python','PHP','Shell','Linux','网络','数据库','操作系统','机器学习','人工智能','web','黑客'];
+                subclass_name = ['----', '数据结构','算法','编译','Lisp','C', 'C++','Python','PHP','Shell','Linux','网络','数据库','操作系统','机器学习','人工智能','web','黑客', 'AV'];
                 break;
             case 10:
                 subclass_name = ['----','矩阵','数值分析','运筹学','算法','代数','几何学','概率统计'];
                 break;
             case 17:
-                subclass_name = ['----','小说','诗词','散文','名著'];
+                subclass_name = ['----','小说','诗词','散文','名著', '随笔'];
                 break;
             default:
                 break;
@@ -285,9 +285,8 @@ function submit_blog(editor){
         if(class_id == 17) {
             sign = "—— " + " 于" + sign;
         } else {
-            sign = "—— " + gen_weekday() + sign;
+            sign = "—— " + gen_weekday() + " " + sign;
         }
-        
 
         var send_data = "op_=1" + //保存博客
                         "_&_title__=" + title +
