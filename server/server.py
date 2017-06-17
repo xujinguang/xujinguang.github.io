@@ -29,7 +29,7 @@ def save_blog(conn, blog):
             ('%s');
     '''
     cursor = conn.cursor()
-    content = blog['_blog_']  
+    content = blog['_blog_'].replace("<p><image", '''<p id="img"><image''')
     if blog['_class_'] == '17' and blog['_subclass_'] == '2':
         content = blog['_blog_'].replace("<p>", '''<p id="poem">''')
     #print sql %content
@@ -104,6 +104,7 @@ class MyTCPHandler(SocketServer.BaseRequestHandler):
         self.data = self.request.recv(8192).strip()
         print self.data
         ret = process(self.data)
+        #ret = 0
         status = "HTTP/1.1 200 OK\r\n"
         content_type = "content-type:text/xml; charset=utf-8\r\n"
         origin = "Access-Control-Allow-Origin:*\r\n"

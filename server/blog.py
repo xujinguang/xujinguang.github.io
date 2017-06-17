@@ -270,6 +270,9 @@ def format_content(content):
     rep = '</p>\n'
     pattarn = r'<\/\p>'
     body = re.sub(pattarn, rep, content)
+    rep = '../'
+    pattarn = r'\/run\/media\/work\/xujinguang\/blog\/xujinguang.github.io\/'
+    body = re.sub(pattarn, rep, body)
     return body
 
 def get_blog_content(cursor, html_dict):
