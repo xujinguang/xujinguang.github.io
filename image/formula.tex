@@ -1,0 +1,53 @@
+牛顿算法
+x_{i+1}=x_{i}-\frac{f(x_{i})}{{f(x_{i})}'};i=0,1,2,...
+
+m重根改进牛顿算法
+x_{i+1}=x_{i}-\frac{mf(x_{i})}{{f(x_{i})}'};\ m>1;i=0,1,2,...
+
+
+牛顿算法推导
+\begin{aligned}
+y-f(x_{0})&={f(x_{0})}'(x-x_{0})\\
+0-f(x_{0})&={f(x_{0})}'(x-x_{0})\\
+x&=x_{0}-\frac{f(x_{0})}{{f(x_{0})}'}\\
+set\ x_{1}&=x_{0}-\frac{f(x_{0})}{{f(x_{0})}'}
+\end{aligned}
+
+使用牛顿法开方公式
+\begin{aligned}
+f(x)&=x^{2}-a\\
+x_{i+1}&=x_{i}-\frac{f(x_{i})}{{f(x_{i})}'}\\
+&=x_{i}-\frac{x_{i}^{2}-a}{{2x_{i}}}\\
+&=\frac{x_{i}^{2}+a}{{2x_{i}}}\\
+&=\frac{x_{i}+\frac{a}{x_{i}}}{2}
+\end{aligned}
+
+牛顿二次收敛定理
+\begin{aligned}
+M&=\lim_{n \to \infty }
+\frac{e_{i+1}}{e_{i}^{2}}<\infty \\
+if\ f(r)&=0;\ f'(r)\neq 0\\
+\lim_{n \to \infty }
+\frac{e_{i+1}}{e_{i}^{2}}&=M=\frac{f''(r)}{2f'(r)}\\
+\end{aligned}
+
+欧式距离
+P(A,B)=\sqrt{\sum\limits_{i=0}^n(a_{i}-b_{i})^{2}}
+
+矩阵方程
+\begin{aligned}
+Ax&=b\\
+x_{1}v_{1}+x_{2}v_{2}+...+x_{n}v_{n}&=b\\
+\end{aligned}
+
+最小二乘法线方程推导
+\begin{aligned}
+(b-A\overline{x})\perp \{Ax|x\in R^n\}\\
+(Ax)^T(b-A\overline{x})=0\\
+x^TA^T(b-A\overline{x})=0\\
+A^T(b-A\overline{x})\perp \{x|x\in R^n\}\\
+but\ A^T(b-A\overline{x})\in R^n\\
+=>\ A^T(b-A\overline{x})=0\\
+A^TA\overline{x}=A^Tb
+\end{aligned}
+

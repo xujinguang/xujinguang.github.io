@@ -1,0 +1,65 @@
+<html lang="zh-cn">
+<head>
+    <title>blog-机器学习-2(梯度下降法和最小二乘法)</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="../css/page.css">
+</head>
+<body>
+    <div class="blog-header"></div>
+    <div class="blog-nav">
+        <hr id="up"/>
+        <button id="first" onclick="window.location.href='../index.html'">首 页
+        </button><button   id="active"  onclick="window.location.href='../blog.html'">博 客
+        </button><button   onclick="window.location.href='../read.html'">读 书
+        </button><button   onclick="window.location.href='../science.html'">科 学
+        </button><button   onclick="window.location.href='../literature.html'">文 哲
+        </button><button   onclick="window.location.href='../scope.html'">视 野
+        </button><button  onclick="window.location.href='../chief_engineer.html'">首 领</button>
+        <hr id="down"/>
+    </div>
+    <div class="blog-body">
+        <div id="title">机器学习-2(梯度下降法和最小二乘法)</div>
+        <div id="subtitle">数值分析知识复习</div>
+        <p><span style="color: rgb(65, 140, 175);">数学复习</span></p>
+<p><span style="color: rgb(227, 55, 55);">梯度下降法</span>，又称为牛顿法，牛顿-拉弗逊方法（后人以发现者其名命名，以表示尊重）。这个方法用于方程 <i>f(x)=0</i> 的求解的。</p>
+<p><b>描述：</b>给定一个初始解 <i>x0 ，</i>画出函数 <i>f(x) </i>在 x0 的切线，用切线近似函数 <i>f(x) </i>；然后求出切线与 x 轴的交点，作为<i> f(x) </i>的根，但是函数<i> f(x) </i>是弯曲的，因此交点不是精确解，因而迭代上述过程，直到收敛到一个近似解为止。</p>
+<p><b>推导：</b></p>
+<p>由切线的点斜式方程求得切线与 x 轴的交点，推导出第一步迭代如下：<br></p>
+<p id="img"><img alt="Image" src="../image/mf_newton_reduction.gif" height="139" width="193"><br></p>
+<p><b>算法：</b></p>
+<p id="img"><img alt="Image" src="../image/mf_machine_learning_newton.gif" height="44" width="245"></p>
+<p><b>实例：</b></p>
+<p>使用牛顿法的开方公式<br></p>
+<p id="img"><img alt="Image" src="../image/mf_extract_root.gif" height="203" width="138"><br></p>
+<p><b>定理：</b></p>
+<p>令ei表示迭代方法第 <i>i </i>步后得到的误差，该迭代是二次收敛的，如果满足</p>
+<p id="img"><img alt="Image" src="../image/mf_theory_convergence.gif" height="90" width="169">；<br/>其中 <i>f(x)</i> 是二阶连续可微函数。<br></p>
+<p><b>说明：</b></p>
+<ul><li>牛顿法是二次收敛方法<br></li><li>迭代过程中出现导数为0，此方法不能继续使用</li><li>高阶多重根，需要使用改进牛顿法</li></ul><p id="img"><img alt="Image" src="../image/mf_machine_learning_newton2.gif" height="30" width="288"></p>
+<p><span style="color: rgb(227, 55, 55);">最小二乘法</span></p>
+<p><b>背景：</b></p>
+<p>（1）数据矩阵异常；（2）方程个数大于变量个数（<i>m</i> 个方程 <i>n</i>个未知量，<i>m&gt;n</i>）两种情况下会导致（线性）方程组无解。在方程组无解的情况下寻找“最接近”的解在实际应用中十分重要。“最接近”，有时也称为最相似，有多种定义方式。最常用的是使用欧式空间的距离概念。</p>
+<p id="img"><img alt="Image" src="../image/mf_machine_learning_distance.gif" height="42" width="157"></p>
+<p>由于开方内部大于等于0，因此可以只考虑开方的内部。当求得欧式距离最小的解，则称为最小二乘解。</p>
+<p><b>原理：</b></p>
+<p><span style="color: rgb(227, 55, 55);">最小二乘法基于正交，从一点到一个平面的最段距离，由一个到平面的正交线段表示，法线方程可以确定该线段，这表示最小二乘法的误差。</span><br></p>
+<p><i>mn</i> 方程组</p>
+<p id="img"><img alt="Image" src="../image/mf_machine_learning_equation.gif" height="40" width="203"><br></p>
+<p><i>b</i>看作是<i> A</i> 列向量的线性组合。<i>R3</i>中两个三维向量组合构成一个平面，当且仅当 <i>b</i> 在这个平面上时才有解（<i>m=3，n=2</i>）。推广到<i>n</i>维，当<i> m&gt;n </i>时，方程组超定。在所有的解集合构成的 <i>Ax</i> 中存在与 <i>b</i> 最接近的点，并且</p>
+<p id="img"><img alt="Image" src="../image/mf_machine_learning_normal_equation.gif" height="163" width="174"></p>
+<p><b>算法：</b></p>
+<p>对于不一致系统（超定方程组）<i>Ax=b</i> 求解</p>
+<p id="img"><img alt="Image" src="../image/mf_machine_learning_normal_equation2.gif" height="16" width="97"></p>
+<p>求的<img alt="Image" src="../image/mf_x_overline.gif" height="10" width="10">就是最小二乘解，最小化余项<img alt="Image" src="../image/mf_machine_learning_normal_equation_error.gif" height="11" width="81">的欧式距离</p>
+<p><b>拟合：</b></p>
+<p>给定一组数据</p>
+<ol><li>选择模型，比如线性模型，周期模型，指数模型，幂次模型</li><li>强制模型拟合数据；代入数据得到矩阵<i>A，b</i></li><li>求解法线方程的解<br></li></ol>
+        <div id="sign">—— 星期日 火星</div>
+        <footer>
+            <a href="20170616_blog_computer_web_6.html">上一篇</a>
+            <span id="back-top"><a href="#">返回页顶</a></span>
+            <span id="next-blog"><a href="">下一篇</a></span>
+        </footer>
+    </div>
+</body>
+</html>

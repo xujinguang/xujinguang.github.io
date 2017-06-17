@@ -29,7 +29,7 @@ def save_blog(conn, blog):
             ('%s');
     '''
     cursor = conn.cursor()
-    content = blog['_blog_'].replace("<p><image", '''<p id="img"><image''')
+    content = blog['_blog_'].replace("<p><img", '''<p id="img"><img''')
     if blog['_class_'] == '17' and blog['_subclass_'] == '2':
         content = blog['_blog_'].replace("<p>", '''<p id="poem">''')
     #print sql %content
