@@ -1,0 +1,43 @@
+<html lang="zh-cn">
+<head>
+    <title>blog-音视频集中营1-音频的录制</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="../css/page.css">
+</head>
+<body>
+    <div class="blog-header"></div>
+    <div class="blog-nav">
+        <hr id="up"/>
+        <button id="first" onclick="window.location.href='../index.html'">首 页
+        </button><button   id="active"  onclick="window.location.href='../blog.html'">博 客
+        </button><button   onclick="window.location.href='../read.html'">读 书
+        </button><button   onclick="window.location.href='../science.html'">科 学
+        </button><button   onclick="window.location.href='../literature.html'">文 哲
+        </button><button   onclick="window.location.href='../scope.html'">视 野
+        </button><button  onclick="window.location.href='../chief_engineer.html'">首 领</button>
+        <hr id="down"/>
+    </div>
+    <div class="blog-body">
+        <div id="title">音视频集中营1-音频的录制</div>
+        <div id="subtitle">2017-06-18 11:37:20</div>
+        <p>最近学习音视频的相关知识，林林总总查了很多资料（博客，官方文档，源码，工具），对于初学者，完全满足“了解”的需求。这些零散的知识都是针对某个部分解析的，是音视频的砖，音视频的美丽大厦还得用它们砌起来。好了，废话少说，搬砖砌墙。</p>
+<p>音视频包括音频和视频两个部分。通常简称为“视频”，而默认包含音频。如果把音频看成声音一维，视频看成平面二维，加上时间轴那么一个音视频是个四维空间。因此，音视频可以理解为在特定的时间上发生的声音和图像。本质也是一种运动。</p>
+<p>音视频承载于万维网，是信息存储的方式之一,是人类信息传递方式伴随科技发展而“进化”的产物。由于它比文字符号载体更符合人的感官，而更容易被接受和传播，但是它的严谨性，个人觉得不如文字。</p>
+<p>信息具有可度量，可传递，可变换，可扩充，可识别等等特征，而音视频是信息的载体，因此音视频同样也具备这些特征。其表现为音视频的录制，处理，封装，传输，解封装和播放。下面一一介绍这些组成部分。 <br>音频和视频这里要分开而论。</p>
+<hr><p>这个过程是音频的源头。采集声音的最简单设备就是麦克风，将振动信号转换成电压信号，然后放大再采集成 <font color="red">PCM（脉冲编码调制）</font>。无论现在的麦克风设计的多么的花哨和时尚，这一过程别无二致。简单的理解：PCM数据是一串按照固定频率采集到的电压正负振幅值。<font color="red"><br></font></p>
+<p><font color="red">为什么是固定频率呢？</font>1.基于一定的信息学原理；2.减少不必要的存储。如果采样率不同，那么在数字化过程中，就要记录时间点，如此相比固定频率需要多存储一维数据。（固定采样率可以依据值所在位置推算）频率也称为<font color="red">采样率</font>，常见的采样率有22050HZ，44100HZ。比如Mp3，CD都是是44.1kHz。<font color="red">为什么用44.1kHz这个“前不着村后不着店”的数字呢？</font>根据奈奎斯特采样理论，为了保证声音不失真，采样频率应该在40kHz左右。</p>
+<blockquote><p>在 CD 发明前硬盘还很贵，主要的数字音频信号储存媒体是录像带，用黑白来记录 0 与 1 。而当时的录像带格式为每秒 30 张，而一张图又可以分为 490 条线，每一条线又可以储存三个取样信号，因此每秒有 30*490*3=44100 个取样点，而为了研发的方便， CD唱盘也继承了这个规格</p>
+</blockquote><p>采样率越大，每秒采样数越大，音频的品质越好。但是不可奢望完美，还要有存储空间的权衡。查资料得之，电话所用8kHz采样率, 对于人的说话已经足够，22.05KHz使用于无线电广播；48kHz是数字电视、DVD、DAT、电影和专业音频所用的采样率。能有多大的采样率，就看你有多豪，发烧的够不够级别。</p>
+<p>电压的正负振幅值使用计算机8bit，16bit，32bit或者64bit 存储，不同的存储字节，不同的<font color="red">位宽</font>，够存储振幅值范围不同，16bit比8bit能够表达的值域更大，因此8bit相比16bit相当于把超过区间(-255,255]的振幅值一刀切了。位宽越大，存储越大。</p>
+<p>一个麦克风效果不佳，来两个，两个还不完美来四个。毕竟声音是可以混效的。从多个音频源或者相同音频源不同位置采集声音，播放时输入到不同的扬声器中，使得声音叠加起来，达到环绕的效果，可以提高听觉体验。录制的麦克风个数，或者播放的扬声器个数称为<font color="red">声道数</font>。常见的分左右的双声道的立体声；前左、前右，后左、后右的环绕四声道。有时会听到X.1声道，那个.1就是低音炮。</p>
+<p>最后还有<font color="red">音频帧</font>的概念，对于PCM来说没有这个玩意。前文提到声音是一维的，图像是二维的，因此声音没有图像二维帧的概念。但是为了方便使用和管理，在把数据用于编码封装时引用了帧的概念，如此把连续的音频数据分割成音频帧，封装到容器中，在播放时实现播放器的拖拉播放。帧一般指一定时长的采样数；确定时长和采样率就确定音频帧的大小。在下文中的音频格式中会用到它。</p>
+<h4>参考资料</h4><ol><li><a href="http://blog.csdn.net/ownwell/article/details/8114121/" target="_blank">PCM数据格式</a> </li><li><a href="http://blog.csdn.net/oldmtn/article/details/7743445" target="_blank">音频数字化简单原理</a> </li><li><a href="http://baike.baidu.com/link?url=tEoapRAzrQ5WaKkJb0tG-MmixC2Tz04dGrQ3rMZBUJuwGzQ5_06dp8GyjnivazxukUUfXuR5uNMT8biH17Ndg0dmeRyICB6NH-tv7dUS06C" target="_blank">声音</a></li><li><a href="http://baike.baidu.com/link?url=Poo4GAdcZPR8rHMjSeGCp8pMQZ4B_k15t5ttdhlXXYv0ZepJnVixDGsWR3yjHFmg0ZAjtMHCTQeZwwI4LwCAKlqQ-tZbV_Scg6lIfyckD_O" target="_blank">声道</a></li><li><a href="http://blog.chinaunix.net/uid-26000296-id-3446714.html" target="_blank">音频帧概念详解</a></li></ol>
+        <div id="sign">—— 星期日 深圳</div>
+        <footer>
+            <a href="20170618_blog_computer_machine-learning_7.html">上一篇</a>
+            <span id="back-top"><a href="#">返回页顶</a></span>
+            <span id="next-blog"><a href="">下一篇</a></span>
+        </footer>
+    </div>
+</body>
+</html>
