@@ -214,7 +214,7 @@ function submit_blog(editor){
         var subclass_name = [];
         switch(class_id) {
             case 7:
-                subclass_name = ['----', '数据结构','算法','编译','Lisp','C', 'C++','Python','PHP','Shell','Linux','网络','数据库','操作系统','机器学习','人工智能','web','黑客', 'AV'];
+                subclass_name = ['----', '数据结构','算法','编译','Lisp','C', 'C++','Python','PHP','Shell','Linux','网络','数据库','操作系统','机器学习','人工智能','web','黑客', 'AV', 'Tool'];
                 break;
             case 10:
                 subclass_name = ['----','矩阵','数值分析','运筹学','算法','代数','几何学','概率统计'];
@@ -272,6 +272,10 @@ function submit_blog(editor){
         }
 
         var blog = editor.getValue();
+        if(blog == "") {
+            alert("请输入文章");
+            return;
+        }
 
         var key_word = $('#key-word').val();
 
@@ -319,13 +323,13 @@ function submit_blog(editor){
                                 url = '../read.html';
                                 break;
                                 case 3:
-                                url = '../scope.html';
-                                break;
-                                case 4:
                                 url = '../science.html';
                                 break;
-                                case 5:
+                                case 4:
                                 url = '../literature.html';
+                                break;
+                                case 5:
+                                url = '../scope.html';
                                 break;
                                 }
                                 window.location.href = "notepad.html";

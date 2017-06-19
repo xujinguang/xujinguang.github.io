@@ -66,6 +66,8 @@ insert into type_name_tb values
 
 --这个分类是discovery工具的学科分类，直接转移过来编号存入
 --新增学科直接追加
+
+insert into class_name_tb values (7, 19, 'tool');
 insert into class_name_tb values
 	(0, 0, 'other'),	
 	(1, 0, 'music'),

@@ -12,9 +12,10 @@ button:hover{
 
 button{
 	background:none;
-	color:black;
+	//color:black;
+	color:#3b5f6d;
 	font-family: "微软雅黑";
-	font-size: 16px;
+	font-size: 18px;
     font-weight:400;
 	border: 0px;
 	margin-left:1px;

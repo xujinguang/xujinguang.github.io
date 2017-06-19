@@ -27,6 +27,8 @@
 1.2.server/blog.py中的输出模板需要调整
 1.3.已有的博客html导航文件需要调整次序或改名
 1.4.修改notepad.html的次序
+1.5.update html_tb,html_index_tb 的 type
+1.6.notepad的blog-editor.js发布成功后的跳转
 
 2.增加分类
 2.1.sqlite.sql的表class_name_tb添加新编号和名字
