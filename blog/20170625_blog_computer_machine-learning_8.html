@@ -1,0 +1,58 @@
+<html lang="zh-cn">
+<head>
+    <title>blog-机器学习3——梯度下降法剖析</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="../css/page.css">
+</head>
+<body>
+    <div class="blog-header"></div>
+    <div class="blog-nav">
+        <hr id="up"/>
+        <button id="first" onclick="window.location.href='../index.html'">首 页
+        </button><button   id="active"  onclick="window.location.href='../blog.html'">博 客
+        </button><button   onclick="window.location.href='../read.html'">读 书
+        </button><button   onclick="window.location.href='../science.html'">科 学
+        </button><button   onclick="window.location.href='../literature.html'">文 哲
+        </button><button   onclick="window.location.href='../scope.html'">视 野
+        </button><button  onclick="window.location.href='../chief_engineer.html'">首 领</button>
+        <hr id="down"/>
+    </div>
+    <div class="blog-body">
+        <div id="title">机器学习3——梯度下降法剖析</div>
+        <div id="subtitle">吴恩达课程2中的房价预测</div>
+        <p>本文依据吴恩达第2节课程，将详细分析一下线性模型中的梯度下降法原理。对课程中公式来源，推导和问题，一一给出解释。从而避免其他人不负责任的乱拷贝公式而误人子弟，同时以期望对自己学习总结和对他人有些帮助。</p>
+<p>按照上一节的总结，选定房价和房间的面积和朝向成线性关系模型，定义<img alt="x0" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D&amp;space;x_%7B0%7D=1" height="14" width="43">，<img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D&amp;space;x_%7B1%7D%7D" height="11" width="14">为房价的面积，<img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D&amp;space;x_%7B2%7D" height="10" width="15">为房间的朝向；其中<img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D&amp;space;x_%7B0%7D" height="10" width="15">表示模型中的常数。</p>
+<p>定义房价的预测函数</p>
+<p id="img"><img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D%5Csmall&amp;space;%5Cbegin%7Baligned%7D&amp;space;h%28x%29&amp;=h_%7B%5Ctheta&amp;space;%7D%28x%29%5C%5C&amp;space;&amp;=%5Ctheta_%7B0%7Dx_%7B0%7D&amp;plus;%5Ctheta_%7B1%7Dx_%7B1%7D&amp;plus;%5Ctheta_%7B2%7Dx_%7B2%7D%5C%5C&amp;space;&amp;=%5Csum%5Climit_%7Bi=0%7D%5E%7B2%7D%5Ctheta_%7Bi%7Dx_%7Bi%7D%5C%5C&amp;space;&amp;=%5Ctheta%5ET&amp;space;x&amp;space;%5Cend%7Baligned%7D" height="103" width="158"><br></p>
+<p>使用最小二乘法定义预测好坏的评估函数</p>
+<p id="img"><img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D%5Csmall&amp;space;%5Cbegin%7Baligned%7D&amp;space;J%28%5Ctheta%29&amp;=%5Cfrac%7B1%7D%7B2%7D%5Csum_%7Bi=0%7D%5E%7Bm%7D%28h_%7B%5Ctheta%7D%28x%5E%7B%28i%29%7D%29-y%5E%7B%28i%29%7D%29%5E2%5C%5C&amp;space;&amp;minJ%28%5Ctheta%29&amp;space;%5Cend%7Baligned%7D" height="59" width="177"></p>
+<p>其中上标表示第<img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D&amp;space;i" height="11" width="5">组数据，等价于</p>
+<p id="img"><img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D%5Csmall&amp;space;J%28%5Ctheta%29=%5Cfrac%7B1%7D%7B2%7D%28h_%7B%5Ctheta%7D%28x%29-y%29%5ET%28h_%7B%5Ctheta%7D%28x%29-y%29" height="16" width="197">&nbsp;&nbsp; 公式（1）</p>
+<p>其中<img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D%5Csmall&amp;space;xy" height="9" width="15">是m维度的列向量；注意与上标<img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D%5Csmall&amp;space;x%5E%7B%28i%29%7Dy%5E%7B%28i%29%7D" height="15" width="41">区分开。（矩阵）向量和元素一般都是用大小写进行区分。比如写成矩阵的形式如下：</p>
+<p id="img"><img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D%5Csmall&amp;space;=%5Cfrac%7B1%7D%7B2%7D%28h_%7B%5Ctheta%7D%28X%29-Y%29%5ET%28h_%7B%5Ctheta%7D%28X%29-Y%29" height="16" width="184"></p>
+<p>这只是约定的规则而已，只要能区分开向量或元素，个人觉得这不是关键问题，但是为了达成最大共识，按照通用规则书写：矩阵字母大写，向量以及元素以小写字母加上标或者下标。因此采用公式（1），但是一定要注意上下文，以确定向量还是元素。</p>
+<p>对评估函数求得极小值，在几何意义上简单而言其过程即：<span style="color: rgb(227, 55, 55);">从曲面的某个起始位置按照特定的方向和步长向曲面的某个谷底走去。</span>下面解释一下其含义。</p>
+<p>由高中数学已知函数极小值不一定是函数的最小值，但是函数的最小值一定在其某个极小值点或者区间边界上的函数值取得。给定一个光滑的曲面，它包括多个极小值点和极大值点（否则它就是一张平面了），那么从其三维几何上看就存在多个“山峰”和“谷底”。在曲面给定一个起始点，往下降的方向走，每次下降一小步，逐渐迭代就会到达某个谷底。在这里脑海里一定要反思几个问题：（1）选择什么样的起始点？任意呢还是有特殊要求？比如有好坏之分呢？（2）下降的方向如何选择？站在山顶时，360度个下降方向可以选择（3）下降的步长取多大？步长大小有何区别？（4）一定能到达谷底嘛？为什么？如果你知道这些问题的答案，恭喜你数学学的很牛逼，可以跳过下文了，否则继续。对于问题（1）和（4）放到最后回答，它依赖于另外两个问题。首先回答问题（2）和（3）。</p>
+<p>要想回答问题（2）（3），需要方向导数，偏导数和梯度的概念。考验大学微（积）分的时候到了。方向导数：函数在指定的方向（矢量）上的变化率；偏导数：多元函数沿坐标轴方向的方向导数。梯度：标量场的一个向量，表示函数在该点处的方向导数沿着该方向取得最大值，即函数在该点处沿着该方向（此梯度的方向）变化最快，变化率最大（为该梯度的模）。显然，下降的方向应该选择函数梯度方向，步长设为梯度的模；如此函数值下降的速度最快，到达谷底的步数也最少。换言之，求得极小值迭代计算的次数最少，计算量最小。而其他方向和步长也是可选的，但不是最好的。</p>
+<p>因此，<img alt="Image" src="http://latex.codecogs.com/gif.latex/%5Csmall?J%28%5Ctheta%29" height="18" width="33">的梯度为</p>
+<p id="img"><img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cdpi%7B100%7D%5Csmall&amp;space;%5Cbegin%7Baligned%7D&amp;space;%5Ctriangledown&amp;space;J%28%5Ctheta%29=%5Cbegin%7Bbmatrix%7D&amp;space;%5Cfrac%7B%5Cpartial&amp;space;J%7D%7B%5Cpartial&amp;space;%5Ctheta_0%7D%5C%5C&amp;space;%5C%5C&amp;space;%5Cfrac%7B%5Cpartial&amp;space;J%7D%7B%5Cpartial&amp;space;%5Ctheta_1%7D%5C%5C&amp;space;%5C%5C&amp;space;%5Cfrac%7B%5Cpartial&amp;space;J%7D%7B%5Cpartial&amp;space;%5Ctheta_2%7D%5C%5C&amp;space;%5Cend%7Bbmatrix%7D&amp;space;%5Cend%7Baligned%7D" height="101" width="97"></p>
+<p>其中</p>
+<p id="img"><img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cdpi%7B100%7D%5Csmall&amp;space;%5Cbegin%7Baligned%7D&amp;space;%5Cfrac%7B%5Cpartial&amp;space;J%28%5Ctheta%29%7D%7B%5Cpartial%5Ctheta_i%7D&amp;=%5Cfrac%7B%5Cpartial%7D%7B%5Cpartial%5Ctheta_i%7D%5Cfrac%7B1%7D%7B2%7D%5Csum_%7Bj=0%7D%5E%7Bm%7D%28h_%7B%5Ctheta%7D%28x%5E%7B%28j%29%7D%29-y%5E%7B%28j%29%7D%29%5E2%5C%5C&amp;space;&amp;=%5Cfrac%7B%5Cpartial%7D%7B%5Cpartial%5Ctheta_i%7D%5Cfrac%7B1%7D%7B2%7D%5Csum_%7Bj=0%7D%5Em%28%5Csum_%7Bk=0%7D%5E2%5Ctheta_%7Bk%7Dx_%7Bk%7D%5E%7B%28j%29%7D-y%5E%7B%28j%29%7D%29%5E2%5C%5C&amp;space;&amp;=%5Csum_%7Bj=0%7D%5Em%28%5Csum_%7Bk=0%7D%5E2%5Ctheta_%7Bk%7Dx_%7Bk%7D%5E%7B%28j%29%7D-y%5E%7B%28j%29%7D%29x_i%5E%7B%28j%29%7D%5C%5C&amp;space;&amp;=%5Csum_%7Bj=0%7D%5Em%28h_%7B%5Ctheta%7D%28x%5E%7B%28j%29%7D%29-y%5E%7B%28j%29%7D%29x_i%5E%7B%28j%29%7D%5C%5C&amp;space;&amp;=%28h_%7B%5Ctheta%7D%28x%29-y%29%5ETx_i%5C&amp;space;;i=0,1,2%5C%5C&amp;space;%5Cend%7Baligned%7D" height="232" width="241"><br></p>
+<p>其中<img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D&amp;space;x_i" height="10" width="13">是数据矩阵的<img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline%5Csmall&amp;space;%5Cdpi%7B100%7D&amp;space;X" height="11" width="13">的列向量，即<img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cdpi%7B100%7D%5Csmall&amp;space;%5Cbegin%7Baligned%7D&amp;space;x_i%5Cin&amp;space;X=%5Cleft%28x_0,x_1,x_2%5Cright%29&amp;space;%5Cend%7Baligned%7D" height="16" width="136"></p>
+<p><b>定义起始值</b></p>
+<p id="img"><img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline%5Csmall&amp;space;%5Cdpi%7B100%7D&amp;space;%5Ctheta_0=%5Cleft[0,0,0%5Cright]%5ET" height="19" width="88"></p>
+<p><b>迭代算法</b></p>
+<p id="img"><img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline%5Csmall&amp;space;%5Cdpi%7B100%7D&amp;space;%5Ctheta_%7Bi&amp;plus;1%7D=%5Ctheta_i-%5Calpha&amp;space;%5Ctriangledown&amp;space;J%28%5Ctheta%29;i=0,1,2,..." height="17" width="214"><br></p>
+<p>其中<img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D&amp;space;%5Calpha" height="7" width="10">是用户输入参数，作用于步长，调节其下降速度。<img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline%5Csmall&amp;space;%5Cdpi%7B100%7D&amp;space;%5Calpha%5Cin&amp;space;[0,1]" height="16" width="58">，当<img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D&amp;space;%5Calpha=0" height="11" width="37">时，原定踏步；当<img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D&amp;space;%5Calpha=1" height="12" width="37">最快速度迭代。步长较大较小都不好，步子较小会导致迭代次数增加，计算量上升；步子较大会导致迭代次数减少，但是会跳做极值点。因此这个需要实践经验来具体问题具体确定。</p>
+<p>然后回头看看问题（1）和（4）。起始值的选定，也需要一定经验。从0起始固然通用，但是计算量会有一定影响。也就说好的起始点会尽量靠近极值点，以减少不必要的计算。此外，不同的起始点可能会进入不同的函数量场的“谷底”或者进入不到“谷底”，因此不同的起始点可能会有不同的结果。最后问题（4）牵涉到算法收敛的证明。这里不证明了，有兴趣请参考<a href="http://blog.csdn.net/shenxiaolu1984/article/details/52577996" target="_blank">《梯度下降法收敛性证明》.</a></p>
+<p>整个过程可以看到数学的简洁和优雅。这就是数学的力量！<br></p>
+
+        <div id="sign">—— 星期日 火星</div>
+        <footer>
+            <a href="20170618_blog_computer_AV_8.html">上一篇</a>
+            <span id="back-top"><a href="#">返回页顶</a></span>
+            <span id="next-blog"><a href="">下一篇</a></span>
+        </footer>
+    </div>
+</body>
+</html>
