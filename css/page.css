@@ -1,11 +1,11 @@
 body{
-	background:black;
+	background:lightgray;
     margin-top:0px;
 }
 
 button:hover{
 	//background: black;
-	background: purple;
+	background: #00aeae;
 	color:white;
 	/*border:1px solid black;*/
 }
@@ -25,7 +25,7 @@ button{
 
 button#active{
 	//background: black;
-	background: purple;
+	background: #00aeae;
 	color:white;
     border:0px;
 }
@@ -68,7 +68,7 @@ button#active{
 }
 
 .nav h1 a:hover{
-    color: purple;
+    color: #00aeae;
     background:white;
     border:none;
 }
@@ -152,7 +152,7 @@ button#active{
     margin:0 auto;
     margin-bottom:30px;
 	font-family:"Times New Roman", "宋体";
-	font-size: 14px;
+	font-size: 15px;
 }
 
 .nav table#index{
@@ -171,7 +171,10 @@ button#active{
 }
 
 .nav table#index tr:hover{
-	background:plum;
+    /*这里是主页导航栏的悬浮颜色*/
+	//background:plum;
+	//background:lightblue;
+	background:#bbffff;
 }
 
 .nav td{
@@ -192,18 +195,18 @@ button#active{
 
 .nav tr:hover {
     //background:lightgray;
-	//background:purple;
+	//background:#00aeae;
     //color:white;
 }
 .nav a:hover{
-	background:purple;
+	background:#00aeae;
     color:white;
 }
 
 .nav footer {
     position:absolute;
     bottom:0px;
-    font-size: 14px;
+    font-size: 15px;
     width:100%;
     margin: 20px auto;
     color: #999999;
@@ -221,7 +224,7 @@ button#active{
 .blog-header{
 	padding:0px 100px 0px 100px;
     height:40px;
-	background:purple;
+	background:#00aeae;
 	width: 34%;
 	min-width: 600px;
 	margin:0 auto;
@@ -266,7 +269,7 @@ button#active{
 	margin:0 auto;
 	height:auto;
 	min-height:800px;
-	box-shadow: 4px 4px 3px 4px rgba(0, 0, 0, 0.35);
+//	box-shadow: 4px 4px 3px 4px rgba(0, 0, 0, 0.35);
 	font-family:"Times New Roman", "宋体";
 }
 
@@ -289,7 +292,7 @@ button#active{
 }
 
 .blog-body ol, ul{
-    font-size:14px;	
+    font-size:15px;	
     margin-left:50px;
     padding-left:0px;
 }
@@ -299,8 +302,8 @@ button#active{
 }
 
 .blog-body p{
-	font-size:14px;
-	line-height:1.5;
+	font-size:15px;
+	line-height:1.8;
 	text-indent:30px;
 }
 
@@ -367,7 +370,7 @@ div#title{
 }
 
 div#subtitle{
-	font-size:14px;
+	font-size:15px;
 	font-family:"Times New Roman";
 	text-align:center;
     margin-top:8px;
@@ -377,7 +380,7 @@ div#subtitle{
 div#sign{
     color:white;
 	float:right;
-	font-size:14px;
+	font-size:15px;
 	margin-right:100px;
 }
 
@@ -399,7 +402,7 @@ a{
 	border-left-width: 0px;
 	border-right-width: 0px;
 	text-decoration: none;
-	font-size: 14px;
+	font-size: 15px;
 	font-weight:400;
 	font-family:"Times New Roman", "宋体";
 }
@@ -409,7 +412,7 @@ a:hover {
 	border-top-width: 0px;
 	border-left-width: 0px;
 	border-right-width: 0px;
-	font-size: 14px;
+	font-size: 15px;
 	text-decoration: none;
 }
 
@@ -449,7 +452,7 @@ a:active {
 }
 
 .blog-chief pre{
-    font-size:14px;
+    font-size:15px;
     font-family:"Times New Roman";
     font-weight:400;
     text-align:left;
@@ -465,11 +468,11 @@ a:active {
     text-transform:Capitalize;
     padding:0px;
     //color:#7d7dff;
-    color:purple;
+    color:#00aeae;
 }
 
 .blog-chief p{
-    font-size:14px;
+    font-size:15px;
     font-family:"Times New Roman";
     font-weight:400;
     text-align:left;
@@ -483,5 +486,5 @@ a:active {
     font-family:"Times New Roman";
     line-height:22px;
     //color:#7d7dff;
-    color:purple;
+    color:#00aeae;
 }
