@@ -40,6 +40,7 @@ button#active{
     padding-top:30px;
     padding-bottom:60px;
     position:relative;
+    text-align:center;
 }
 
 .nav h1 {
@@ -111,7 +112,7 @@ button#active{
 }
 
 .nav button#first{
-	margin-left:120px;
+	//margin-left:120px;
 }
 
 .nav ul {
