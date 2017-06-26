@@ -4,3 +4,13 @@ https://github.com/f2e-journey/xueqianban/issues/61
 
 http://blog.qiniu.com/archives/7040
 《视频直播技术详解》
+
+http://blog.csdn.net/leixiaohua1020/article/details/18893769
+音视频博客
+
+
+http://blog.csdn.net/taniya001/article/details/7962864
+多媒体文件格式分析
+
+http://blog.csdn.net/wlsfling/article/details/5875959
+MP3格式解析
