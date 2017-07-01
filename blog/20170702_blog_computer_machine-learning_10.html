@@ -1,0 +1,40 @@
+<html lang="zh-cn">
+<head>
+    <title>blog-机器学习4——数学公式符号的思考</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="../css/page.css">
+</head>
+<body>
+    <div class="blog-header"></div>
+    <div class="blog-nav">
+        <hr id="up"/>
+        <button id="first" onclick="window.location.href='../index.html'">首 页
+        </button><button   id="active"  onclick="window.location.href='../blog.html'">博 客
+        </button><button   onclick="window.location.href='../read.html'">读 书
+        </button><button   onclick="window.location.href='../science.html'">科 学
+        </button><button   onclick="window.location.href='../literature.html'">文 哲
+        </button><button   onclick="window.location.href='../scope.html'">视 野
+        </button><button  onclick="window.location.href='../chief_engineer.html'">首 领</button>
+        <hr id="down"/>
+    </div>
+    <div class="blog-body">
+        <div id="title">机器学习4——数学公式符号的思考</div>
+        <div id="subtitle">2017-07-01 22:55:37</div>
+        <p>网易公开课<a href="http://open.163.com/special/opencourse/machinelearning.html" target="_blank">《机器学习》</a>的课程中，老师吴恩达板书的数学公式不规范。这里的“不规范”指他的数学符号和教材不一致。我不知道国外的数学教材是什么样的，至少我看到他的数学公式的记法和国内以及翻译过来的记法有很多差异，导致读起来觉得非常怪异和不习惯，甚至导致理解的难度增大。</p>
+<p>我相信我肯定不是第一个觉得他的数学记法”很奇怪“，有歧义，国内的读者尤其数学专业的学生肯定不习惯他的符号记法，但是我估计我是少数几个在这里公开说出来的。毕竟他是大牛，牛人都是规则制定者，菜鸟们只有跟从规则玩的份，绝对没有挑剔的余地；但是从理解的难易程度上而言，他的符号记法绝对不是最好的，对于他自己来说应该是最好的，毕竟他使用，但在我眼里有点差劲，我在笔记中绝对要改过来。</p>
+<p>比如线性方程组的记法，通用的，甚至说国内的所有教材都是<img alt="Image" src="http://latex.codecogs.com/gif.latex?\inline&amp;space;\dpi{100}&amp;space;Ax=b" height="11" width="47">，他在第一课使用线性模型时，使用了近似<img alt="Image" src="http://latex.codecogs.com/gif.latex?\inline&amp;space;\dpi{100}&amp;space;x\theta&amp;space;=y" height="14" width="45">的记法。我靠，我有点懵逼，<img alt="Image" src="http://latex.codecogs.com/gif.latex?\inline&amp;space;\dpi{100}&amp;space;x" height="7" width="8">不是列向量吗？怎么突然成矩阵了。未知的变量<img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D&amp;space;x" height="7" width="8">，这是从初中学方程就已经习惯了的，他突然让<img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D&amp;space;x" height="7" width="8">等价于已知的常数系数矩阵<img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D&amp;space;A" height="11" width="11">，让“眼球”成了未知变量，也是给我脑袋里强行安装了一个映射函数，而且要想理解并对接自己的知识体系，还必须自建一个转换函数，真是增加复杂度没有二话。</p>
+<p>还有更懵逼的，向量（矩阵）和元素不区分。矩阵<img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D&amp;space;A" height="11" width="11">和矩阵元素<img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D&amp;space;A_{ij}" height="16" width="20">这是什么鬼？高数里不是<img alt="Image" src="http://latex.codecogs.com/gif.latex?%5Cinline&amp;space;%5Cdpi%7B100%7D&amp;space;a_{ij}" height="12" width="17">吗？<img alt="Image" src="http://latex.codecogs.com/gif.latex?\inline&amp;space;\dpi{100}&amp;space;X,x,x_{i},x_{ij},x_{i}^{(j)}" height="20" width="103">向量矩阵还是元素，得联系上下文而定而不是通过公式自明。他的记法使用得有点太任性了，以至于我好奇他论文中的记法是不是也是这么的随意。而且我更好奇，很长时间后回过头在不看文章内容的情况下来看自己写的公式是否分的清呢？反正如果我在任性的代码里不加注释，时间已久，我是看不懂。</p>
+<p>其他怪异不一一列举，在自己的笔记中我会书写出更容易理解的公式。<br></p>
+<p>说到记笔记，我从高中就好奇那些知识界的牛人在他的求知识生涯中是如何记录笔记的。后来偶尔能都看到一些影印版的手稿，才发现他们其实没有统一的章法，按照自己的习惯来。但也有一些共性：自由，不拘一格以及认真。再好的头脑都替代不了一支笔和一张纸能够完成的重要性，彼此是相互补充的。</p>
+<p>这类似于CPU和内存的关系；将中间结果存储到内存中，让CPU空闲出来，在原有的基础上去继续往下做必要的事情；必要的时候再将信息从内存重归CPU进行计算。而现代将纸和笔电子化了，这并没有什么高级的，仅仅换了一种方式，本质并没有发生变化，相比而言电子文档反而局促了很多，少了太多随心思考时的写写画画，缺少了自由，限制了CPU的速度，对于数学推演并不是最理想的工具；但是不绝对，对于个人学习的需要，一定程度上电子化还是很方便的。</p>
+<p>鉴于老师的数学符号记法问题，以及为了笔记的容易理解，降低学习成本的目的。我将一贯坚持我数学专业的风格和习惯，采用规范书写符号，完成机器学习的相关知识。<br></p>
+
+        <div id="sign">—— 星期日 深圳</div>
+        <footer>
+            <a href="20170625_blog_computer_tool_9.html">上一篇</a>
+            <span id="back-top"><a href="#">返回页顶</a></span>
+            <span id="next-blog"><a href="">下一篇</a></span>
+        </footer>
+    </div>
+</body>
+</html>
