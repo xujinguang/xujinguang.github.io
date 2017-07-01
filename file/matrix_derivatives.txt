@@ -1,0 +1,55 @@
+令
+http://latex.codecogs.com/gif.latex?\inline&space;\dpi{100}&space;f:R_{m\times&space;n}\rightarrow&space;R
+为
+http://latex.codecogs.com/gif.latex?\inline&space;\dpi{100}&space;m\times&space;n
+阶矩阵到实数的映射，比如行列式就是最常见的映射
+定义映射对矩阵的梯度为
+http://latex.codecogs.com/gif.latex?\dpi{100}&space;\begin{aligned}&space;\bigtriangledown&space;_{A}f(A)={\begin{bmatrix}&space;&\frac{\partial&space;f}{\partial&space;a_{11}}\&space;&\cdots&space;\&space;&\frac{\partial&space;f}{\partial&space;a_{1n}}\\&space;&\vdots&space;&\ddots&space;&\vdots&space;\\&space;&\frac{\partial&space;f}{\partial&space;a_{m1}}\&space;&\cdots&space;\&space;&\frac{\partial&space;f}{\partial&space;a_{mn}}&space;\end{bmatrix}}_{m\times&space;n}&space;\end{aligned}
+即映射f对矩阵A各个元素的偏导
+http://latex.codecogs.com/gif.latex?\dpi{100}&space;\frac{\partial&space;f}&space;{\partial&space;a_{ij}};i=1,2,\cdots,m;j=1,2,\cdots,n
+
+（讲义中使用的大写的
+http://latex.codecogs.com/gif.latex?\dpi{100}&space;A_{ij},
+个人感觉容易混淆，让矩阵和元素不好区分，这里矩阵元素使用小写
+http://latex.codecogs.com/gif.latex?\dpi{100}&space;a_{ij}比较清晰
+
+定义方阵的迹（trace）为矩阵对角线元素之和记号tr
+http://latex.codecogs.com/gif.latex?\dpi{100}&space;\mathbf{tr}A=\sum_{i=1}^{n}a_{ii}
+矩阵的迹的性质
+http://latex.codecogs.com/gif.latex?\dpi{100}&space;\begin{aligned}&space;\mathbf{tr}AB&=\mathbf{tr}BA(1)\\&space;\mathbf{tr}ABC&=\mathbf{tr}CBA\\&space;\mathbf{tr}ABCD&=\mathbf{tr}DABC\\&space;&=\mathbf{tr}CDAB\\&space;&=\mathbf{tr}BCDA\\&space;\mathbf{tr}A&=\mathbf{tr}A^T\\&space;\mathbf{tr}(A&plus;B)&=\mathbf{tr}A&plus;\mathbf{tr}B\\&space;\mathbf{tr}cA&=c\mathbf{tr}A&space;\end{aligned}
+
+
+
+
+
+-------------------formular
+矩阵到实数的映射
+f:R_{m\times n}\rightarrow R
+m\times n
+
+矩阵的梯度
+\begin{aligned}
+\bigtriangledown _{A}f(A)={\begin{bmatrix}
+ &\frac{\partial f}{\partial a_{11}}\  &\cdots \  &\frac{\partial f}{\partial a_{1n}}\\ 
+ &\vdots &\ddots &\vdots \\ 
+&\frac{\partial f}{\partial a_{m1}}\  &\cdots \  &\frac{\partial f}{\partial a_{mn}}
+\end{bmatrix}}_{m\times n}
+\end{aligned}
+
+矩阵梯度的分量
+\frac{\partial f} {\partial a_{ij}};i=1,2,\cdots,m;j=1,2,\cdots,n
+
+矩阵的迹
+\mathbf{tr}A=\sum_{i=1}^{n}a_{ii}
+
+矩阵的迹性质
+\begin{aligned} 
+\mathbf{tr}AB&=\mathbf{tr}BA(1)\\
+\mathbf{tr}ABC&=\mathbf{tr}CBA\\
+\mathbf{tr}ABCD&=\mathbf{tr}DABC\\
+&=\mathbf{tr}CDAB\\
+&=\mathbf{tr}BCDA\\
+\mathbf{tr}A&=\mathbf{tr}A^T\\
+\mathbf{tr}(A+B)&=\mathbf{tr}A+\mathbf{tr}B\\
+\mathbf{tr}cA&=c\mathbf{tr}A
+\end{aligned}
