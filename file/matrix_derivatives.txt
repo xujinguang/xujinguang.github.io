@@ -1,28 +1,5 @@
-令
-http://latex.codecogs.com/gif.latex?\inline&space;\dpi{100}&space;f:R_{m\times&space;n}\rightarrow&space;R
-为
-http://latex.codecogs.com/gif.latex?\inline&space;\dpi{100}&space;m\times&space;n
-阶矩阵到实数的映射，比如行列式就是最常见的映射
-定义映射对矩阵的梯度为
-http://latex.codecogs.com/gif.latex?\dpi{100}&space;\begin{aligned}&space;\bigtriangledown&space;_{A}f(A)={\begin{bmatrix}&space;&\frac{\partial&space;f}{\partial&space;a_{11}}\&space;&\cdots&space;\&space;&\frac{\partial&space;f}{\partial&space;a_{1n}}\\&space;&\vdots&space;&\ddots&space;&\vdots&space;\\&space;&\frac{\partial&space;f}{\partial&space;a_{m1}}\&space;&\cdots&space;\&space;&\frac{\partial&space;f}{\partial&space;a_{mn}}&space;\end{bmatrix}}_{m\times&space;n}&space;\end{aligned}
-即映射f对矩阵A各个元素的偏导
-http://latex.codecogs.com/gif.latex?\dpi{100}&space;\frac{\partial&space;f}&space;{\partial&space;a_{ij}};i=1,2,\cdots,m;j=1,2,\cdots,n
+-------------------机器学习5-formular
 
-（讲义中使用的大写的
-http://latex.codecogs.com/gif.latex?\dpi{100}&space;A_{ij},
-个人感觉容易混淆，让矩阵和元素不好区分，这里矩阵元素使用小写
-http://latex.codecogs.com/gif.latex?\dpi{100}&space;a_{ij}比较清晰
-
-定义方阵的迹（trace）为矩阵对角线元素之和记号tr
-http://latex.codecogs.com/gif.latex?\dpi{100}&space;\mathbf{tr}A=\sum_{i=1}^{n}a_{ii}
-矩阵的迹的性质
-http://latex.codecogs.com/gif.latex?\dpi{100}&space;\begin{aligned}&space;\mathbf{tr}AB&=\mathbf{tr}BA(1)\\&space;\mathbf{tr}ABC&=\mathbf{tr}CBA\\&space;\mathbf{tr}ABCD&=\mathbf{tr}DABC\\&space;&=\mathbf{tr}CDAB\\&space;&=\mathbf{tr}BCDA\\&space;\mathbf{tr}A&=\mathbf{tr}A^T\\&space;\mathbf{tr}(A&plus;B)&=\mathbf{tr}A&plus;\mathbf{tr}B\\&space;\mathbf{tr}cA&=c\mathbf{tr}A&space;\end{aligned}
-
-
-
-
-
--------------------formular
 矩阵到实数的映射
 f:R_{m\times n}\rightarrow R
 m\times n
@@ -53,3 +30,114 @@ m\times n
 \mathbf{tr}(A+B)&=\mathbf{tr}A+\mathbf{tr}B\\
 \mathbf{tr}cA&=c\mathbf{tr}A
 \end{aligned}
+
+trAB=trBA证明
+\begin{aligned}
+\mathbf{tr}AB&=\mathbf{tr}\begin{bmatrix}
+\sum \limits_{j=1}^na_{1j}b_{j1} & \cdots &\sum \limits_{j=1}^na_{1j}b_{jn}\\ 
+\vdots&\ddots&\vdots \\
+\sum \limits_{j=1}^na_{nj}b_{j1}&\cdots&\sum \limits_{j=1}^na_{nj}b_{jn}\\ 
+\end{bmatrix}\\
+&=\sum \limits_{i=1}^n\sum \limits_{j=1}^n a_{ij}b_{ji}\\
+&=\sum \limits_{j=1}^n\sum \limits_{i=1}^n b_{ji}a_{ij}\\
+&=\mathbf{tr}BA
+\end{aligned}
+
+trABC=trCAB证明
+\begin{aligned}
+\mathbf{tr}ABC&=\mathbf{tr}\begin{bmatrix}
+\sum\limits_{k=1}^n \sum\limits_{j=1}^n a_{1j}b_{jk}c_{k1} & \cdots &\sum\limits_{k=1}^n \sum \limits_{j=1}^n a_{1j}b_{jk}c_{kn}\\ 
+\vdots&\ddots&\vdots \\
+\sum\limits_{k=1}^n \sum\limits_{j=1}^n a_{nj}b_{jk}c_{k1} & \cdots &\sum\limits_{k=1}^n \sum \limits_{j=1}^n a_{nj}b_{jk}c_{kn}\\  
+\end{bmatrix}\\
+&=\sum \limits_{i=1}^n \sum\limits_{k=1}^n \sum\limits_{j=1}^n a_{ij}b_{jk}c_{ki}\\
+&=\sum\limits_{k=1}^n \sum \limits_{i=1}^n \sum\limits_{j=1}^n c_{ki}a_{ij}b_{jk}\\
+&=\mathbf{tr}CAB
+\end{aligned}
+
+
+梯度运算于矩阵的迹的性质
+\begin{aligned}
+\bigtriangledown_A\mathbf{tr}AB&=B^T\\
+\bigtriangledown_A\mathbf{tr}ABA^TC&=CAB+C^TAB^T\\
+\bigtriangledown_{A^T}f(A)&=(\bigtriangledown_Af(A))^T\\
+\bigtriangledown_{A}|A|&=|A|(A^{-1})^T
+\end{aligned}
+
+第一个等于B的转置证明
+\begin{aligned}
+\frac{\partial \mathbf{tr}AB}{a_{ij}}&=\frac{\partial}{a_{ij}}\sum \limits_{i=1}^n\sum \limits_{j=1}^n a_{ij}b_{ji}\\
+&=\frac{\partial}{a_{ij}}(\sum \limits_{j=1}^n a_{0j}b_{j0}+\cdots+\sum \limits_{j=1}^n a_{nj}b_{jn})\\
+&=\frac{\partial}{a_{ij}}\sum \limits_{j=1}^n a_{ij}b_{ji}\\
+&=\frac{\partial}{a_{ij}}(a_{i0}b_{0i} + \cdots + a_{in}b_{ni})\\
+&=b_{ji}
+\end{aligned}
+
+\begin{aligned}
+\bigtriangledown _{A}\mathbf{tr}AB&={\begin{bmatrix}
+ &\frac{\partial \mathbf{tr}AB}{\partial a_{11}}\  &\cdots \  &\frac{\partial \mathbf{tr}AB}{\partial a_{1n}}\\ 
+ &\vdots &\ddots &\vdots \\ 
+&\frac{\partial \mathbf{tr}AB}{\partial a_{n1}}\  &\cdots \  &\frac{\partial \mathbf{tr}AB}{\partial a_{nn}}
+\end{bmatrix}}_{n\times n}\\
+&={\begin{bmatrix}
+ &b_{11}\  &\cdots \  &b_{n1}\\ 
+ &\vdots &\ddots &\vdots \\ 
+&b_{1n}\  &\cdots \  &b_{nn}
+\end{bmatrix}}_{n\times n}\\
+&=B^T
+\end{aligned}
+
+
+矩阵秩的梯度
+\begin{aligned}
+\bigtriangledown_A|A|&=\bigtriangledown_AAA^*\\
+&=(A^*)^T\\
+&=(|A|A^{-1})^T\\
+&=|A|(A^{-1})^T
+\end{aligned}
+
+方程左
+\sum\limits_{j=1}^na_{ij}x_j;i=1,2.\cdots,m
+最小二乘函数
+\begin{aligned}
+J(x)&=\frac{1}{2}(\sum\limits_{j=1}^na_{ij}x_j-b_i)^2;i=1,2.\cdots,m\\
+&=\frac{1}{2}(Ax-b)^2\\
+&=\frac{1}{2}(Ax-b)^T(Ax-b)
+\end{aligned}
+
+最小二乘求梯度
+\begin{aligned}
+\bigtriangledown _xJ(x)&=\bigtriangledown _x\frac{1}{2}(Ax-b)^T(Ax-b)\\
+&=\frac{1}{2}\bigtriangledown _x(Ax-b)^T(Ax-b)\\
+&=\frac{1}{2}\bigtriangledown _x(x^TA^T-b^T)(Ax-b)\\
+&=\frac{1}{2}\bigtriangledown _x(x^TA^TAx- x^TA^Tb - b^TAx + b^Tb)\\
+&=\frac{1}{2}\bigtriangledown _x\mathbf{tr}(x^TA^TAx- x^TA^Tb - b^TAx + b^Tb)\\
+&=\frac{1}{2}\bigtriangledown _x(\mathbf{tr}x^TA^TAx- \mathbf{tr}x^TA^Tb - \mathbf{tr}b^TAx + \mathbf{tr}b^Tb)\\
+&=\frac{1}{2}(\bigtriangledown _x\mathbf{tr}x^TA^TAx- \bigtriangledown _x2\mathbf{tr}x^TA^Tb )\\
+&=\frac{1}{2}(\bigtriangledown _x\mathbf{tr}x^TA^TAx- 2\bigtriangledown _x\mathbf{tr}x^TA^Tb )\\
+\end{aligned}
+
+\bigtriangledown_{x^T}\mathbf{tr}x^TAxE&=Ex^TA+E^Tx^TA^T\\
+\bigtriangledown_{x^T}f(x)&=(\bigtriangledown_xf(x))^T\\
+
+\begin{aligned}
+\bigtriangledown_A\mathbf{tr}ABA^TC&=CAB+C^TAB^T\\
+\end{aligned}
+
+\begin{aligned}
+\bigtriangledown_{x^T}\mathbf{tr}x^TA^TAxE&=Ex^TA^TA+E^Tx^TA^TA\\
+\bigtriangledown_{x^T}\mathbf{tr}x^TA^TAx&=x^TA^TA+x^TA^TA\\
+\end{aligned}
+
+\begin{aligned}
+\frac{1}{2}(\bigtriangledown _x\mathbf{tr}x^TA^TAx- 2\bigtriangledown _x\mathbf{tr}x^TA^Tb )&=\frac{1}{2}(\bigtriangledown_{x^T}\mathbf{tr}x^TA^TAx)^T-\bigtriangledown _x\mathbf{tr}x^TA^Tb\\
+&=\frac{1}{2}(2x^TA^TA)^T-(\bigtriangledown _{x^T}\mathbf{tr}x^TA^Tb)^T\\
+&=(x^TA^TA)^T-A^Tb\\
+&=A^TAx-A^Tb
+\end{aligned}
+
+\begin{aligned}
+\bigtriangledown _xJ(x)&=0\\
+\Rightarrow A^TAx&=A^Tb
+\end{aligned}
+
