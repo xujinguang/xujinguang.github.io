@@ -76,6 +76,7 @@ def process(data):
     decode_value(data, blog)
     if len(blog) == 0:
         return -1;
+    #return 0
 
     read_conf(conf)
     conn = sqlite3.connect(conf['db_path'])
@@ -101,7 +102,7 @@ def process(data):
 class MyTCPHandler(SocketServer.BaseRequestHandler):
 
     def handle(self):
-        self.data = self.request.recv(8192).strip()
+        self.data = self.request.recv(65535).strip()
         print self.data
         ret = process(self.data)
         #ret = 0
