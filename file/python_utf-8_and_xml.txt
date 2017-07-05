@@ -1,0 +1,38 @@
+python utf-8编码问题
+1. 
+	#coding=utf-8
+	# -*- coding: utf-8 -*-
+
+2. 
+	u'中文'.encode('utf-8')
+
+3. 
+	import sys
+
+	reload(sys)
+	sys.setdefaultencoding('utf-8')
+
+三步能解决这个问题
+
+python解析xml文件
+	import xml.dom.minidom
+
+	#打开xml文件
+	dom = xml.dom.minidom.parse('result/test_result.xml')
+	#获取根
+	root = dom.documentElement
+	#根的属性
+	title =  root.getAttribute('failures')
+	#查询元素
+	testcase = root.getElementsByTagName('testcase')
+	#遍历元素
+	for test in testcase:
+		#查询子元素
+		failure = test.getElementsByTagName('failure')
+		#存在处理
+		if len(failure) != 0:
+			print failure[0].firstChild.data
+			std_out = test.getElementsByTagName('system-out')
+			content += std_out[0].firstChild.data
+		else:
+			pass
