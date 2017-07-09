@@ -50,6 +50,7 @@ INDEX_TEMPLATE = '''<html lang="zh-cn">
 	<title>裸猿森林</title>
 	<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="./css/page.css">
+    <link rel="shortcut icon" href="./image/yuan.ico" type="image/x-icon"/>
 </head>
 <body>
     <div class="nav">

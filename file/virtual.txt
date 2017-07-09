@@ -1,0 +1,22 @@
+1.虚函数
+A memory location is either an object of scalar type or a maximal sequence of adjacent bit-fields all having
+
+non-zero width. [ Note: Various features of the language, such as references and virtual functions, might
+
+involve additional memory locations that are not accessible to programs but are managed by the imple-
+
+mentation.
+
+在谈及内存位置的时候，谈到虚函数会涉及额外的内存，但是这些额外的内存是由编译器实现管理，程序无法访问。
+
+2.关键字，不能用作标示符号使用。
+
+3.A virtual member function is odr-used if it is not pure.
+非纯虚函数是odr-used
+
+
+1，当想在基类中抽象出一个方法，且该基类只做能被继承，而不能被实例化；
+2，这个方法必须在派生类(derived class)中被实现；
+   如果满足以上两点，可以考虑将该方法申明为pure virtual function.
+实例化，编译时就被发现
+
