@@ -14,9 +14,12 @@ def decode_value(data, blog):
     for value in values: 
         kv = value.split('_=')
         #print len(kv)
+        if len(kv) != 2:
+            return False
         print str(kv)
         blog[kv[0]] = kv[1]
     print blog
+    return True
 
 def list_blog(conn, blog):
     return 0 
@@ -75,7 +78,9 @@ def edit_blog(conn, blog):
 def process(data):
     blog = {}
     conf = {}
-    decode_value(data, blog)
+    ret = decode_value(data, blog)
+    if ret == False:
+        return -1
     if len(blog) == 0:
         return -1;
     #return 0
@@ -104,7 +109,7 @@ def process(data):
 class MyTCPHandler(SocketServer.BaseRequestHandler):
 
     def handle(self):
-        self.data = self.request.recv(65530).strip()
+        self.data = self.request.recv(65000).strip()
         print self.data
 
         ret = process(self.data)
@@ -117,7 +122,7 @@ class MyTCPHandler(SocketServer.BaseRequestHandler):
         self.request.sendall(response)
 
 if __name__ == "__main__":
-    HOST, PORT = "localhost", 8080 
+    HOST, PORT = "127.0.0.1", 8080 
     #HOST, PORT = "192.168.1.2", 8080 
 
     server = SocketServer.TCPServer((HOST, PORT), MyTCPHandler)
