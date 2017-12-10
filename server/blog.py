@@ -523,7 +523,7 @@ def get_all_html(cursor, all_html):
 
 def output_all_html(conf, all_html):
     index_str = '''
-            <li><a href="#%s">%s</a></li>'''
+            <li><a href="#%s">%s-(%s)</a></li>'''
     class_index_str = '''
         <div id="%s">
         <hr id="up"/>
@@ -540,8 +540,8 @@ def output_all_html(conf, all_html):
     all_class_index = ""
 
     for class_name in sorted(all_html.keys()):
-        all_index += index_str % ((class_name, ) * 2)
         records = all_html[class_name]
+        all_index += index_str % (class_name, class_name, len(records))
         all_record = ""
         for record in records:
             title = '《'.encode('utf-8') + record[1] + '》'.encode('utf-8')

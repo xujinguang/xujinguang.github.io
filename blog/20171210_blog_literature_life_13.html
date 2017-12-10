@@ -1,0 +1,39 @@
+<html lang="zh-cn">
+<head>
+    <title>blog-整理诗集，再次开博</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="../css/page.css">
+    <link rel="shortcut icon" href="../image/yuan.ico" type="image/x-icon"/>
+</head>
+<body>
+    <div class="blog-header"></div>
+    <div class="blog-nav">
+        <hr id="up"/>
+        <button id="first" onclick="window.location.href='../index.html'">首 页
+        </button><button   id="active"  onclick="window.location.href='../blog.html'">博 客
+        </button><button   onclick="window.location.href='../read.html'">读 书
+        </button><button   onclick="window.location.href='../science.html'">科 学
+        </button><button   onclick="window.location.href='../literature.html'">文 哲
+        </button><button   onclick="window.location.href='../scope.html'">视 野
+        </button><button  onclick="window.location.href='../chief_engineer.html'">首 领</button>
+        <hr id="down"/>
+    </div>
+    <div class="blog-body">
+        <div id="title">整理诗集，再次开博</div>
+        <div id="subtitle">2017-12-10 23:20:19</div>
+        <p>去北京出差了三个月，中间写了几篇油诗，今天打通了网络，将这几篇文字整理推到页面上去。</p>
+<p>整理了大约十来篇，没有天天写它。心情好一般不会有写它的情调和动力。偶尔记两篇，聊以解解郁闷的心情。诗歌是快乐的彼岸，这里只有忧伤。</p>
+<p>刚刚看了下文件，在出差之前已经把db推到github并且服务移植到了windows，而我在北京整个期间都以为我的博客不可用，甚至都没有去github核对并尝试一下，以至于三个月期间没有往上推送一篇文字，转而使用本地ipython落地的，先入为主的概念真的害死人，以后得多多注意！<br></p>
+<p>三个月没有使用我得博客系统了，上来突然有些陌生，对此系统感觉很懵逼；不知道如何开始了。打开数据库看看结构才算明白过来。多亏当时把db配置也融合进来了。奇巧得是windows下的sqlite正常，而linux下得db挂了，已不记得什么操作导致的了，还好它们二者是兼容得，直接覆盖linux下的db更新了。然后直接启动服务脚本，打开编辑器就可以写了。</p>
+<p>这个博客系统十分简单，不支持后期编辑，也不支持评论回复，纯静态页面。每次发布新内容，都会生成新的html文件并更新目录，当然数据写入本地db，用于管理文章的前后以及结构关系。web编辑器是个独立的模块，分类结构和db一致。写好的文字通过http请求发给服务，服务生成或更新一堆文件，这就是server.py和blog.py的工作。</p>
+<p>我创建这个小系统只是为了自己玩玩，方便自己而已。自己做的工具，用起来的顺手。github帮我托管静态页面，并给与一个能用域名访问，觉得暂时足够满足自己的博客需要了。今天还想要不要买个server重新搭建一个博客系统，想到自己暂时还没有什么访问量，单纯写点文字，此系统已经完全满足，重新部署还无必要。<br></p>
+
+        <div id="sign">——  于深圳</div>
+        <footer>
+            <a href="20170805_blog_literature_life_12.html">上一篇</a>
+            <span id="back-top"><a href="#">返回页顶</a></span>
+            <span id="next-blog"><a href="">下一篇</a></span>
+        </footer>
+    </div>
+</body>
+</html>
