@@ -280,10 +280,10 @@ button#active{
 .blog-body pre {
 	margin-left:auto;
 	margin-right: auto;
-	background: black;
+	background: #0D0D0D;
 	color: green;
-	width: 80%;
-	padding:10px;
+	width: 100%;
+	padding:10px 10px 10px 0px;
 }
 
 .blog-body code {
@@ -298,7 +298,9 @@ button#active{
 }
 
 .blog-body blockquote {
-	font-family:"仿宋";
+	font-family:"Times";
+	margin: 0px;
+	background-color: #f2f2f2;
 }
 
 .blog-body p{
@@ -371,7 +373,7 @@ div#title{
 
 div#subtitle{
 	font-size:15px;
-	font-family:"Times New Roman";
+	font-family:"Times";
 	text-align:center;
     margin-top:8px;
     padding-bottom:10px;
@@ -404,7 +406,7 @@ a{
 	text-decoration: none;
 	font-size: 15px;
 	font-weight:400;
-	font-family:"Times New Roman", "宋体";
+	font-family:"Times", "宋体";
 }
 
 a:hover {
@@ -453,7 +455,7 @@ a:active {
 
 .blog-chief pre{
     font-size:15px;
-    font-family:"Times New Roman";
+    font-family:"Times";
     font-weight:400;
     text-align:left;
     padding-top:10px;
@@ -462,7 +464,7 @@ a:active {
 }
 
 .blog-chief pre#english{
-    font-family:"Times New Roman";
+    font-family:"Times";
     font-size:12px;
     font-weight:400;
     text-transform:Capitalize;
@@ -473,7 +475,7 @@ a:active {
 
 .blog-chief p{
     font-size:15px;
-    font-family:"Times New Roman";
+    font-family:"Times";
     font-weight:400;
     text-align:left;
     margin:0px;
@@ -483,7 +485,7 @@ a:active {
 .blog-chief p#english{
     margin-top:5px; 
     text-indent:2em;
-    font-family:"Times New Roman";
+    font-family:"Times";
     line-height:22px;
     //color:#7d7dff;
     color:#00aeae;
