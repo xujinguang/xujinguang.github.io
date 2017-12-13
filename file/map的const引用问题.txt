@@ -1,0 +1,21 @@
+有两种使用场景
+
+1.参数传递const引用
+
+2.代码中直接声明const
+
+其中第一种使用方式最常用，比如这样
+
+int func(std::map<std::string, std::string> mapName);
+这样使用有个潜在的问题
+
+如果在代码中使用运算符[]访问map元素时，就会报错;如果使用at()访问map元素就一切正常，为什么呢？
+error: passing \'const std::map<std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<const std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >\' as \'this\' argument of \'_Tp& std::map<_Key, _Tp, _Compare, _Alloc>::operator[](const _Key&) [with _Key = std::basic_string<char, std::char_traits<char>, std::allocator<char> >, _Tp = std::basic_string<char, std::char_traits<char>, std::allocator<char> >, _Compare = std::less<std::basic_string<char, std::char_traits<char>, std::allocator<char> > >, _Alloc = std::allocator<std::pair<const std::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::basic_string<char, std::char_traits<char>, std::allocator<char> > > >]\' discards qualifiers
+
+因为运算符[],意味着可能修改map
+
+The []-operator will create a new entry in the map if the given key does not exists. It may thus change the map.
+
+而const引用是不能修改的。
+
+因此，如果使用const引用map，那么使用at访问元素。如果非const引用map，at和[]都可以。
