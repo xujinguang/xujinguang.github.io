@@ -214,10 +214,10 @@ function submit_blog(editor){
         var subclass_name = [];
         switch(class_id) {
             case 7:
-                subclass_name = ['----', '数据结构','算法','编译','Lisp','C', 'C++','Python','PHP','Shell','Linux','网络','数据库','操作系统','机器学习','人工智能','web','黑客', 'AV', 'Tool', 'Go'];
+                subclass_name = ['----', '数据结构','算法','编译','Lisp','C', 'C++','Python','PHP','Shell','Linux','网络','数据库','操作系统','机器学习','人工智能','web','黑客', 'AV', 'Tool', 'Go', '思想'];
                 break;
             case 10:
-                subclass_name = ['----','矩阵','数值分析','运筹学','算法','代数','几何学','概率统计'];
+                subclass_name = ['----','矩阵','数值分析','运筹学','算法','代数','几何学','概率统计', '数学思想'];
                 break;
             case 17:
                 subclass_name = ['----','小说','诗词','散文','名著', '随笔'];

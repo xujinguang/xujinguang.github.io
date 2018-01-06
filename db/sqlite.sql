@@ -66,9 +66,6 @@ insert into type_name_tb values
 
 --这个分类是discovery工具的学科分类，直接转移过来编号存入
 --新增学科直接追加
-
-insert into class_name_tb values (7, 20, 'Go');
-insert into class_name_tb values (7, 19, 'tool');
 insert into class_name_tb values
 	(0, 0, 'other'),	
 	(1, 0, 'music'),
@@ -129,6 +126,12 @@ insert into class_name_tb values
 	(20, 0, 'philosophy');
 
 --新增音视频和生活 2017-06-15
+
+--2018-01-05增加计算机-编程思想，数学思想
+insert into class_name_tb values(7, 21, "thinking"),(10, 8, "thinking");
+
+insert into class_name_tb values (7, 20, 'Go');
+insert into class_name_tb values (7, 19, 'tool');
 
 --测试数据建立
 insert into content_tb
