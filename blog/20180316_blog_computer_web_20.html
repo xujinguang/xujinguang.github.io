@@ -1,0 +1,62 @@
+<html lang="zh-cn">
+<head>
+    <title>blog-HTML页面源代码高光</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="../css/page.css">
+    <link rel="stylesheet" type="text/css" href="../css/code-styles.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script >hljs.initHighlightingOnLoad();</script>  
+    <link rel="shortcut icon" href="../image/yuan.ico" type="image/x-icon"/>
+</head>
+<body>
+    <div class="blog-header"></div>
+    <div class="blog-nav">
+        <hr id="up"/>
+        <button id="first" onclick="window.location.href='../index.html'">首 页
+        </button><button   id="active"  onclick="window.location.href='../blog.html'">博 客
+        </button><button   onclick="window.location.href='../read.html'">读 书
+        </button><button   onclick="window.location.href='../science.html'">科 学
+        </button><button   onclick="window.location.href='../literature.html'">文 哲
+        </button><button   onclick="window.location.href='../scope.html'">视 野
+        </button><button  onclick="window.location.href='../chief_engineer.html'">首 领</button>
+        <hr id="down"/>
+    </div>
+    <div class="blog-body">
+        <div id="title">HTML页面源代码高光</div>
+        <div id="subtitle">2018-03-16 23:15:17</div>
+        <p>当然我不会重造轮子。没那功夫，也没有别人造的好。好了，现在把别人轮子推过来：<a href="https://highlightjs.org/" target="_blank">开源的 highlight.js</a></p>
+<p>URL:<a href="https://highlightjs.org" rel="nofollow">https://highlightjs.org</a><br></p>
+<p>使用方法：</p>
+<p>1. 在 html 的 head 里三句话：分别是高光的风格 css ，高光 js 和脚本初始化。</p>
+<pre><code class="lang-html">&lt;link rel="stylesheet"
+      href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"&gt;
+&lt;script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"&gt;&lt;/script&gt;
+&lt;script &gt;hljs.initHighlightingOnLoad();&lt;/script&gt; <br></code></pre><p>2. 在 body 的 代码块加上 &lt;pre&gt;&lt;code&gt; ... &lt;/code&gt; &lt;/pre&gt;. 脚本自动识别 code 并将其高光。语言类型可以通过 class 显式指定（使用lang-前缀）。</p>
+<pre><code class="lang-c++">&lt;pre&gt;
+&lt;code lang-cpp&gt;
+#include &lt; iostream&gt;
+
+int main(int argc, char *argv[]) {
+
+&nbsp;&nbsp;&nbsp; /* An annoying "Hello World" example */
+&nbsp;&nbsp;&nbsp; for (auto i = 0; i &lt; 0xFFFF; i++)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cout &lt;&lt; "Hello, World!" &lt;&lt; endl;
+
+&nbsp;&nbsp;&nbsp; char c = '\n';
+&nbsp;&nbsp;&nbsp; unordered_map &lt;string, vector&lt;string&gt; &gt; m;
+&nbsp;&nbsp;&nbsp; m["key"] = "\\\\"; // this is an error
+
+&nbsp;&nbsp;&nbsp; return -2e3 + 12l;
+}
+&lt;/code&gt;
+&lt;/pre&gt;<br></code></pre><p>其中步骤 1 使用的cdn，也可以自己下载集成。高光风格有很多种，<a href="https://github.com/isagalaev/highlight.js/tree/master/src/styles" target="_blank">戳这里</a>，下载到指定目录，link进来即可替换。这里有官方的<a href="https://highlightjs.org/static/demo/" target="_blank">风格示例</a>。</p>
+
+        <div id="sign">—— 星期五 深圳</div>
+        <footer>
+            <a href="20180127_blog_computer_ai_19.html">上一篇</a>
+            <span id="back-top"><a href="#">返回页顶</a></span>
+            <span id="next-blog"><a href="">下一篇</a></span>
+        </footer>
+    </div>
+</body>
+</html>

@@ -15,6 +15,9 @@ TEMPLATE = '''<html lang="zh-cn">
     <title>%s</title>
     <meta charset='utf-8'>
     <link rel="stylesheet" type="text/css" href="../css/page.css">
+    <link rel="stylesheet" type="text/css" href="../css/code-styles.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script >hljs.initHighlightingOnLoad();</script>  
     <link rel="shortcut icon" href="../image/yuan.ico" type="image/x-icon"/>
 </head>
 <body>

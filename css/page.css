@@ -270,7 +270,7 @@ button#active{
 	height:auto;
 	min-height:800px;
 //	box-shadow: 4px 4px 3px 4px rgba(0, 0, 0, 0.35);
-	font-family:"Times", "宋体";
+	font-family:"宋体", Arial,sans;;
 }
 
 .blog-body i {
@@ -281,14 +281,16 @@ button#active{
 .blog-body pre {
 	margin-left:auto;
 	margin-right: auto;
-	//background: #f2f2f2;
-	color: green;
+	background:gray;
 	width: 100%;
-	padding:10px 10px 10px 0px;
+	padding:2px 2px 2px 2px;
 }
+
 .blog-body code {
-	margin-right:30px;
-	//background-color: #f2f2f2;
+	padding:5px 15px 5px 15px;
+    font-family: Arial,sans;
+    font-size: 12px;
+    font-weight:100;
 }
 
 .blog-body ol, ul{
