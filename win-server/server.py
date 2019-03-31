@@ -10,10 +10,11 @@ def decode_value(data, blog):
     i = data.find("\r\n\r\n")
     body = data[i + 4:]
     print len(body)
+    #print body
     values = body.split('_&')
     for value in values: 
         kv = value.split('_=')
-        #print len(kv)
+        print len(kv)
         if len(kv) != 2:
             return False
         print str(kv)
@@ -86,6 +87,7 @@ def process(data):
     #return 0
 
     read_conf(conf)
+    print conf['db_path']
     conn = sqlite3.connect(conf['db_path'])
     ret = 0
     if blog['op'] == '0':
