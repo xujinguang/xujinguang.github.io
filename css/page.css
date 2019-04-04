@@ -203,6 +203,9 @@ button#active{
     color:white;
 }
 
+div#link-nav {
+	margin-top: 10px;
+}
 .nav footer {
     position:absolute;
     bottom:0px;
@@ -496,4 +499,9 @@ a:active {
     line-height:22px;
     //color:#7d7dff;
     color:#00aeae;
+}
+
+footer img#qcode{
+	width: 150px;
+	height: 150px;
 }
