@@ -311,6 +311,10 @@ div#link-nav {
 	font-family:"Times";
 	margin: 0px;
 	background-color: #f2f2f2;
+	padding-left:10px;
+	padding-right:10px;
+	padding-top:10px;
+	padding-bottom:10px;
 }
 
 .blog-body p{
@@ -336,16 +340,25 @@ div#link-nav {
 }
 
 .blog-body h2 {
+	font-family:"黑体";
 	padding:0px;
 	margin:0px;
-	font-size:24px;
-	font-weight:100;
-	font-family:"黑体";
+	font-size:28px;
+	font-weight:700;
 }
 
 .blog-body h3{
+	font-weight:600;
+	font-family:"微软雅黑";
 	margin-left:10px;
-	font-size:14px;
+	font-size:20px;
+}
+
+.blog-body h4{
+	font-weight:500;
+	font-family:"微软雅黑";
+	margin-left:10px;
+	font-size:18px;
 }
 
 .blog-body footer {
@@ -354,6 +367,16 @@ div#link-nav {
 	text-align:center;
 }
 
+.blog-body table{
+	margin-top:30px; 
+	margin-bottom:20px; 
+	margin-left:60px;
+	text-align:center;
+}
+
+.blog-body td{
+	padding-left:10px;	
+}
 .blog-body hr{
 	margin-top:60px;
 	margin-bottom:60px;
@@ -361,6 +384,14 @@ div#link-nav {
 	border:none;
 	border-top:1px dashed red;
 	float: right;
+}
+
+.blog-body code{
+	font-size:16px;
+	font-style:oblique;
+	font-family:"Times New Roman",Georgia,Serif;
+	padding:0px 5px 0px 5px;
+	font-weight:300;
 }
 
 .blog-body span#back-top{
