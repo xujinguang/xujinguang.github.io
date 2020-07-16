@@ -228,7 +228,7 @@ div#link-nav {
 	padding:0px 100px 0px 100px;
     height:40px;
 	background:#00aeae;
-	width: 34%;
+	width: 48%;
 	min-width: 600px;
 	margin:0 auto;
 }
@@ -237,13 +237,13 @@ div#link-nav {
 	background:white;
 	padding-left:5px; 
 	padding-right:5px;
-	width: 45%;
+	width: 60%;
 	min-width: 800px;
 	margin:0 auto;
 }
 
 .blog-nav button#first{
-	margin-left:120px;
+	margin-left:100px;
 }
 
 
@@ -267,7 +267,7 @@ div#link-nav {
 .blog-body{
 	padding:60px 100px 60px 100px;
 	background:white;
-	width: 34%;
+	width: 48%;
 	min-width: 600px;
 	margin:0 auto;
 	height:auto;
