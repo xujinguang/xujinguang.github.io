@@ -1,0 +1,16 @@
+$ django-admin startproject mysite
+$ python manage.py migrate
+$ python manage.py inspectdb > RobotOpenAppidAdminConfig/models.py
+$ python manage.py makemigrations RobotOpenAppidAdminConfig
+$ python manage.py migrate
+$ python manage.py createsuperuser
+$ python manage.py runserver 0.0.0.0:8080
+
+
+指定显示数据字段，在admin.py中添加，并注册
+class RobotAdmin(admin.ModelAdmin):
+	list_display = ()
+	search_fields = ()
+
+中文文档
+http://python.usyiyi.cn/translate/django_182/index.html
