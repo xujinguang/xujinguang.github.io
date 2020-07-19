@@ -170,6 +170,10 @@ button#active{
 .nav table#index td{
 }
 
+.nav table td{
+	text-align:left;
+}
+
 .nav table#index tr:hover{
     /*这里是主页导航栏的悬浮颜色*/
 	//background:plum;
@@ -273,7 +277,7 @@ div#link-nav {
 	height:auto;
 	min-height:800px;
 //	box-shadow: 4px 4px 3px 4px rgba(0, 0, 0, 0.35);
-	font-family:"宋体", Arial,sans;;
+	font-family:"宋体", Arial,sans;
 }
 
 .blog-body i {
@@ -284,9 +288,9 @@ div#link-nav {
 .blog-body pre {
 	margin-left:auto;
 	margin-right: auto;
-	background:gray;
+	background:lightgoldenrodyellow;
 	width: 100%;
-	padding:2px 2px 2px 2px;
+	padding:10px 10px 10px 10px;
 }
 
 .blog-body code {
@@ -345,6 +349,7 @@ div#link-nav {
 	margin:0px;
 	font-size:28px;
 	font-weight:700;
+	text-align: center;
 }
 
 .blog-body h3{
