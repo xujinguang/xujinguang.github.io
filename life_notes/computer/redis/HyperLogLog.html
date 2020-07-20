@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>HyperLogLog</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <base href="../../../"> <meta http-equiv="Content-Type" content="text/html" charset="utf-8"> <link rel="stylesheet" type="text/css" href="css/page.css"> <link rel="stylesheet" type="text/css" href="css/gen.css"> <link rel="shortcut icon" href="image/yuan.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="blog-header">
+    </div>
+    <div class="blog-nav">
+        <hr id="up"/>
+        <button id="first" onclick="window.location.href='index.html'">首 页
+        </button><button   onclick="window.location.href='blog.html'">博 客
+        </button><button   onclick="window.location.href='read.html'">读 书
+        </button><button   onclick="window.location.href='science.html'">科 学
+        </button><button   onclick="window.location.href='literature.html'">文 哲
+        </button><button   onclick="window.location.href='scope.html'">视 野
+        </button><button  id="active" onclick="window.location.href='life_notes/index.html'">笔 记
+        </button><button  onclick="window.location.href='index.html'">首 领</button>
+        <hr id="down"/>
+    </div>
+    <div class="blog-body">
+<a id="retindex" href="life_notes/computer/redis/index.html">返回目录</a>
+<h2 id="hyperloglog">HyperLogLog</h2>
+<h3 id="需求">需求</h3>
+<ol type="1">
+<li>UV</li>
+<li>关键词搜索</li>
+<li>数据分析</li>
+</ol>
+<h3 id="直觉方法">直觉方法</h3>
+<p>记录集合中所有不重复的元素集合；当新来一个元素，若中不包含元素，则将加入；否则不加入，计数值就是的元素数量。</p>
+<p>可用数据结构：HaspMap，Set，ZSet（底层也是哈希表），B树，bitmap</p>
+<h3 id="存储元素算法">存储元素算法</h3>
+<h4 id="hashmap">HashMap</h4>
+<ol type="1">
+<li>计算<code>value</code>的<code>hash</code>值，然后分配节点并存入<code>value</code>.</li>
+<li>判断哈希表对应槽位上是否存在元素；</li>
+<li>如果有，则遍历比对冲突链表；</li>
+<li>如果查找存在，则结束；否则，插入链表结尾；</li>
+<li>如果哈希表装填因子变大，则进行<code>rehash</code>操作</li>
+</ol>
+<h4 id="b树">B树</h4>
+<ol type="1">
+<li>查找树节点，比对<code>value</code>值</li>
+<li>找到，则放弃插入；否则，分配节点并存入<code>value</code>.</li>
+<li>执行B树插入操作。</li>
+<li>树的节点个数即为元素个数。</li>
+</ol>
+<h4 id="bitmap">BitMap</h4>
+<ol type="1">
+<li>计算value的整形哈希值，以此哈希值为索引设置位图对应<code>bit</code></li>
+<li>如果对应<code>bit</code>位已经设置为1，则放弃；否则，置位1；</li>
+<li>统计位图1的个数，即为元素个数。</li>
+<li>为了防止冲突，需要比较均匀的哈希函数，并且根据访问量增加而放大位图。</li>
+</ol>
+<table>
+<thead>
+<tr class="header">
+<th>对比项</th>
+<th>HashMap</th>
+<th>B树</th>
+<th>BitMap</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>查找</td>
+<td>最快O(1),最坏O(n)</td>
+<td>O(log^n)</td>
+<td>O(1)</td>
+</tr>
+<tr class="even">
+<td>插入</td>
+<td>O(1)</td>
+<td>O(log^n)</td>
+<td>O(1)</td>
+</tr>
+<tr class="odd">
+<td>存储</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr class="even">
+<td>准确度</td>
+<td>精确</td>
+<td>精确</td>
+<td>如果请求id是整形，则比较精确<br>如果id是哈希值，则粗略</td>
+</tr>
+<tr class="odd">
+<td>值</td>
+<td>元素本身</td>
+<td>元素本身</td>
+<td>元素本身/哈希值</td>
+</tr>
+</tbody>
+</table>
+<p>很显然，三种方法随着数据量增大而增大是主要问题。查找和插入不是性能的瓶颈。如果只是单纯的统计UV，对于亿万数据量级的存储显得没有必要性。</p>
+<h3 id="问题">问题</h3>
+<ol type="1">
+<li>存储空间随元素线性增长，比如亿万数量级的元素；</li>
+<li>元素越多，判断是否加入成本越大；</li>
+<li>数据合并成本大。</li>
+</ol>
+<h3 id="非存储元素算法">非存储元素算法</h3>
+<p>不追求绝对准确，保证误差控制在一定范围。不存储元素，节省内存。基于概率。Probabilistic cardinality estimators - 概率基数估计器。</p>
+<p>比如：Linear Counting/LogLog/HyperLogLog</p>
+<p>HyperLogLog 是早期 LogLog 算法的扩展，后者本身源自1984年 Flajolet-Martin 算法。在 Flajolet 等人的原始论文[1]和关于计数不同问题的相关文献中，术语“基数”用于指具有重复元素的数据流中不同元素的数量。然而，在多集合论中，这个术语指的是多集合中每个成员的多重数之和。</p>
+<blockquote>
+<p>the term “cardinality” is used to mean the number of distinct elements in a data stream with repeated elements. However in the theory of <a href="https://en.wikipedia.org/wiki/Multiset">multisets</a> the term refers to the sum of multiplicities of each member of a multiset.</p>
+</blockquote>
+<h3 id="hyperloglogwiki">HyperLogLog[wiki]</h3>
+<p>HyperLogLog 算法的基础是观察到一个<strong>均匀分布</strong>的随机数的<strong>多重集的基数</strong>可以通过计算该集中每个数的<strong>二进制表示</strong>中的<strong>前导零的最大个数</strong>来估计。如果观察到的前导零的最大数目是 <span class="math display"><em>n</em></span>，则该集合中不同元素的数目估计为<span class="math display">2<sup><em>n</em></sup></span>.</p>
+<p>在 HyperLogLog 算法中，对原多集中的每个元素应用一个哈希函数，得到与原多集具有相同基数的均匀分布随机数的多集。然后可以使用上述算法估计这个随机分布集的基数。如此算法得到的基数的简单估计具有方差大的缺点。在 HyperLogLog 算法中，方差最小化的方法是将多重集分割成多个子集，计算每个子集中前导零的最大数目，并使用调和平均值将每个子集的估计值合并为整个集的基数估计值。</p>
+<p>HyperLogLog数组大小<span class="math display"><em>m</em></span>, 数组记为M$$</p>
+<h4 id="add">Add</h4>
+<p>已知输入值<span class="math display"><em>v</em></span>,哈希函数<span class="math display"><em>h</em></span>:</p>
+<p><img src="https://render.githubusercontent.com/render/math?math=\large \begin{equation} \begin{aligned} b%26=\log_2^m\\x%26=h(v)\\j %26= 1 + \langle x_1,x_2,\cdots,x_b\rangle \\ w%26=x_{b+1}x_{b+2}\cdots\\M[j]%26=\max(M[j],\theta(w)) \end{aligned} \end{equation}"></p>
+<p>注：github展示的方法，将&amp;替换%26,以图片展示</p>
+<p>数学中的计算从<code>1</code>开始，不是计算机的<code>0</code>下标开始. 计算<code>b</code>为了取得哈希值的高位作为数组下标索引<code>j</code>。取低<code>bit</code>位中前导0最大的数目<span class="math display"><em>θ</em>(<em>w</em>)</span>,取最大值设置<span class="math display"><em>M</em>[<em>j</em>]</span>.</p>
+<h4 id="count">Count</h4>
+<p><img src="https://render.githubusercontent.com/render/math?math=\large\begin{equation} \begin{aligned} Z%26=\left(\sum_{j=1}^m{\frac{1}{2^{M[j]}}}\right)^{-1} \\ \alpha_m%26=\left(m \int_0^\infty\left(\log_2^{\left(\frac{2 + u}{1+u}\right)}\right)^mdu\right)^{-1}\\E%26=\alpha_m m^2 Z \end{aligned} \end{equation} "></p>
+<h4 id="merge">Merge</h4>
+<p><img src="https://render.githubusercontent.com/render/math?math=\large hll_union[j] = \max(hll_1[j],hll_2[j]),j = 1,2,\cdots" alt="hll_union[j] = \max(hll_1[j],hll_2[j]),j = 1,2,\cdots"></p>
+<p>对应元素取最大值</p>
+<h3 id="redis中hyperloglog">redis中hyperloglog</h3>
+<table>
+<thead>
+<tr class="header">
+<th>cmd</th>
+<th>时间复杂度</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>pfadd</td>
+<td>O(1)</td>
+<td>将元素放入hll</td>
+</tr>
+<tr class="even">
+<td>pfcount</td>
+<td>O(1)~O(N)</td>
+<td>统计hll中的元素个数</td>
+</tr>
+<tr class="odd">
+<td>pfmerge</td>
+<td>O(N)~const</td>
+<td>合并多个hll到指定hll</td>
+</tr>
+</tbody>
+</table>
+<p>pf是算法发明人的<code>Philippe Flajolet</code>的首字母。</p>
+<h4 id="kb">12KB</h4>
+<p>redis中实现用的<span class="math display">2<sup>14</sup> = 16384</span>个桶，每个桶占用 <code>6</code>个<code>bit</code>,为什么是6个。因为redis将value哈希成<code>64bit</code>值，分桶占去14个，剩余50个bit，最坏情况下，低位第一个1出现在第50个bit，那么需要最少6bit ：<span class="math display">2<sup>6</sup> = 64 &gt; 50</span> 来表示这个位置。所以每个桶用6bit。最后的大小</p>
+<p><img src="https://render.githubusercontent.com/render/math?math=\large \frac{2^{14} \times 6  (bits)}{2^{13}} = 2 \times 6(KB) = 12KB"></p>
+<h3 id="参考资料">参考资料</h3>
+<p><a href="https://en.wikipedia.org/wiki/HyperLogLog">HyperLogLog Wiki</a></p>
+<footer>
+    <style>
+        a#backtop{
+            margin-right:120px;
+            font-size:18px;
+            margin-bottom:30px;
+        }
+    </style>
+    <a id="backtop" style="position:fixed;right:0;bottom:0">返回页顶</a>
+    <script>
+        backtop.onclick = function(){
+            scrollTo(0,0);
+        }
+    </script>
+</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>envoy-wasm-src</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <base href="../../../"> <meta http-equiv="Content-Type" content="text/html" charset="utf-8"> <link rel="stylesheet" type="text/css" href="css/page.css"> <link rel="stylesheet" type="text/css" href="css/gen.css"> <link rel="shortcut icon" href="image/yuan.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="blog-header">
+    </div>
+    <div class="blog-nav">
+        <hr id="up"/>
+        <button id="first" onclick="window.location.href='index.html'">首 页
+        </button><button   onclick="window.location.href='blog.html'">博 客
+        </button><button   onclick="window.location.href='read.html'">读 书
+        </button><button   onclick="window.location.href='science.html'">科 学
+        </button><button   onclick="window.location.href='literature.html'">文 哲
+        </button><button   onclick="window.location.href='scope.html'">视 野
+        </button><button  id="active" onclick="window.location.href='life_notes/index.html'">笔 记
+        </button><button  onclick="window.location.href='index.html'">首 领</button>
+        <hr id="down"/>
+    </div>
+    <div class="blog-body">
+<a id="retindex" href="life_notes/computer/envoy/index.html">返回目录</a>
+<h2 id="envoy-wasm-源码">Envoy Wasm 源码</h2>
+<p>CT: 2020年 7月15日 星期三 15时54分29秒 CST</p>
+<h3 id="main">main</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="dt">int</span> main(<span class="dt">int</span> argc, <span class="dt">char</span>** argv) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>    <span class="cf">return</span> Envoy::MainCommon::main(argc, argv); </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">//-&gt;执行</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="dt">int</span> MainCommon::main(<span class="dt">int</span> argc, <span class="dt">char</span>** argv, PostServerHook hook) { <span class="co">//hook默认为 nullptr</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>  <span class="bu">std::</span>unique_ptr&lt;Envoy::MainCommon&gt; main_common;</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>  <span class="cf">try</span> {</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>    main_common = <span class="bu">std::</span>make_unique&lt;Envoy::MainCommon&gt;(argc, argv); <span class="co">//实例化MainCommon</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>    Envoy::Server::Instance* server = main_common-&gt;server(); <span class="co">//base_.server();</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>    <span class="cf">if</span> (server != <span class="kw">nullptr</span> &amp;&amp; hook != <span class="kw">nullptr</span>) {</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>      hook(*server);</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>    }</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>  } <span class="cf">catch</span> (){}</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>  <span class="co">// Run the server listener loop outside try/catch blocks, so that unexpected exceptions</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a>  <span class="co">// show up as a core-dumps for easier diagnostics.</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a>  <span class="cf">return</span> main_common-&gt;run() ? EXIT_SUCCESS : EXIT_FAILURE; <span class="co">//base_.run()</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a>}</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a><span class="co">//构造函数</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a>MainCommon::MainCommon(<span class="dt">int</span> argc, <span class="at">const</span> <span class="dt">char</span>* <span class="at">const</span>* argv)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a>     <span class="co">//实例化OptionsImpl</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a>    : <span class="va">options_</span>(argc, argv, &amp;MainCommon::hotRestartVersion, spdlog::level::info), </span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a>        <span class="co">//实例化 MainCommonBase</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true"></a>      <span class="va">base_</span>(<span class="va">options_</span>, </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true"></a>          <span class="va">real_time_system_</span>, </span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true"></a>          <span class="va">default_listener_hooks_</span>, </span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true"></a>            <span class="va">prod_component_factory_</span>,</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true"></a>            <span class="bu">std::</span>make_unique&lt;Runtime::RandomGeneratorImpl&gt;(), </span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true"></a>            <span class="va">platform_impl_</span>.threadFactory(),</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true"></a>            <span class="va">platform_impl_</span>.fileSystem(), </span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true"></a>            <span class="kw">nullptr</span>)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true"></a>      {}</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true"></a><span class="co">//其中base_ 是 MainCommonBase，因此转换成MainCommonBase 的server() 和 run(),构造函数如下</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true"></a>MainCommonBase::MainCommonBase(<span class="at">const</span> OptionsImpl&amp; options, Event::TimeSystem&amp; time_system,</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true"></a>                               ListenerHooks&amp; listener_hooks,</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true"></a>                               Server::ComponentFactory&amp; component_factory,</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true"></a>                               <span class="bu">std::</span>unique_ptr&lt;Runtime::RandomGenerator&gt;&amp;&amp; random_generator,</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true"></a>                               Thread::ThreadFactory&amp; thread_factory,</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true"></a>                               Filesystem::Instance&amp; file_system,</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true"></a>                               <span class="bu">std::</span>unique_ptr&lt;ProcessContext&gt; process_context)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true"></a>    : </span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true"></a><span class="va">options_</span>(options), </span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true"></a><span class="va">component_factory_</span>(component_factory), </span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true"></a><span class="va">thread_factory_</span>(thread_factory),</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true"></a><span class="va">file_system_</span>(file_system), <span class="va">symbol_table_</span>(Stats::SymbolTableCreator::initAndMakeSymbolTable(</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true"></a>             <span class="va">options_</span>.fakeSymbolTableEnabled())),</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true"></a><span class="va">stats_allocator_</span>(*<span class="va">symbol_table_</span>) {</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true"></a>  <span class="co">//其他初始化</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true"></a>}</span></code></pre></div>
+<p>MainCommon这一层有点多余。代码中说未来会移除它。直接使用MainCommonBase</p>
+<h4 id="main_common-server">main_common-&gt;server()</h4>
+<div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">//base_.server()-&gt;MainCommonBase::server()</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="co">// Will be null if options.mode() == Server::Mode::Validate</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>Server::Instance* server() { <span class="cf">return</span> <span class="va">server_</span>.get(); }</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="co">//server是个InstanceImpl类型的 MainCommonBase 成员变量</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="bu">std::</span>unique_ptr&lt;Server::InstanceImpl&gt; <span class="va">server_</span>;</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="co">//server_是在MainCommonBase实例化构造函数中初始化的</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a> <span class="va">server_</span> = <span class="bu">std::</span>make_unique&lt;Server::InstanceImpl&gt;(</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>   *<span class="va">init_manager_</span>, </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>   <span class="va">options_</span>, </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>   time_system, </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>   local_address, </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a>   listener_hooks, </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a>   *<span class="va">restarter_</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a>   *<span class="va">stats_store_</span>, </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a>   access_log_lock, </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a>   component_factory, </span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a>   <span class="bu">std::</span>move(random_generator), </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a>   *<span class="va">tls_</span>,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true"></a>   <span class="va">thread_factory_</span>, </span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true"></a>   <span class="va">file_system_</span>, </span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true"></a>   <span class="bu">std::</span>move(process_context));</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true"></a><span class="co">//返回 Instance 实例指针,因为unique不能作为参数传递，需要get</span></span></code></pre></div>
+<h4 id="hooksever">hook(*sever)</h4>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co">//hook的原型</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="kw">using</span> PostServerHook = <span class="bu">std::</span>function&lt;<span class="dt">void</span>(Server::Instance&amp; server)&gt;;</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="co">//MainCommon 的main方法声明个静态方法，使用ns调用。hook 默认为空，所以这里hook()不执行</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="at">static</span> <span class="dt">int</span> main(<span class="dt">int</span> argc, <span class="dt">char</span>** argv, PostServerHook hook = <span class="kw">nullptr</span>);</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="co">//options.mode() == Server::Mode::Validate时，sever=nullptr，同样不执行</span></span></code></pre></div>
+<h4 id="main_common-run">main_common-&gt;run()</h4>
+<div class="sourceCode" id="cb5"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co">//base_.run()-&gt; MainCommonBase::run()</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>依据启动时候传入的有三种启动模式</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>    Server::Mode{}-&gt;/Serve/Validate/InitOnly</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>    <span class="fl">1.</span> Server - 默认模式</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>    <span class="fl">2.</span> Validate - 验证，最大限度不开启上下游的网络连通,使用本地网络</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>    <span class="fl">3.</span> InitOnly - 初始化，完整加载并初始化配置，然后退出</span></code></pre></div>
+<p>###Server模式</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="va">server_</span>-&gt;run();       </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="co">//上面run()实际执行启动实例 run</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="dt">void</span> InstanceImpl::run(){</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>        <span class="at">const</span> <span class="kw">auto</span> run_helper = RunHelper(*<span class="kw">this</span>, </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>                                          <span class="va">options_</span>, </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>                                          *<span class="va">dispatcher_</span>, </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>                                          clusterManager(),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>                                          <span class="va">access_log_manager_</span>, </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>                                          <span class="va">init_manager_</span>, </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>                                          overloadManager(), </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>                                          [<span class="kw">this</span>] {</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a>                                      notifyCallbacksForStage(Stage::PostInit);</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a>                                      startWorkers();</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a>                                    });</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a>  <span class="co">// Run the main dispatch loop waiting to exit.</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a>  ENVOY_LOG(info, <span class="st">&quot;starting main dispatch loop&quot;</span>);</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true"></a>  <span class="kw">auto</span> watchdog =</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true"></a>      <span class="va">guard_dog_</span>-&gt;createWatchDog(<span class="va">api_</span>-&gt;threadFactory().currentThreadId(), <span class="st">&quot;main_thread&quot;</span>);</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true"></a>  watchdog-&gt;startWatchdog(*<span class="va">dispatcher_</span>);</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true"></a>  <span class="va">dispatcher_</span>-&gt;post([<span class="kw">this</span>] { notifyCallbacksForStage(Stage::Startup); });</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true"></a>  <span class="va">dispatcher_</span>-&gt;run(Event::Dispatcher::RunType::Block);</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true"></a>  ENVOY_LOG(info, <span class="st">&quot;main dispatch loop exited&quot;</span>);</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true"></a>  <span class="va">guard_dog_</span>-&gt;stopWatching(watchdog);</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true"></a>  watchdog.reset();</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true"></a>  terminate();</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true"></a>}</span></code></pre></div>
+<h4 id="startworkers">startWorkers();</h4>
+<div class="sourceCode" id="cb7"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="va">listener_manager_</span>-&gt;startWorkers(*<span class="va">guard_dog_</span>);</span></code></pre></div>
+<h4 id="dispatcher_-runeventdispatcherruntypeblock">dispatcher_-&gt;run(Event::Dispatcher::RunType::Block);</h4>
+<div class="sourceCode" id="cb8"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="co">//dispatcher_ 是InstanceImpl的成员变量</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>Event::DispatcherPtr <span class="va">dispatcher_</span>;</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="kw">using</span> DispatcherPtr = <span class="bu">std::</span>unique_ptr&lt;Dispatcher&gt;;</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="co">//-&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a><span class="dt">void</span> DispatcherImpl::run(RunType type) {</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>  <span class="va">run_tid_</span> = <span class="va">api_</span>.threadFactory().currentThreadId();</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>  runPostCallbacks();</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>  <span class="va">base_scheduler_</span>.run(type); <span class="co">//LibeventScheduler</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>}</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a><span class="co">//-&gt;</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a><span class="dt">void</span> LibeventScheduler::run(Dispatcher::RunType mode) {</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a>  <span class="dt">int</span> flag = <span class="dv">0</span>;</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a>  <span class="cf">switch</span> (mode) {</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a>  <span class="cf">case</span> Dispatcher::RunType::NonBlock:</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a>    flag = EVLOOP_NONBLOCK;</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true"></a>    <span class="cf">break</span>;</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true"></a>  <span class="cf">case</span> Dispatcher::RunType::Block:</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true"></a>    <span class="co">// The default flags have &#39;block&#39; behavior. See</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true"></a>    <span class="co">// http://www.wangafu.net/~nickm/libevent-book/Ref3_eventloop.html</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true"></a>    <span class="cf">break</span>;</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true"></a>  <span class="cf">case</span> Dispatcher::RunType::RunUntilExit:</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true"></a>    flag = EVLOOP_NO_EXIT_ON_EMPTY;</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true"></a>    <span class="cf">break</span>;</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true"></a>  }</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true"></a>  event_base_loop(<span class="va">libevent_</span>.get(), flag);</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true"></a>}</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true"></a><span class="co">//-&gt;</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true"></a><span class="co">/**</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true"></a><span class="co">  Wait for events to become active, and run their callbacks.</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true"></a></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true"></a><span class="co">  This is a more flexible version of event_base_dispatch().</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true"></a></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true"></a><span class="co">  By default, this loop will run the event base until either there are no more</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true"></a><span class="co">  pending or active events, or until something calls event_base_loopbreak() or</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true"></a><span class="co">  event_base_loopexit().  You can override this behavior with the &#39;flags&#39;</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true"></a><span class="co">  argument.</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true"></a></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true"></a><span class="co">  </span><span class="an">@param</span><span class="co"> </span><span class="cv">eb</span><span class="co"> the event_base structure returned by event_base_new() or</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true"></a><span class="co">     event_base_new_with_config()</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true"></a><span class="co">  </span><span class="an">@param</span><span class="co"> </span><span class="cv">flags</span><span class="co"> any combination of EVLOOP_ONCE | EVLOOP_NONBLOCK</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true"></a><span class="co">  </span><span class="an">@return</span><span class="co"> 0 if successful, -1 if an error occurred, or 1 if we exited because</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true"></a><span class="co">     no events were pending or active.</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true"></a><span class="co">  </span><span class="an">@see</span><span class="co"> event_base_loopexit(), event_base_dispatch(), EVLOOP_ONCE,</span></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true"></a><span class="co">     EVLOOP_NONBLOCK</span></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true"></a><span class="co">  */</span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true"></a>EVENT2_EXPORT_SYMBOL</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true"></a><span class="dt">int</span> event_base_loop(<span class="kw">struct</span> event_base *, <span class="dt">int</span>)</span></code></pre></div>
+<h3 id="valide-模式">Valide 模式</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>    <span class="kw">auto</span> local_address = Network::Utility::getLocalAddress(<span class="va">options_</span>.localAddressIpVersion());</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>    <span class="cf">return</span> Server::validateConfig(<span class="va">options_</span>, local_address, <span class="va">component_factory_</span>, <span class="va">thread_factory_</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>                                  <span class="va">file_system_</span>)</span></code></pre></div>
+<p>validateConfig -&gt; ValidationInstance -&gt; ### InitOnly 模式</p>
+<p>do nothing!</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>  <span class="cf">do</span> {                                                                                             </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>  } <span class="cf">while</span> (false);</span></code></pre></div>
+<h2 id="插件">插件</h2>
+<h3 id="http">HTTP</h3>
+<p>####Encode</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="co">/**</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a><span class="co"> * Encodes an HTTP stream. This interface contains methods common to both the request and response</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a><span class="co"> * path.</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a><span class="co"> * </span><span class="al">TODO</span><span class="co">(mattklein123): Consider removing the StreamEncoder interface entirely and just duplicating</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a><span class="co"> * the methods in both the request/response path for simplicity.</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a><span class="co"> */</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a><span class="kw">class</span> StreamEncoder {</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a><span class="kw">public</span>:</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a>  <span class="kw">virtual</span> ~StreamEncoder() = <span class="cf">default</span>;</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true"></a>  <span class="co">/**</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true"></a><span class="co">   * Encode a data frame.</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true"></a><span class="co">   * </span><span class="an">@param</span><span class="co"> </span><span class="cv">data</span><span class="co"> supplies the data to encode. The data may be moved by the encoder.</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true"></a><span class="co">   * </span><span class="an">@param</span><span class="co"> </span><span class="cv">end_stream</span><span class="co"> supplies whether this is the last data frame.</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true"></a><span class="co">   */</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true"></a>  <span class="kw">virtual</span> <span class="dt">void</span> encodeData(Buffer::Instance&amp; data, <span class="dt">bool</span> end_stream) PURE;</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true"></a></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true"></a>  <span class="co">/**</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true"></a><span class="co">   * </span><span class="an">@return</span><span class="co"> Stream&amp; the backing stream.</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true"></a><span class="co">   */</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true"></a>  <span class="kw">virtual</span> Stream&amp; getStream() PURE;</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true"></a></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true"></a>  <span class="co">/**</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true"></a><span class="co">   * Encode metadata.</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true"></a><span class="co">   * </span><span class="an">@param</span><span class="co"> </span><span class="cv">metadata_map_vector</span><span class="co"> is the vector of metadata maps to encode.</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true"></a><span class="co">   */</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true"></a>  <span class="kw">virtual</span> <span class="dt">void</span> encodeMetadata(<span class="at">const</span> MetadataMapVector&amp; metadata_map_vector) PURE;</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true"></a></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true"></a>  <span class="co">/**</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true"></a><span class="co">   * Return the HTTP/1 stream encoder options if applicable. If the stream is not HTTP/1 returns</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true"></a><span class="co">   * absl::nullopt.</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true"></a><span class="co">   */</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true"></a>  <span class="kw">virtual</span> Http1StreamEncoderOptionsOptRef http1StreamEncoderOptions() PURE;</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true"></a>};</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true"></a><span class="kw">class</span> RequestEncoder : <span class="kw">public</span> <span class="kw">virtual</span> StreamEncoder{};</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true"></a><span class="kw">class</span> ResponseEncoder : <span class="kw">public</span> <span class="kw">virtual</span> StreamEncoder {};</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true"></a><span class="kw">class</span> RequestEncoderWrapper : <span class="kw">public</span> RequestEncoder{};</span></code></pre></div>
+<h4 id="decode">Decode</h4>
+<div class="sourceCode" id="cb12"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="co">/**</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a><span class="co"> * Decodes an HTTP stream. These are callbacks fired into a sink. This interface contains methods</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a><span class="co"> * common to both the request and response path.</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a><span class="co"> * </span><span class="al">TODO</span><span class="co">(mattklein123): Consider removing the StreamDecoder interface entirely and just duplicating</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a><span class="co"> * the methods in both the request/response path for simplicity.</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a><span class="co"> */</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true"></a><span class="kw">class</span> StreamDecoder {</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true"></a><span class="kw">public</span>:</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true"></a>  <span class="kw">virtual</span> ~StreamDecoder() = <span class="cf">default</span>;</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true"></a>  <span class="co">/**</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true"></a><span class="co">   * Called with a decoded data frame.</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true"></a><span class="co">   * </span><span class="an">@param</span><span class="co"> </span><span class="cv">data</span><span class="co"> supplies the decoded data.</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true"></a><span class="co">   * </span><span class="an">@param</span><span class="co"> </span><span class="cv">end_stream</span><span class="co"> supplies whether this is the last data frame.</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true"></a><span class="co">   */</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true"></a>  <span class="kw">virtual</span> <span class="dt">void</span> decodeData(Buffer::Instance&amp; data, <span class="dt">bool</span> end_stream) PURE;</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true"></a>  <span class="co">/**</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true"></a><span class="co">   * Called with decoded METADATA.</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true"></a><span class="co">   * </span><span class="an">@param</span><span class="co"> </span><span class="cv">decoded</span><span class="co"> METADATA.</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true"></a><span class="co">   */</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true"></a>  <span class="kw">virtual</span> <span class="dt">void</span> decodeMetadata(MetadataMapPtr&amp;&amp; metadata_map) PURE;</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true"></a>};</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true"></a></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true"></a><span class="kw">class</span> RequestDecoder : <span class="kw">public</span> <span class="kw">virtual</span> StreamDecoder {}</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true"></a><span class="kw">class</span> ResponseDecoder : <span class="kw">public</span> <span class="kw">virtual</span> StreamDecoder {}</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true"></a><span class="kw">class</span> ResponseDecoderWrapper : <span class="kw">public</span> ResponseDecoder {}</span></code></pre></div>
+<h4 id="汇总stream">汇总stream</h4>
+<div class="sourceCode" id="cb13"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a> <span class="kw">class</span> ConnPoolImpl : <span class="kw">public</span> Http::HttpConnPoolImplBase { <span class="co">//包括StreamWrapper，ActiveClient</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="kw">struct</span> StreamWrapper : <span class="kw">public</span> RequestEncoderWrapper,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a>                         <span class="kw">public</span> ResponseDecoderWrapper,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a>                         <span class="kw">public</span> StreamCallbacks{};</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a> <span class="kw">class</span> ActiveClient : <span class="kw">public</span> Envoy::Http::ActiveClient {</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true"></a>   StreamWrapperPtr <span class="va">stream_wrapper_</span>;</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true"></a> };</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true"></a> };</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true"></a>ConnPoolImpl::StreamWrapper::StreamWrapper(ResponseDecoder&amp; response_decoder, ActiveClient&amp; parent)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true"></a>    : RequestEncoderWrapper(parent.<span class="va">codec_client_</span>-&gt;newStream(*<span class="kw">this</span>)),</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true"></a>      ResponseDecoderWrapper(response_decoder), <span class="va">parent_</span>(parent) {</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true"></a>  RequestEncoderWrapper::<span class="va">inner_</span>.getStream().addCallbacks(*<span class="kw">this</span>);</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true"></a>}</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true"></a></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true"></a><span class="co">//http1, newStreamEncoder 实例化 StreamWrapper</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true"></a>RequestEncoder&amp; ConnPoolImpl::ActiveClient::newStreamEncoder(ResponseDecoder&amp; response_decoder) {</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true"></a>  <span class="va">stream_wrapper_</span> = <span class="bu">std::</span>make_unique&lt;StreamWrapper&gt;(response_decoder, *<span class="kw">this</span>);</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true"></a>  <span class="cf">return</span> *<span class="va">stream_wrapper_</span>;</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true"></a>}</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true"></a></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true"></a><span class="co">//onPoolReady -&gt; newStreamEncoder</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true"></a><span class="dt">void</span> HttpConnPoolImplBase::onPoolReady(Envoy::ConnectionPool::ActiveClient&amp; client,</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true"></a>                                       Envoy::ConnectionPool::AttachContext&amp; context) {</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true"></a>  ActiveClient* http_client = <span class="kw">static_cast</span>&lt;ActiveClient*&gt;(&amp;client);</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true"></a>  <span class="kw">auto</span>&amp; http_context = typedContext&lt;HttpAttachContext&gt;(context);</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true"></a>  Http::ResponseDecoder&amp; response_decoder = *http_context.<span class="va">decoder_</span>;</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true"></a>  Http::ConnectionPool::Callbacks&amp; callbacks = *http_context.<span class="va">callbacks_</span>;</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true"></a>  Http::RequestEncoder&amp; new_encoder = http_client-&gt;newStreamEncoder(response_decoder);</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true"></a>  callbacks.onPoolReady(new_encoder, client.<span class="va">real_host_description_</span>,</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true"></a>                        http_client-&gt;<span class="va">codec_client_</span>-&gt;streamInfo());</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true"></a>}</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true"></a></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true"></a><span class="co">//attachRequestToClient -&gt; onPoolReady</span></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true"></a><span class="co">//newStream-&gt;attachRequestToClient | onUpstreamReady-&gt;attachRequestToClient</span></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true"></a><span class="co">//ConnPoolImpl 实例化时候调用onUpstreamReady</span></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true"></a><span class="co">//对接到下文的 ProdConnPoolImpl 实例化</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a><span class="kw">class</span> Instance {};</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a><span class="kw">class</span> Instance : <span class="kw">public</span> Envoy::ConnectionPool::Instance, <span class="kw">public</span> Event::DeferredDeletable{};</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a><span class="kw">class</span> ConnPoolImplBase : <span class="kw">protected</span> Logger::Loggable&lt;Logger::Id::pool&gt; {};</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a><span class="kw">class</span> HttpConnPoolImplBase : <span class="kw">public</span> Envoy::ConnectionPool::ConnPoolImplBase,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a>                             <span class="kw">public</span> Http::ConnectionPool::Instance {};<span class="co">//注意命名空间</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true"></a><span class="kw">class</span> ConnPoolImpl : <span class="kw">public</span> Http::HttpConnPoolImplBase {}; <span class="co">//这里有三个，分别是Envoy(http2)，http1,Envoy(tcp)空间下的 ConnPoolImpl</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true"></a><span class="kw">class</span> ProdConnPoolImpl : <span class="kw">public</span> ConnPoolImpl {};</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true"></a><span class="co">//HTTP1 allocateConnPool 实例化 ProdConnPoolImpl</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true"></a>ConnectionPool::InstancePtr</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true"></a>allocateConnPool(Event::Dispatcher&amp; dispatcher, Upstream::HostConstSharedPtr host,</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true"></a>                 Upstream::ResourcePriority priority,</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true"></a>                 <span class="at">const</span> Network::ConnectionSocket::OptionsSharedPtr&amp; options,</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true"></a>                 <span class="at">const</span> Network::TransportSocketOptionsSharedPtr&amp; transport_socket_options) {</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true"></a>  <span class="cf">return</span> <span class="bu">std::</span>make_unique&lt;Http::Http1::ProdConnPoolImpl&gt;(dispatcher, host, priority, options,</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true"></a>                                                         transport_socket_options);</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true"></a>}</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true"></a><span class="co">//成员函数 allocateConnPool() -&gt; NS::allocateConnPool()</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true"></a><span class="kw">class</span> ProdClusterManagerFactory : <span class="kw">public</span> ClusterManagerFactory {}</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true"></a>Http::ConnectionPool::InstancePtr ProdClusterManagerFactory::allocateConnPool() {</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true"></a>  <span class="co">//根据protocol协议分发，http3暂无</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true"></a>  Http::Http2::allocateConnPool();</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true"></a>  Http::Http1::allocateConnPool();</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true"></a>}</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true"></a></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true"></a><span class="co">// connPool() -&gt; allocateConnPool()</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true"></a>Http::ConnectionPool::Instance*</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true"></a>ClusterManagerImpl::ThreadLocalClusterManagerImpl::ClusterEntry::connPool() {</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true"></a>    ConnPoolsContainer::ConnPools::PoolOptRef pool =</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true"></a>      container.<span class="va">pools_</span>-&gt;getPool(priority, hash_key, [&amp;]() {</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true"></a>        <span class="cf">return</span> <span class="va">parent_</span>.<span class="va">parent_</span>.<span class="va">factory_</span>.allocateConnPool(</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true"></a>            <span class="va">parent_</span>.<span class="va">thread_local_dispatcher_</span>, host, priority, upstream_protocol,</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true"></a>            !upstream_options-&gt;empty() ? upstream_options : <span class="kw">nullptr</span>,</span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true"></a>            have_transport_socket_options ? context-&gt;upstreamTransportSocketOptions() : <span class="kw">nullptr</span>);</span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true"></a>      });</span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true"></a>}</span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true"></a><span class="co">//httpConnPoolForCluster() -&gt; connPool()</span></span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true"></a>Http::ConnectionPool::Instance*</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true"></a>ClusterManagerImpl::httpConnPoolForCluster(<span class="at">const</span> <span class="bu">std::</span>string&amp; cluster, ResourcePriority priority,</span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true"></a>                                           absl::optional&lt;Http::Protocol&gt; protocol,</span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true"></a>                                           LoadBalancerContext* context) {</span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true"></a>  ThreadLocalClusterManagerImpl&amp; cluster_manager = <span class="va">tls_</span>-&gt;getTyped&lt;ThreadLocalClusterManagerImpl&gt;();</span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true"></a></span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true"></a>  <span class="kw">auto</span> entry = cluster_manager.<span class="va">thread_local_clusters_</span>.find(cluster);</span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true"></a>  <span class="cf">if</span> (entry == cluster_manager.<span class="va">thread_local_clusters_</span>.end()) {</span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true"></a>    <span class="cf">return</span> <span class="kw">nullptr</span>;</span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true"></a>  }</span>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true"></a></span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true"></a>  <span class="co">// Select a host and create a connection pool for it if it does not already exist.</span></span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true"></a>  <span class="cf">return</span> entry-&gt;second-&gt;connPool(priority, protocol, context);</span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true"></a>}</span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true"></a></span>
+<span id="cb14-54"><a href="#cb14-54" aria-hidden="true"></a><span class="co">// HttpConnPool 构造函数 -&gt; httpConnPoolForCluster()</span></span>
+<span id="cb14-55"><a href="#cb14-55" aria-hidden="true"></a><span class="kw">class</span> HttpConnPool : <span class="kw">public</span> Router::GenericConnPool, <span class="kw">public</span> Envoy::Http::ConnectionPool::Callbacks {</span>
+<span id="cb14-56"><a href="#cb14-56" aria-hidden="true"></a>  HttpConnPool() {</span>
+<span id="cb14-57"><a href="#cb14-57" aria-hidden="true"></a>      <span class="va">conn_pool_</span> = cm.httpConnPoolForCluster(route_entry.clusterName(), route_entry.priority(),</span>
+<span id="cb14-58"><a href="#cb14-58" aria-hidden="true"></a>                                           downstream_protocol, ctx);</span>
+<span id="cb14-59"><a href="#cb14-59" aria-hidden="true"></a>  }</span>
+<span id="cb14-60"><a href="#cb14-60" aria-hidden="true"></a>}</span>
+<span id="cb14-61"><a href="#cb14-61" aria-hidden="true"></a></span>
+<span id="cb14-62"><a href="#cb14-62" aria-hidden="true"></a><span class="co">//HttpGenericConnPoolFactory::createGenericConnPool() -&gt; 实例化 HttpConnPool</span></span>
+<span id="cb14-63"><a href="#cb14-63" aria-hidden="true"></a>Router::GenericConnPoolPtr HttpGenericConnPoolFactory::createGenericConnPool(</span>
+<span id="cb14-64"><a href="#cb14-64" aria-hidden="true"></a>    Upstream::ClusterManager&amp; cm, <span class="dt">bool</span> is_connect, <span class="at">const</span> Router::RouteEntry&amp; route_entry,</span>
+<span id="cb14-65"><a href="#cb14-65" aria-hidden="true"></a>    absl::optional&lt;Envoy::Http::Protocol&gt; downstream_protocol,</span>
+<span id="cb14-66"><a href="#cb14-66" aria-hidden="true"></a>    Upstream::LoadBalancerContext* ctx) <span class="at">const</span> {</span>
+<span id="cb14-67"><a href="#cb14-67" aria-hidden="true"></a>  <span class="kw">auto</span> ret = <span class="bu">std::</span>make_unique&lt;HttpConnPool&gt;(cm, is_connect, route_entry, downstream_protocol, ctx);</span>
+<span id="cb14-68"><a href="#cb14-68" aria-hidden="true"></a>  <span class="cf">return</span> (ret-&gt;valid() ? <span class="bu">std::</span>move(ret) : <span class="kw">nullptr</span>);</span>
+<span id="cb14-69"><a href="#cb14-69" aria-hidden="true"></a>}</span>
+<span id="cb14-70"><a href="#cb14-70" aria-hidden="true"></a>REGISTER_FACTORY(HttpGenericConnPoolFactory, Router::GenericConnPoolFactory);</span>
+<span id="cb14-71"><a href="#cb14-71" aria-hidden="true"></a></span>
+<span id="cb14-72"><a href="#cb14-72" aria-hidden="true"></a><span class="co">//Filter::createConnPool() -&gt; HttpGenericConnPoolFactory::createGenericConnPool()</span></span>
+<span id="cb14-73"><a href="#cb14-73" aria-hidden="true"></a><span class="bu">std::</span>unique_ptr&lt;GenericConnPool&gt; Filter::createConnPool() {</span>
+<span id="cb14-74"><a href="#cb14-74" aria-hidden="true"></a>  factory = &amp;Envoy::Config::Utility::getAndCheckFactory&lt;GenericConnPoolFactory&gt;(</span>
+<span id="cb14-75"><a href="#cb14-75" aria-hidden="true"></a>        <span class="va">cluster_</span>-&gt;upstreamConfig().value()); <span class="co">//GenericConnPoolFactory 上面注册</span></span>
+<span id="cb14-76"><a href="#cb14-76" aria-hidden="true"></a>  <span class="cf">return</span> factory-&gt;createGenericConnPool(<span class="va">config_</span>.<span class="va">cm_</span>, should_tcp_proxy, *<span class="va">route_entry_</span>,</span>
+<span id="cb14-77"><a href="#cb14-77" aria-hidden="true"></a>                                        <span class="va">callbacks_</span>-&gt;streamInfo().protocol(), <span class="kw">this</span>);</span>
+<span id="cb14-78"><a href="#cb14-78" aria-hidden="true"></a>}</span>
+<span id="cb14-79"><a href="#cb14-79" aria-hidden="true"></a><span class="co">//Filter::decodeHeaders() -&gt; Filter::createConnPool()</span></span>
+<span id="cb14-80"><a href="#cb14-80" aria-hidden="true"></a>Http::FilterHeadersStatus Filter::decodeHeaders(Http::RequestHeaderMap&amp; headers, <span class="dt">bool</span> end_stream) {</span>
+<span id="cb14-81"><a href="#cb14-81" aria-hidden="true"></a>  <span class="co">//创建</span></span>
+<span id="cb14-82"><a href="#cb14-82" aria-hidden="true"></a>  <span class="bu">std::</span>unique_ptr&lt;GenericConnPool&gt; generic_conn_pool = createConnPool();\</span>
+<span id="cb14-83"><a href="#cb14-83" aria-hidden="true"></a>  <span class="co">//连接处理上行数据</span></span>
+<span id="cb14-84"><a href="#cb14-84" aria-hidden="true"></a>    UpstreamRequestPtr upstream_request =</span>
+<span id="cb14-85"><a href="#cb14-85" aria-hidden="true"></a>      <span class="bu">std::</span>make_unique&lt;UpstreamRequest&gt;(*<span class="kw">this</span>, <span class="bu">std::</span>move(generic_conn_pool));</span>
+<span id="cb14-86"><a href="#cb14-86" aria-hidden="true"></a>  upstream_request-&gt;moveIntoList(<span class="bu">std::</span>move(upstream_request), <span class="va">upstream_requests_</span>);</span>
+<span id="cb14-87"><a href="#cb14-87" aria-hidden="true"></a>  <span class="va">upstream_requests_</span>.front()-&gt;encodeHeaders(end_stream);</span>
+<span id="cb14-88"><a href="#cb14-88" aria-hidden="true"></a>}</span>
+<span id="cb14-89"><a href="#cb14-89" aria-hidden="true"></a><span class="co">//重试的时候也要使用 void Filter::doRetry(){}</span></span>
+<span id="cb14-90"><a href="#cb14-90" aria-hidden="true"></a></span>
+<span id="cb14-91"><a href="#cb14-91" aria-hidden="true"></a><span class="co">//HTTP filter</span></span>
+<span id="cb14-92"><a href="#cb14-92" aria-hidden="true"></a><span class="kw">class</span> StreamFilterBase {};</span>
+<span id="cb14-93"><a href="#cb14-93" aria-hidden="true"></a><span class="kw">class</span> StreamDecoderFilter : <span class="kw">public</span> StreamFilterBase {};</span>
+<span id="cb14-94"><a href="#cb14-94" aria-hidden="true"></a><span class="kw">class</span> StreamFilter : <span class="kw">public</span> <span class="kw">virtual</span> StreamDecoderFilter, <span class="kw">public</span> <span class="kw">virtual</span> StreamEncoderFilter {};</span>
+<span id="cb14-95"><a href="#cb14-95" aria-hidden="true"></a><span class="kw">class</span> Filter : <span class="kw">public</span> Http::StreamFilter, <span class="kw">public</span> AccessLog::Instance {}</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="co">//它作为 MainCommonBase 成员变量，实例化时初始化，参见main</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a><span class="bu">std::</span>unique_ptr&lt;Server::InstanceImpl&gt; <span class="va">server_</span>;</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a><span class="co">//实例化时-&gt;initialize()</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a>InstanceImpl::InstanceImpl() {</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true"></a>    initialize(options, <span class="bu">std::</span>move(local_address), component_factory, hooks);</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true"></a>}</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true"></a><span class="co">//server/server.cc 实例化 ProdClusterManagerFactory</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true"></a><span class="dt">void</span> InstanceImpl::initialize(<span class="at">const</span> Options&amp; options,</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true"></a>                              Network::Address::InstanceConstSharedPtr local_address,</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true"></a>                              ComponentFactory&amp; component_factory, ListenerHooks&amp; hooks) {</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true"></a>  <span class="va">cluster_manager_factory_</span> = <span class="bu">std::</span>make_unique&lt;Upstream::ProdClusterManagerFactory&gt;(</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true"></a>      *<span class="va">admin_</span>, Runtime::LoaderSingleton::get(), <span class="va">stats_store_</span>, <span class="va">thread_local_</span>, *<span class="va">random_generator_</span>,</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true"></a>      <span class="va">dns_resolver_</span>, *<span class="va">ssl_context_manager_</span>, *<span class="va">dispatcher_</span>, *<span class="va">local_info_</span>, *<span class="va">secret_manager_</span>,</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true"></a>      messageValidationContext(), *<span class="va">api_</span>, <span class="va">http_context_</span>, <span class="va">grpc_context_</span>, <span class="va">access_log_manager_</span>,</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true"></a>      *<span class="va">singleton_manager_</span>);</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true"></a>}</span></code></pre></div>
+<h2 id="wasm">WASM</h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="kw">class</span> Context : <span class="kw">public</span> proxy_wasm::ContextBase,</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a>                <span class="kw">public</span> Logger::Loggable&lt;Logger::Id::wasm&gt;,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a>                <span class="kw">public</span> AccessLog::Instance,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a>                <span class="kw">public</span> Http::StreamFilter,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a>                <span class="kw">public</span> Network::ConnectionCallbacks,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a>                <span class="kw">public</span> Network::Filter,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a>                <span class="kw">public</span> google::api::expr::runtime::BaseActivation,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a>                <span class="kw">public</span> <span class="bu">std::</span>enable_shared_from_this&lt;Context&gt; {}</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true"></a><span class="co">//创建 Context</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true"></a>createFilter()  {</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true"></a>  <span class="bu">std::</span>make_shared&lt;Context&gt;(wasm, <span class="va">root_context_id_</span>, <span class="va">plugin_</span>);</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true"></a>}</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true"></a><span class="co">//工厂调用</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true"></a>Http::FilterFactoryCb WasmFilterConfig::createFilterFactoryFromProtoTyped(</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true"></a>    <span class="at">const</span> envoy::extensions::filters::http::wasm::v3::Wasm&amp; proto_config, <span class="at">const</span> <span class="bu">std::</span>string&amp;,</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true"></a>    Server::Configuration::FactoryContext&amp; context) {</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true"></a>  <span class="kw">auto</span> filter_config = <span class="bu">std::</span>make_shared&lt;FilterConfig&gt;(proto_config, context);</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true"></a>  <span class="cf">return</span> [filter_config](Http::FilterChainFactoryCallbacks&amp; callbacks) -&gt; <span class="dt">void</span> {</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true"></a>    <span class="kw">auto</span> filter = filter_config-&gt;createFilter();</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true"></a>    <span class="cf">if</span> (!filter) { <span class="co">// Fail open</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true"></a>      <span class="cf">return</span>;</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true"></a>    }</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true"></a>    callbacks.addStreamFilter(filter);</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true"></a>    callbacks.addAccessLogHandler(filter);</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true"></a>  };</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true"></a>}</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true"></a></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true"></a><span class="co">//add</span></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true"></a>    <span class="dt">void</span> addStreamFilter(StreamFilterSharedPtr filter) <span class="kw">override</span> {</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true"></a>      addStreamDecoderFilterWorker(filter, <span class="kw">true</span>);</span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true"></a>      addStreamEncoderFilterWorker(filter, <span class="kw">true</span>);</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true"></a>    }</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true"></a><span class="co">//会存储在一个链表中，然后再遍历链表执行插件</span></span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true"></a>插件会继承这个Context，然后执行方法重载。</span></code></pre></div>
+<p>EnvoyFilter协议</p>
+<h3 id="envoyfilter">EnvoyFilter</h3>
+<div class="sourceCode" id="cb17"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> networking.istio.io/v1alpha3</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> EnvoyFilter</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> demo-filter</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true"></a><span class="at">  </span><span class="fu">namespace</span><span class="kw">:</span><span class="at"> istio-system</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true"></a><span class="at">  </span><span class="fu">configPatches</span><span class="kw">:</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">applyTo</span><span class="kw">:</span><span class="at"> HTTP_FILTER</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true"></a><span class="at">    </span><span class="fu">match</span><span class="kw">:</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true"></a><span class="at">      </span><span class="fu">context</span><span class="kw">:</span><span class="at"> GATEWAY</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true"></a><span class="at">      </span><span class="fu">listener</span><span class="kw">:</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true"></a><span class="at">        </span><span class="fu">filterChain</span><span class="kw">:</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true"></a><span class="at">          </span><span class="fu">filter</span><span class="kw">:</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true"></a><span class="at">            </span><span class="fu">name</span><span class="kw">:</span><span class="at"> envoy.http_connection_manager</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true"></a><span class="at">            </span><span class="fu">subFilter</span><span class="kw">:</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true"></a><span class="at">              </span><span class="fu">name</span><span class="kw">:</span><span class="at"> envoy.router</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true"></a><span class="at">    </span><span class="fu">patch</span><span class="kw">:</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true"></a><span class="at">      </span><span class="fu">operation</span><span class="kw">:</span><span class="at"> INSERT_BEFORE</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true"></a><span class="at">      </span><span class="fu">value</span><span class="kw">:</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true"></a><span class="at">        </span><span class="fu">typed_config</span><span class="kw">:</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true"></a><span class="at">          </span><span class="fu">&#39;@type&#39;</span><span class="kw">:</span><span class="at"> type.googleapis.com/udpa.type.v1.TypedStruct</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true"></a><span class="at">          </span><span class="fu">type_url</span><span class="kw">:</span><span class="at"> type.googleapis.com/envoy.extensions.filters.http.wasm.v3.Wasm</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true"></a><span class="at">          </span><span class="fu">value</span><span class="kw">:</span><span class="co"> # WasmService</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true"></a><span class="at">            </span><span class="fu">config</span><span class="kw">:</span><span class="co"> # PluginConfig</span></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true"></a><span class="at">              </span><span class="fu">name</span><span class="kw">:</span><span class="at"> demofilter</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true"></a><span class="at">              </span><span class="fu">root_id</span><span class="kw">:</span><span class="at"> demofilter</span></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true"></a><span class="at">              </span><span class="fu">vm_config</span><span class="kw">:</span><span class="co"> # VmConfig</span></span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true"></a><span class="at">                </span><span class="fu">code</span><span class="kw">:</span><span class="co"> # AsyncDataSource</span></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true"></a><span class="at">                  </span><span class="fu">local</span><span class="kw">:</span><span class="co"> # DataSource</span></span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true"></a><span class="at">                    </span><span class="fu">filename</span><span class="kw">:</span><span class="at"> /data/wasm-filter/_wasm_demo.wasm</span></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true"></a><span class="at">                </span><span class="fu">runtime</span><span class="kw">:</span><span class="at"> envoy.wasm.runtime.v8</span></span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true"></a><span class="at">                </span><span class="fu">vm_id</span><span class="kw">:</span><span class="at"> demofilter</span></span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true"></a><span class="at">        </span><span class="fu">name</span><span class="kw">:</span><span class="at"> envoy.filters.http.wasm</span></span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true"></a><span class="at">  </span><span class="fu">workloadSelector</span><span class="kw">:</span></span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true"></a><span class="at">    </span><span class="fu">labels</span><span class="kw">:</span></span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true"></a><span class="at">      </span><span class="fu">app</span><span class="kw">:</span><span class="at"> istio-ingressgateway</span></span></code></pre></div>
+<h3 id="crd">CRD</h3>
+<p>crd的完整定义：</p>
+<p>envoyfilters.networking.istio.io</p>
+<h3 id="proto">proto</h3>
+<div class="sourceCode" id="cb18"><pre class="sourceCode protobuf"><code class="sourceCode protobuf"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a>syntax = <span class="st">&quot;proto3&quot;</span>;</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true"></a><span class="kw">package</span> envoy.<span class="kw">extensions</span>.wasm.v3;</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true"></a><span class="kw">import</span> <span class="st">&quot;envoy/config/core/v3/base.proto&quot;</span>;</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true"></a><span class="kw">import</span> <span class="st">&quot;google/protobuf/any.proto&quot;</span>;</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true"></a><span class="kw">import</span> <span class="st">&quot;udpa/annotations/status.proto&quot;</span>;</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true"></a><span class="kw">import</span> <span class="st">&quot;udpa/annotations/versioning.proto&quot;</span>;</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true"></a><span class="kw">import</span> <span class="st">&quot;validate/validate.proto&quot;</span>;</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true"></a><span class="kw">option</span> java_package = <span class="st">&quot;io.envoyproxy.envoy.extensions.wasm.v3&quot;</span>;</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true"></a><span class="kw">option</span> java_outer_classname = <span class="st">&quot;WasmProto&quot;</span>;</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true"></a><span class="kw">option</span> java_multiple_files = true;</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true"></a><span class="kw">option</span> (udpa.annotations.file_status).package_version_status = ACTIVE;</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true"></a></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true"></a><span class="co">// [#protodoc-title: Wasm service]</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true"></a></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true"></a><span class="co">// Configuration for a Wasm VM.</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true"></a><span class="co">// [#next-free-field: 6]</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true"></a><span class="kw">message</span> VmConfig {</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true"></a>  <span class="co">// An ID which will be used along with a hash of the wasm code (or the name of the registered Null</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true"></a>  <span class="co">// VM plugin) to determine which VM will be used for the plugin. All plugins which use the same</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true"></a>  <span class="co">// *vm_id* and code will use the same VM. May be left blank. Sharing a VM between plugins can</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true"></a>  <span class="co">// reduce memory utilization and make sharing of data easier which may have security implications.</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true"></a>  <span class="co">// See ref: &quot;TODO: add ref&quot; for details.</span></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true"></a>  <span class="dt">string</span> vm_id = <span class="dv">1</span>;</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true"></a></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true"></a>  <span class="co">// The Wasm runtime type (either &quot;v8&quot; or &quot;null&quot; for code compiled into Envoy).</span></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true"></a>  <span class="dt">string</span> runtime = <span class="dv">2</span> [(validate.rules).<span class="dt">string</span> = {min_bytes: <span class="dv">1</span>}];</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true"></a></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true"></a>  <span class="co">// The Wasm code that Envoy will execute.</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true"></a>  config.core.v3.AsyncDataSource code = <span class="dv">3</span>;</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true"></a></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true"></a>  <span class="co">// The Wasm configuration used in initialization of a new VM (proxy_on_start).</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true"></a>  google.protobuf.Any configuration = <span class="dv">4</span>;</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true"></a></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true"></a>  <span class="co">// Allow the wasm file to include pre-compiled code on VMs which support it.</span></span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true"></a>  <span class="co">// Warning: this should only be enable for trusted sources as the precompiled code is not</span></span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true"></a>  <span class="co">// verified.</span></span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true"></a>  <span class="dt">bool</span> allow_precompiled = <span class="dv">5</span>;</span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true"></a>}</span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true"></a></span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true"></a><span class="co">// Base Configuration for Wasm Plugins e.g. filters and services.</span></span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true"></a><span class="co">// [#next-free-field: 6]</span></span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true"></a><span class="kw">message</span> PluginConfig {</span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true"></a>  <span class="co">// A unique name for a filters/services in a VM for use in identifying the filter/service if</span></span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true"></a>  <span class="co">// multiple filters/services are handled by the same *vm_id* and *group_name* and for</span></span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true"></a>  <span class="co">// logging/debugging.</span></span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true"></a>  <span class="dt">string</span> name = <span class="dv">1</span>;</span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true"></a></span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true"></a>  <span class="co">// A unique ID for a set of filters/services in a VM which will share a RootContext and Contexts</span></span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true"></a>  <span class="co">// if applicable (e.g. an Wasm HttpFilter and an Wasm AccessLog). If left blank, all</span></span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true"></a>  <span class="co">// filters/services with a blank root_id with the same *vm_id* will share Context(s).</span></span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true"></a>  <span class="dt">string</span> root_id = <span class="dv">2</span>;</span>
+<span id="cb18-57"><a href="#cb18-57" aria-hidden="true"></a></span>
+<span id="cb18-58"><a href="#cb18-58" aria-hidden="true"></a>  <span class="co">// Configuration for finding or starting VM.</span></span>
+<span id="cb18-59"><a href="#cb18-59" aria-hidden="true"></a>  oneof vm {</span>
+<span id="cb18-60"><a href="#cb18-60" aria-hidden="true"></a>    VmConfig vm_config = <span class="dv">3</span>;</span>
+<span id="cb18-61"><a href="#cb18-61" aria-hidden="true"></a>    <span class="co">// </span><span class="al">TODO</span><span class="co">: add referential VM configurations.</span></span>
+<span id="cb18-62"><a href="#cb18-62" aria-hidden="true"></a>  }</span>
+<span id="cb18-63"><a href="#cb18-63" aria-hidden="true"></a></span>
+<span id="cb18-64"><a href="#cb18-64" aria-hidden="true"></a>  <span class="co">// Filter/service configuration used to configure or reconfigure a plugin</span></span>
+<span id="cb18-65"><a href="#cb18-65" aria-hidden="true"></a>  <span class="co">// (proxy_on_configuration).</span></span>
+<span id="cb18-66"><a href="#cb18-66" aria-hidden="true"></a>  google.protobuf.Any configuration = <span class="dv">4</span>;</span>
+<span id="cb18-67"><a href="#cb18-67" aria-hidden="true"></a></span>
+<span id="cb18-68"><a href="#cb18-68" aria-hidden="true"></a>  <span class="co">// If there is a fatal error on the VM (e.g. exception, abort(), on_start or on_configure return false),</span></span>
+<span id="cb18-69"><a href="#cb18-69" aria-hidden="true"></a>  <span class="co">// then all plugins associated with the VM will either fail closed (by default), e.g. by returning an HTTP 503 error,</span></span>
+<span id="cb18-70"><a href="#cb18-70" aria-hidden="true"></a>  <span class="co">// or fail open (if &#39;fail_open&#39; is set to true) by bypassing the filter. Note: when on_start or on_configure return false</span></span>
+<span id="cb18-71"><a href="#cb18-71" aria-hidden="true"></a>  <span class="co">// during xDS updates the xDS configuration will be rejected and when on_start or on_configuration return false on initial</span></span>
+<span id="cb18-72"><a href="#cb18-72" aria-hidden="true"></a>  <span class="co">// startup the proxy will not start.</span></span>
+<span id="cb18-73"><a href="#cb18-73" aria-hidden="true"></a>  <span class="dt">bool</span> fail_open = <span class="dv">5</span>;</span>
+<span id="cb18-74"><a href="#cb18-74" aria-hidden="true"></a>}</span>
+<span id="cb18-75"><a href="#cb18-75" aria-hidden="true"></a></span>
+<span id="cb18-76"><a href="#cb18-76" aria-hidden="true"></a><span class="co">// WasmService is configured as a built-in *envoy.wasm_service* :ref:`ServiceConfig</span></span>
+<span id="cb18-77"><a href="#cb18-77" aria-hidden="true"></a><span class="co">// &lt;envoy_api_msg_extensions.wasm.v3.WasmService&gt;`. This opaque configuration will be used to</span></span>
+<span id="cb18-78"><a href="#cb18-78" aria-hidden="true"></a><span class="co">// create a Wasm Service.</span></span>
+<span id="cb18-79"><a href="#cb18-79" aria-hidden="true"></a><span class="kw">message</span> WasmService {</span>
+<span id="cb18-80"><a href="#cb18-80" aria-hidden="true"></a>  <span class="co">// General plugin configuration.</span></span>
+<span id="cb18-81"><a href="#cb18-81" aria-hidden="true"></a>  PluginConfig config = <span class="dv">1</span>;</span>
+<span id="cb18-82"><a href="#cb18-82" aria-hidden="true"></a></span>
+<span id="cb18-83"><a href="#cb18-83" aria-hidden="true"></a>  <span class="co">// If true, create a single VM rather than creating one VM per worker. Such a singleton can</span></span>
+<span id="cb18-84"><a href="#cb18-84" aria-hidden="true"></a>  <span class="co">// not be used with filters.</span></span>
+<span id="cb18-85"><a href="#cb18-85" aria-hidden="true"></a>  <span class="dt">bool</span> singleton = <span class="dv">2</span>;</span>
+<span id="cb18-86"><a href="#cb18-86" aria-hidden="true"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode protobuf"><code class="sourceCode protobuf"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="co">// Async data source which support async data fetch.</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a><span class="kw">message</span> AsyncDataSource {</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a>  <span class="kw">option</span> (udpa.annotations.versioning).previous_message_type = <span class="st">&quot;envoy.api.v2.core.AsyncDataSource&quot;</span>;</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true"></a>  oneof specifier {</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true"></a>    <span class="kw">option</span> (validate.<span class="kw">required</span>) = true;</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true"></a>    <span class="co">// Local async data source.</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true"></a>    DataSource local = <span class="dv">1</span>;</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true"></a>    <span class="co">// Remote async data source.</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true"></a>    RemoteDataSource remote = <span class="dv">2</span>;</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true"></a>  }</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true"></a>}</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true"></a></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true"></a><span class="co">// Data source consisting of either a file or an inline value.</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true"></a><span class="kw">message</span> DataSource {</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true"></a>  <span class="kw">option</span> (udpa.annotations.versioning).previous_message_type = <span class="st">&quot;envoy.api.v2.core.DataSource&quot;</span>;</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true"></a></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true"></a>  oneof specifier {</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true"></a>    <span class="kw">option</span> (validate.<span class="kw">required</span>) = true;</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true"></a></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true"></a>    <span class="co">// Local filesystem data source.</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true"></a>    <span class="dt">string</span> filename = <span class="dv">1</span> [(validate.rules).<span class="dt">string</span> = {min_bytes: <span class="dv">1</span>}];</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true"></a></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true"></a>    <span class="co">// Bytes inlined in the configuration.</span></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true"></a>    <span class="dt">bytes</span> inline_bytes = <span class="dv">2</span> [(validate.rules).<span class="dt">bytes</span> = {min_len: <span class="dv">1</span>}];</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true"></a></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true"></a>    <span class="co">// String inlined in the configuration.</span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true"></a>    <span class="dt">string</span> inline_string = <span class="dv">3</span> [(validate.rules).<span class="dt">string</span> = {min_bytes: <span class="dv">1</span>}];</span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true"></a>  }</span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true"></a>}</span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true"></a></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true"></a><span class="co">// The message specifies how to fetch data from remote and how to verify it.</span></span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true"></a><span class="kw">message</span> RemoteDataSource {</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true"></a>  <span class="kw">option</span> (udpa.annotations.versioning).previous_message_type = <span class="st">&quot;envoy.api.v2.core.RemoteDataSource&quot;</span>;</span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true"></a></span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true"></a>  <span class="co">// The HTTP URI to fetch the remote data.</span></span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true"></a>  HttpUri http_uri = <span class="dv">1</span> [(validate.rules).<span class="kw">message</span> = {<span class="kw">required</span>: true}];</span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true"></a></span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true"></a>  <span class="co">// SHA256 string for verifying data.</span></span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true"></a>  <span class="dt">string</span> sha256 = <span class="dv">2</span> [(validate.rules).<span class="dt">string</span> = {min_bytes: <span class="dv">1</span>}];</span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true"></a></span>
+<span id="cb19-44"><a href="#cb19-44" aria-hidden="true"></a>  <span class="co">// Retry policy for fetching remote data.</span></span>
+<span id="cb19-45"><a href="#cb19-45" aria-hidden="true"></a>  RetryPolicy retry_policy = <span class="dv">3</span>;</span>
+<span id="cb19-46"><a href="#cb19-46" aria-hidden="true"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode protobuf"><code class="sourceCode protobuf"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="co">// Message type for extension configuration.</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a><span class="co">// [#next-major-version: revisit all existing typed_config that doesn&#39;t use this wrapper.].</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true"></a><span class="kw">message</span> TypedExtensionConfig {</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true"></a>  <span class="kw">option</span> (udpa.annotations.versioning).previous_message_type =</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true"></a>      <span class="st">&quot;envoy.config.core.v3.TypedExtensionConfig&quot;</span>;</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true"></a>  <span class="co">// The name of an extension. This is not used to select the extension, instead</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true"></a>  <span class="co">// it serves the role of an opaque identifier.</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true"></a>  <span class="dt">string</span> name = <span class="dv">1</span> [(validate.rules).<span class="dt">string</span> = {min_len: <span class="dv">1</span>}];</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true"></a>  <span class="co">// The typed config for the extension. The type URL will be used to identify</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true"></a>  <span class="co">// the extension. In the case that the type URL is *udpa.type.v1.TypedStruct*,</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true"></a>  <span class="co">// the inner type URL of *TypedStruct* will be utilized. See the</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true"></a>  <span class="co">// :ref:`extension configuration overview</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true"></a>  <span class="co">// &lt;config_overview_extension_configuration&gt;` for further details.</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true"></a>  google.protobuf.Any typed_config = <span class="dv">2</span> [(validate.rules).any = {<span class="kw">required</span>: true}];</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true"></a>}</span></code></pre></div>
+<p>初始化链路</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true"></a>   HttpConnectionManagerConfig::HttpConnectionManagerConfig() {</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true"></a>       <span class="at">const</span> <span class="kw">auto</span>&amp; filters = config.http_filters(); <span class="co">//config:envoy::extensions::filters::network::http_connection_manager::v3::HttpConnectionManager</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true"></a>  <span class="cf">for</span> (<span class="dt">int32_t</span> i = <span class="dv">0</span>; i &lt; filters.size(); i++) {</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true"></a>    processFilter(filters[i], i, <span class="st">&quot;http&quot;</span>, <span class="va">filter_factories_</span>, <span class="st">&quot;http&quot;</span>, i == filters.size() - <span class="dv">1</span>);</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true"></a>  }</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true"></a>   }</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true"></a><span class="dt">void</span> HttpConnectionManagerConfig::processFilter(...) {</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true"></a>     Http::FilterFactoryCb callback =</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true"></a>      factory.createFilterFactoryFromProto(*message, <span class="va">stats_prefix_</span>, <span class="va">context_</span>);</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true"></a>     </span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true"></a>      filter_factories.push_back(callback);<span class="co">//std::list&lt;Http::FilterFactoryCb&gt;&amp;</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true"></a>   }</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true"></a>Network::FilterFactoryC createFilterFactoryFromProto(<span class="at">const</span> Protobuf::Message&amp; proto_config,</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true"></a>                               Server::Configuration::FactoryContext&amp; context) <span class="kw">override</span> {</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true"></a>    <span class="cf">return</span> createFilterFactoryFromProtoTyped(MessageUtil::downcastAndValidate&lt;<span class="at">const</span> ConfigProto&amp;&gt;(</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true"></a>                                                 proto_config, context.messageValidationVisitor()),</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true"></a>                                             context);</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true"></a>  }</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true"></a></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true"></a>Http::FilterFactoryCb WasmFilterConfig::createFilterFactoryFromProtoTyped(</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true"></a>    <span class="at">const</span> envoy::extensions::filters::http::wasm::v3::Wasm&amp; proto_config, <span class="at">const</span> <span class="bu">std::</span>string&amp;,</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true"></a>    Server::Configuration::FactoryContext&amp; context) {</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true"></a>  <span class="kw">auto</span> filter_config = <span class="bu">std::</span>make_shared&lt;FilterConfig&gt;(proto_config, context);</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true"></a>  <span class="cf">return</span> [filter_config](Http::FilterChainFactoryCallbacks&amp; callbacks) -&gt; <span class="dt">void</span> {</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true"></a>    <span class="kw">auto</span> filter = filter_config-&gt;createFilter();</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true"></a>    <span class="cf">if</span> (!filter) { <span class="co">// Fail open</span></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true"></a>      <span class="cf">return</span>;</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true"></a>    }</span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true"></a>    callbacks.addStreamFilter(filter);</span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true"></a>    callbacks.addAccessLogHandler(filter);</span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true"></a>  };</span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true"></a>}</span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true"></a></span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true"></a><span class="co">/**</span></span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true"></a><span class="co"> * Static registration for the Wasm filter. </span><span class="an">@see</span><span class="co"> RegisterFactory.</span></span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true"></a><span class="co"> */</span></span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true"></a>REGISTER_FACTORY(WasmFilterConfig, Server::Configuration::NamedHttpFilterConfigFactory);</span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true"></a></span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true"></a></span>
+<span id="cb21-40"><a href="#cb21-40" aria-hidden="true"></a>FilterConfig::FilterConfig(<span class="at">const</span> envoy::extensions::filters::http::wasm::v3::Wasm&amp; config,</span>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true"></a>                           Server::Configuration::FactoryContext&amp; context{}</span>
+<span id="cb21-42"><a href="#cb21-42" aria-hidden="true"></a><span class="dt">void</span> createWasm(){}</span>
+<span id="cb21-43"><a href="#cb21-43" aria-hidden="true"></a>                          </span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="dt">void</span> HttpConnectionManagerConfig::processFilter(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a>    <span class="at">const</span> envoy::extensions::filters::network::http_connection_manager::v3::HttpFilter&amp;</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true"></a>        proto_config,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true"></a>    <span class="dt">int</span> i, absl::string_view prefix, <span class="bu">std::</span>list&lt;Http::FilterFactoryCb&gt;&amp; filter_factories,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true"></a>    <span class="at">const</span> <span class="dt">char</span>* <span class="dt">filter_chain_type</span>, <span class="dt">bool</span> last_filter_in_current_config) {</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true"></a>  ENVOY_LOG(debug, <span class="st">&quot;    </span><span class="sc">{}</span><span class="st"> filter #</span><span class="sc">{}</span><span class="st">&quot;</span>, prefix, i);</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true"></a>  ENVOY_LOG(debug, <span class="st">&quot;      name: </span><span class="sc">{}</span><span class="st">&quot;</span>, proto_config.name());</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true"></a>  ENVOY_LOG(debug, <span class="st">&quot;    config: </span><span class="sc">{}</span><span class="st">&quot;</span>,</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true"></a>            MessageUtil::getJsonStringFromMessage(</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true"></a>                proto_config.has_typed_config()</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true"></a>                    ? <span class="kw">static_cast</span>&lt;<span class="at">const</span> Protobuf::Message&amp;&gt;(proto_config.typed_config())</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true"></a>                    : <span class="kw">static_cast</span>&lt;<span class="at">const</span> Protobuf::Message&amp;&gt;(</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true"></a>                          proto_config.hidden_envoy_deprecated_config()),</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true"></a>                <span class="kw">true</span>));</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true"></a></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true"></a>  <span class="co">// Now see if there is a factory that will accept the config.</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true"></a>  <span class="kw">auto</span>&amp; factory =</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true"></a>      Config::Utility::getAndCheckFactory&lt;Server::Configuration::NamedHttpFilterConfigFactory&gt;(</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true"></a>          proto_config);</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true"></a>  ProtobufTypes::MessagePtr message = Config::Utility::translateToFactoryConfig(</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true"></a>      proto_config, <span class="va">context_</span>.messageValidationVisitor(), factory);</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true"></a>  Http::FilterFactoryCb callback =</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true"></a>      factory.createFilterFactoryFromProto(*message, <span class="va">stats_prefix_</span>, <span class="va">context_</span>);</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true"></a>  <span class="dt">bool</span> is_terminal = factory.isTerminalFilter();</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true"></a>  Config::Utility::validateTerminalFilters(proto_config.name(), factory.name(), <span class="dt">filter_chain_type</span>,</span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true"></a>                                           is_terminal, last_filter_in_current_config);</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true"></a>  filter_factories.push_back(callback);</span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true"></a>}</span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true"></a></span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true"></a><span class="co">//getAndCheckFactory </span></span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true"></a>  <span class="kw">template</span> &lt;<span class="kw">class</span> Factory, <span class="kw">class</span> ProtoMessage&gt;</span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true"></a>  <span class="at">static</span> Factory&amp; getAndCheckFactory(<span class="at">const</span> ProtoMessage&amp; message) {</span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true"></a>    <span class="at">const</span> ProtobufWkt::Any&amp; typed_config = message.typed_config();</span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true"></a>    <span class="at">static</span> <span class="at">const</span> <span class="bu">std::</span>string&amp; <span class="dt">typed_struct_type</span> =</span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true"></a>        udpa::type::v1::TypedStruct::default_instance().GetDescriptor()-&gt;full_name();</span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true"></a></span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true"></a>    <span class="cf">if</span> (!typed_config.type_url().empty()) {</span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true"></a>      <span class="co">// Unpack methods will only use the fully qualified type name after the last &#39;/&#39;.</span></span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true"></a>      <span class="co">// https://github.com/protocolbuffers/protobuf/blob/3.6.x/src/google/protobuf/any.proto#L87</span></span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true"></a>      <span class="kw">auto</span> type = <span class="bu">std::</span>string(TypeUtil::typeUrlToDescriptorFullName(typed_config.type_url()));</span>
+<span id="cb22-41"><a href="#cb22-41" aria-hidden="true"></a>      <span class="cf">if</span> (type == <span class="dt">typed_struct_type</span>) {</span>
+<span id="cb22-42"><a href="#cb22-42" aria-hidden="true"></a>        udpa::type::v1::TypedStruct typed_struct;</span>
+<span id="cb22-43"><a href="#cb22-43" aria-hidden="true"></a>        MessageUtil::unpackTo(typed_config, typed_struct);</span>
+<span id="cb22-44"><a href="#cb22-44" aria-hidden="true"></a>        <span class="co">// Not handling nested structs or typed structs in typed structs</span></span>
+<span id="cb22-45"><a href="#cb22-45" aria-hidden="true"></a>        type = <span class="bu">std::</span>string(TypeUtil::typeUrlToDescriptorFullName(typed_struct.type_url()));</span>
+<span id="cb22-46"><a href="#cb22-46" aria-hidden="true"></a>      }</span>
+<span id="cb22-47"><a href="#cb22-47" aria-hidden="true"></a>      Factory* factory = Registry::FactoryRegistry&lt;Factory&gt;::getFactoryByType(type);</span>
+<span id="cb22-48"><a href="#cb22-48" aria-hidden="true"></a>      <span class="cf">if</span> (factory != <span class="kw">nullptr</span>) {</span>
+<span id="cb22-49"><a href="#cb22-49" aria-hidden="true"></a>        <span class="cf">return</span> *factory;</span>
+<span id="cb22-50"><a href="#cb22-50" aria-hidden="true"></a>      }</span>
+<span id="cb22-51"><a href="#cb22-51" aria-hidden="true"></a>    }</span>
+<span id="cb22-52"><a href="#cb22-52" aria-hidden="true"></a></span>
+<span id="cb22-53"><a href="#cb22-53" aria-hidden="true"></a>    <span class="cf">return</span> Utility::getAndCheckFactoryByName&lt;Factory&gt;(message.name());</span>
+<span id="cb22-54"><a href="#cb22-54" aria-hidden="true"></a>  }</span>
+<span id="cb22-55"><a href="#cb22-55" aria-hidden="true"></a></span>
+<span id="cb22-56"><a href="#cb22-56" aria-hidden="true"></a></span>
+<span id="cb22-57"><a href="#cb22-57" aria-hidden="true"></a><span class="kw">class</span> WasmFilterConfig</span>
+<span id="cb22-58"><a href="#cb22-58" aria-hidden="true"></a>    : <span class="kw">public</span> Common::FactoryBase&lt;envoy::extensions::filters::network::wasm::v3::Wasm&gt; {</span>
+<span id="cb22-59"><a href="#cb22-59" aria-hidden="true"></a>      <span class="co">//工厂初始化为 envoy::extensions::filters::network::wasm::v3::Wasm</span></span>
+<span id="cb22-60"><a href="#cb22-60" aria-hidden="true"></a><span class="kw">public</span>:</span>
+<span id="cb22-61"><a href="#cb22-61" aria-hidden="true"></a>      <span class="co">//构造函数传入  WebAssembly filter名称存入 FactoryBase 的name_成员变量</span></span>
+<span id="cb22-62"><a href="#cb22-62" aria-hidden="true"></a>  WasmFilterConfig() : FactoryBase(NetworkFilterNames::get().Wasm) {}</span>
+<span id="cb22-63"><a href="#cb22-63" aria-hidden="true"></a></span>
+<span id="cb22-64"><a href="#cb22-64" aria-hidden="true"></a><span class="kw">private</span>:</span>
+<span id="cb22-65"><a href="#cb22-65" aria-hidden="true"></a>  Network::FilterFactoryCb createFilterFactoryFromProtoTyped(</span>
+<span id="cb22-66"><a href="#cb22-66" aria-hidden="true"></a>      <span class="at">const</span> envoy::extensions::filters::network::wasm::v3::Wasm&amp; proto_config,</span>
+<span id="cb22-67"><a href="#cb22-67" aria-hidden="true"></a>      Server::Configuration::FactoryContext&amp; context) <span class="kw">override</span>;</span>
+<span id="cb22-68"><a href="#cb22-68" aria-hidden="true"></a>};</span>
+<span id="cb22-69"><a href="#cb22-69" aria-hidden="true"></a></span>
+<span id="cb22-70"><a href="#cb22-70" aria-hidden="true"></a><span class="co">//WasmFilterConfig() : FactoryBase(NetworkFilterNames::get().Wasm) {}</span></span>
+<span id="cb22-71"><a href="#cb22-71" aria-hidden="true"></a><span class="kw">class</span> NetworkFilterNameValues {</span>
+<span id="cb22-72"><a href="#cb22-72" aria-hidden="true"></a><span class="kw">public</span>:</span>
+<span id="cb22-73"><a href="#cb22-73" aria-hidden="true"></a>  <span class="co">// WebAssembly filter</span></span>
+<span id="cb22-74"><a href="#cb22-74" aria-hidden="true"></a>  <span class="at">const</span> <span class="bu">std::</span>string Wasm = <span class="st">&quot;envoy.filters.network.wasm&quot;</span>;</span>
+<span id="cb22-75"><a href="#cb22-75" aria-hidden="true"></a>};</span>
+<span id="cb22-76"><a href="#cb22-76" aria-hidden="true"></a></span>
+<span id="cb22-77"><a href="#cb22-77" aria-hidden="true"></a><span class="kw">using</span> NetworkFilterNames = ConstSingleton&lt;NetworkFilterNameValues&gt;;</span>
+<span id="cb22-78"><a href="#cb22-78" aria-hidden="true"></a></span>
+<span id="cb22-79"><a href="#cb22-79" aria-hidden="true"></a><span class="co">//const Protobuf::Message类型，使用downcastAndValidate工具强转成envoy::extensions::filters::network::wasm::v3::Wasm类型,最终调用上文的wasm的createFilterFactoryFromProtoTyped</span></span>
+<span id="cb22-80"><a href="#cb22-80" aria-hidden="true"></a>  Network::FilterFactoryCb</span>
+<span id="cb22-81"><a href="#cb22-81" aria-hidden="true"></a>  createFilterFactoryFromProto(<span class="at">const</span> Protobuf::Message&amp; proto_config,</span>
+<span id="cb22-82"><a href="#cb22-82" aria-hidden="true"></a>                               Server::Configuration::FactoryContext&amp; context) <span class="kw">override</span> {</span>
+<span id="cb22-83"><a href="#cb22-83" aria-hidden="true"></a>    <span class="cf">return</span> createFilterFactoryFromProtoTyped(MessageUtil::downcastAndValidate&lt;<span class="at">const</span> ConfigProto&amp;&gt;(</span>
+<span id="cb22-84"><a href="#cb22-84" aria-hidden="true"></a>                                                 proto_config, context.messageValidationVisitor()),</span>
+<span id="cb22-85"><a href="#cb22-85" aria-hidden="true"></a>                                             context);</span>
+<span id="cb22-86"><a href="#cb22-86" aria-hidden="true"></a>  }</span></code></pre></div>
+<footer>
+    <style>
+        a#backtop{
+            margin-right:120px;
+            font-size:18px;
+            margin-bottom:30px;
+        }
+    </style>
+    <a id="backtop" style="position:fixed;right:0;bottom:0">返回页顶</a>
+    <script>
+        backtop.onclick = function(){
+            scrollTo(0,0);
+        }
+    </script>
+</footer>
+</div>
+</body>
+</html>

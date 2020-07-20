@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Redis分布式锁</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <base href="../../../"> <meta http-equiv="Content-Type" content="text/html" charset="utf-8"> <link rel="stylesheet" type="text/css" href="css/page.css"> <link rel="stylesheet" type="text/css" href="css/gen.css"> <link rel="shortcut icon" href="image/yuan.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="blog-header">
+    </div>
+    <div class="blog-nav">
+        <hr id="up"/>
+        <button id="first" onclick="window.location.href='index.html'">首 页
+        </button><button   onclick="window.location.href='blog.html'">博 客
+        </button><button   onclick="window.location.href='read.html'">读 书
+        </button><button   onclick="window.location.href='science.html'">科 学
+        </button><button   onclick="window.location.href='literature.html'">文 哲
+        </button><button   onclick="window.location.href='scope.html'">视 野
+        </button><button  id="active" onclick="window.location.href='life_notes/index.html'">笔 记
+        </button><button  onclick="window.location.href='index.html'">首 领</button>
+        <hr id="down"/>
+    </div>
+    <div class="blog-body">
+<a id="retindex" href="life_notes/computer/redis/index.html">返回目录</a>
+<h2 id="redis分布式锁">Redis分布式锁</h2>
+<p>CreateTime: 2020-07-07 20:54</p>
+<h3 id="分布式锁">分布式锁</h3>
+<h4 id="什么是分布式锁">什么是分布式锁</h4>
+<p>在分布式系统中，多个服务或者请求同时操作互斥数据，保证它们有序的访问共享资源，避免竞争而发生数据不一致等问题，引入分布式锁，保证它们互斥的访问共享资源。</p>
+<h4 id="分布式锁特点">分布式锁特点</h4>
+<ol type="1">
+<li>互斥性</li>
+<li>可重入性</li>
+<li>锁超时</li>
+<li>高可用</li>
+<li>阻塞和非阻塞特性</li>
+</ol>
+<h4 id="分布式锁实现方式">分布式锁实现方式</h4>
+<ol type="1">
+<li>基于数据库</li>
+<li>基于Redis</li>
+<li>基于zookeeper</li>
+</ol>
+<h3 id="redis分布式锁-1">Redis分布式锁</h3>
+<pre><code>SET key value [EX seconds|PX milliseconds] [NX|XX] [KEEPTTL]
+EX seconds -- Set the specified expire time, in seconds.
+PX milliseconds -- Set the specified expire time, in milliseconds.
+NX -- Only set the key if it does not already exist.
+XX -- Only set the key if it already exist.
+KEEPTTL -- Retain the time to live associated with the key.</code></pre>
+<pre><code>The command SET resource-name anystring NX EX max-lock-time is a simple way to implement a locking system with Redis.
+
+A client can acquire the lock if the above command returns OK (or retry after some time if the command returns Nil), and remove the lock just using DEL.
+
+The lock will be auto-released after the expire time is reached.
+
+It is possible to make this system more robust modifying the unlock schema as follows:
+
+Instead of setting a fixed string, set a non-guessable large random string, called token.
+Instead of releasing the lock with DEL, send a script that only removes the key if the value matches.
+This avoids that a client will try to release the lock after the expire time deleting the key created by another client that acquired the lock later.
+
+An example of unlock script would be similar to the following:
+
+if redis.call(&quot;get&quot;,KEYS[1]) == ARGV[1]
+then
+    return redis.call(&quot;del&quot;,KEYS[1])
+else
+    return 0
+end
+The script should be called with EVAL ...script... 1 resource-name token-value</code></pre>
+<p>官网已经教我们怎么做了。说的十分的详细，有几个要点强调一下：</p>
+<h4 id="为什么setnx-不可以">1.为什么setnx 不可以？</h4>
+<p>虽然<code>setnx</code>本身可以保证原子性，但是还要单独调用一次<code>expired</code>设置锁的超时时间。那么这两个命令不能保证原子执行，如果<code>setnx</code>成功后，获得锁的服务异常，超时时间又无法设置，导致死锁了，其他服务无法拿到锁。有补救办法，当然引入了复杂度，那不如让<code>set</code>命令一步到位。</p>
+<h4 id="为何要设置超时时间">2.为何要设置超时时间？</h4>
+<p>避免某些服务超长持有锁，超长持有锁可以是：1.临界区运行过长；2.阻塞在临界区；3.服务crash。设置一个合理的超时时间，保证锁在合理时间内总被释放掉。</p>
+<h4 id="为什么要设置随机唯一字符串">2.为什么要设置随机唯一字符串？</h4>
+<p>为锁设置唯一的随机字符串，保证这个锁只能有持有锁的服务释放，好似一把钥匙。避免服务A释放掉服务B锁。什么时候会发生这种情况。当持有锁的服务A，由于某种原因阻塞在临界区或者在临界区执行时间过长，锁超时释放了，然后被新的服务B获得。如果不检测锁的钥匙值，阻塞的服务A醒来再去释放锁，会将服务B持有的锁释放掉，造成问题。通过锁的<code>value</code>验证，可以避免这种情况。</p>
+<h4 id="为什么要用lua脚本释放锁">3.为什么要用lua脚本释放锁？</h4>
+<footer>
+    <style>
+        a#backtop{
+            margin-right:120px;
+            font-size:18px;
+            margin-bottom:30px;
+        }
+    </style>
+    <a id="backtop" style="position:fixed;right:0;bottom:0">返回页顶</a>
+    <script>
+        backtop.onclick = function(){
+            scrollTo(0,0);
+        }
+    </script>
+</footer>
+</div>
+</body>
+</html>

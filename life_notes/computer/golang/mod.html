@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>mod</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <base href="../../../"> <meta http-equiv="Content-Type" content="text/html" charset="utf-8"> <link rel="stylesheet" type="text/css" href="css/page.css"> <link rel="stylesheet" type="text/css" href="css/gen.css"> <link rel="shortcut icon" href="image/yuan.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="blog-header">
+    </div>
+    <div class="blog-nav">
+        <hr id="up"/>
+        <button id="first" onclick="window.location.href='index.html'">首 页
+        </button><button   onclick="window.location.href='blog.html'">博 客
+        </button><button   onclick="window.location.href='read.html'">读 书
+        </button><button   onclick="window.location.href='science.html'">科 学
+        </button><button   onclick="window.location.href='literature.html'">文 哲
+        </button><button   onclick="window.location.href='scope.html'">视 野
+        </button><button  id="active" onclick="window.location.href='life_notes/index.html'">笔 记
+        </button><button  onclick="window.location.href='index.html'">首 领</button>
+        <hr id="down"/>
+    </div>
+    <div class="blog-body">
+<a id="retindex" href="life_notes/computer/golang/index.html">返回目录</a>
+<p>mod中旧的import路径可以使用replace替代 、go mod常用命令 go build, go test：下载并添加依赖到go.mod中。 go mod tidy：整理，增加缺失的包，移除没用的包。 go mod graph：显示模块间的依赖图。 go mod why：显示为什么需要包。 go list -m all：查看所有的依赖。 go get：下载依赖并更新到go.mod中。 4、go get命令 <span class="citation" data-cites="v0.3.2">@v0.3.2</span>：指定tag，Release时建议此方法。 <span class="citation" data-cites="master">@master</span>：master分支最新commit。 <span class="citation" data-cites="342b2e">@342b2e</span>：指定commit。go.mod中的表现格式为：v0.0.0-20190529093157-265ded9b6495。 <span class="citation" data-cites="latest">@latest</span>、不指定：默认行为，最新版本；有tag则最新tag，无tag则master分支最新commit。 version前使用&gt;，&gt;=，&lt;，&lt;=：大于/小于指定版本。 v0.0.1-pre：开发时版本较多时使用，不会被 <span class="citation" data-cites="latest">@latest</span>、不指定 自动拉取到。</p>
+<footer>
+    <style>
+        a#backtop{
+            margin-right:120px;
+            font-size:18px;
+            margin-bottom:30px;
+        }
+    </style>
+    <a id="backtop" style="position:fixed;right:0;bottom:0">返回页顶</a>
+    <script>
+        backtop.onclick = function(){
+            scrollTo(0,0);
+        }
+    </script>
+</footer>
+</div>
+</body>
+</html>
