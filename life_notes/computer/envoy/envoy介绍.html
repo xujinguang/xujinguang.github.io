@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>README</title>
+  <title>envoy介绍</title>
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -17,7 +17,7 @@
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
-  <base href="../../"> <meta http-equiv="Content-Type" content="text/html" charset="utf-8"> <link rel="stylesheet" type="text/css" href="css/page.css"> <link rel="stylesheet" type="text/css" href="css/gen.css"> <link rel="shortcut icon" href="image/yuan.ico" type="image/x-icon">
+  <base href="../../../"> <meta http-equiv="Content-Type" content="text/html" charset="utf-8"> <link rel="stylesheet" type="text/css" href="css/page.css"> <link rel="stylesheet" type="text/css" href="css/gen.css"> <link rel="shortcut icon" href="image/yuan.ico" type="image/x-icon">
 </head>
 <body>
     <div class="blog-header">
@@ -35,20 +35,20 @@
         <hr id="down"/>
     </div>
     <div class="blog-body">
-<a id="retindex" href="life_notes/computer/index.html">返回目录</a>
-<h2 id="计算机技术分类">计算机技术分类</h2>
-<p>KM</p>
+<a id="retindex" href="life_notes/computer/envoy/index.html">返回目录</a>
+<h2 id="envoy-介绍">Envoy 介绍</h2>
+<h3 id="xds-配置">xds 配置</h3>
+<p>Domain Specific Language</p>
 <ol type="1">
-<li>C++的关键特性和原理、TCP/IP协议栈、内存管理、进程调度；</li>
-<li>实现I/O多路复用，如Ractor模式，以及实现RPC框架；</li>
-<li>数据库的索引、隔离级别、多版本控制、事务、备份与恢复、同步机制等原理和实现；</li>
-<li>分布式事务模型（X/Open DTP）；</li>
-<li>数据一致性算法，如paxos、raft等；</li>
-<li>高可用技术方案；</li>
-<li>redis等架构原理；</li>
-<li>各种缓存机制；</li>
-<li>任意高并发、高可用、海量存储的系统架构设计；</li>
+<li>RDS - 路由规则</li>
+<li>CDS - 集群规则</li>
+<li>EDS - 后端规则</li>
+<li>LDS - 监听规则</li>
+<li>SDS - 证书规则</li>
 </ol>
+<p>数据接口定义 https://github.com/envoyproxy/data-plane-api</p>
+<p>数据下发控制 https://github.com/envoyproxy/go-control-plane</p>
+<p>HttpConnectionManager，全权负责HTTP连接和请求的处理 ；使用宏REGISTER_FACTORY，将HttpConnectionManagerConfig静态注册为NetworkFilter</p>
 <footer>
     <style>
         a#backtop{

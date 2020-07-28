@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Pod</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <base href="../../../"> <meta http-equiv="Content-Type" content="text/html" charset="utf-8"> <link rel="stylesheet" type="text/css" href="css/page.css"> <link rel="stylesheet" type="text/css" href="css/gen.css"> <link rel="shortcut icon" href="image/yuan.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="blog-header">
+    </div>
+    <div class="blog-nav">
+        <hr id="up"/>
+        <button id="first" onclick="window.location.href='index.html'">首 页
+        </button><button   onclick="window.location.href='blog.html'">博 客
+        </button><button   onclick="window.location.href='read.html'">读 书
+        </button><button   onclick="window.location.href='science.html'">科 学
+        </button><button   onclick="window.location.href='literature.html'">文 哲
+        </button><button   onclick="window.location.href='scope.html'">视 野
+        </button><button  id="active" onclick="window.location.href='life_notes/index.html'">笔 记
+        </button><button  onclick="window.location.href='index.html'">首 领</button>
+        <hr id="down"/>
+    </div>
+    <div class="blog-body">
+<a id="retindex" href="life_notes/computer/k8s/index.html">返回目录</a>
+<h2 id="k8s-pod">K8S Pod</h2>
+<h3 id="pod">Pod</h3>
+<p><em>Pod</em> （就像在鲸鱼荚或者豌豆荚中）是一组（一个或多个）<a href="https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/#why-containers">容器</a>（例如 Docker 容器），这些容器共享存储、网络、以及怎样运行这些容器的声明。</p>
+<p>Kubernetes 对象模型中创建或部署的最小和最简单的单元。pod表示在集群中运行的进程。</p>
+<p>Pod 封装了应用程序容器、存储资源、唯一网络 IP 以及控制容器应该如何运行的选项。 Pod表示部署单元。</p>
+<p>如果希望横向扩展应用程序（例如，运行多个实例），则应该使用多个 Pod，每个应用实例使用一个 Pod 。在 Kubernetes 中，这通常被称为 <em>副本</em>。通常使用一个称为控制器的抽象来创建和管理一组副本 Pod。</p>
+<h3 id="网络">网络</h3>
+<p>每个 Pod 分配一个唯一的 IP 地址。 Pod 中的每个容器共享网络命名空间，包括 IP 地址和网络端口。 <em>Pod 内的容器</em> 可以使用 <code>localhost</code> 互相通信。 当 Pod 中的容器与 <em>Pod 之外</em> 的实体通信时，它们必须协调如何使用共享的网络资源（例如端口）</p>
+<h3 id="存储">存储</h3>
+<p>一个 Pod 可以指定一组共享存储<a href="https://kubernetes.io/docs/concepts/storage/volumes/">卷</a>。 Pod 中的所有容器都可以访问共享卷，允许这些容器共享数据。 卷还允许 Pod 中的持久数据保留下来，以防其中的容器需要重新启动。</p>
+<h3 id="控制器">控制器</h3>
+<p>Kubernetes 使用了一个更高级的称为 <em>控制器</em> 的抽象，由它处理相对可丢弃的 Pod 实例的管理工作。 因此，虽然可以直接使用 Pod，但在 Kubernetes 中，更为常见的是使用控制器管理 Pod。</p>
+<p>控制器包括：Deployment，StatefulSet,DaemonSet</p>
+<footer>
+    <style>
+        a#backtop{
+            margin-right:120px;
+            font-size:18px;
+            margin-bottom:30px;
+        }
+    </style>
+    <a id="backtop" style="position:fixed;right:0;bottom:0">返回页顶</a>
+    <script>
+        backtop.onclick = function(){
+            scrollTo(0,0);
+        }
+    </script>
+</footer>
+</div>
+</body>
+</html>

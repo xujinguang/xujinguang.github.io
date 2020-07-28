@@ -12,6 +12,68 @@
     div.column{display: inline-block; vertical-align: top; width: 50%;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
   <!--[if lt IE 9]>
@@ -36,7 +98,85 @@
     </div>
     <div class="blog-body">
 <a id="retindex" href="life_notes/computer/redis/index.html">返回目录</a>
-<p>list用于队列</p>
+<h2 id="list">List</h2>
+<h2 id="quicklist">QuickList</h2>
+<p>链表底层实现有三个</p>
+<ol type="1">
+<li>ziplist - 压缩列表，连续存储，适合短链表，节约内存，当比较大的链表时候增删效率太低。</li>
+<li>双向非循环链表 - 当数据量比较大的时候，查找很慢</li>
+<li>QuickList - 1,2的结合，一个由ziplist充当节点的双向链表</li>
+</ol>
+<h3 id="数据结构">数据结构</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">typedef</span> <span class="kw">struct</span> listNode {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>    <span class="kw">struct</span> listNode *prev;</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>    <span class="kw">struct</span> listNode *next;</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>    <span class="dt">void</span> *value;</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>} listNode;</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="kw">typedef</span> <span class="kw">struct</span> listIter {</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>    listNode *next;</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a>    <span class="dt">int</span> direction;</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>} listIter;</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="kw">typedef</span> <span class="kw">struct</span> list {</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a>    listNode *head;</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a>    listNode *tail;</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a>    <span class="dt">void</span> *(*dup)(<span class="dt">void</span> *ptr);</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a>    <span class="dt">void</span> (*free)(<span class="dt">void</span> *ptr);</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a>    <span class="dt">int</span> (*match)(<span class="dt">void</span> *ptr, <span class="dt">void</span> *key);</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">long</span> len;</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true"></a>} list;</span></code></pre></div>
+<p><strong>QuickList</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">/* quicklistNode is a 32 byte struct describing a ziplist for a quicklist.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="co"> * We use bit fields keep the quicklistNode at 32 bytes.</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="co"> * count: 16 bits, max 65536 (max zl bytes is 65k, so max count actually &lt; 32k).</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="co"> * encoding: 2 bits, RAW=1, LZF=2.</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="co"> * container: 2 bits, NONE=1, ZIPLIST=2.</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="co"> * recompress: 1 bit, bool, true if node is temporarry decompressed for usage.</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a><span class="co"> * attempted_compress: 1 bit, boolean, used for verifying during testing.</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a><span class="co"> * extra: 10 bits, free for future use; pads out the remainder of 32 bits */</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a><span class="kw">typedef</span> <span class="kw">struct</span> quicklistNode {</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>    <span class="kw">struct</span> quicklistNode *prev;</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>    <span class="kw">struct</span> quicklistNode *next;</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">char</span> *zl;</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> sz;             <span class="co">/* ziplist size in bytes */</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> count : <span class="dv">16</span>;     <span class="co">/* count of items in ziplist */</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> encoding : <span class="dv">2</span>;   <span class="co">/* RAW==1 or LZF==2 */</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> container : <span class="dv">2</span>;  <span class="co">/* NONE==1 or ZIPLIST==2 */</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> recompress : <span class="dv">1</span>; <span class="co">/* was this node previous compressed? */</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> attempted_compress : <span class="dv">1</span>; <span class="co">/* node can&#39;t compress; too small */</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> extra : <span class="dv">10</span>; <span class="co">/* more bits to steal for future usage */</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a>} quicklistNode;</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true"></a><span class="kw">typedef</span> <span class="kw">struct</span> quicklistEntry {</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true"></a>    <span class="dt">const</span> quicklist *quicklist;</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true"></a>    quicklistNode *node;</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">char</span> *zi;</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">char</span> *value;</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true"></a>    <span class="dt">long</span> <span class="dt">long</span> longval;</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> sz;</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true"></a>    <span class="dt">int</span> offset;</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true"></a>} quicklistEntry;</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true"></a><span class="co">/* quicklist is a 40 byte struct (on 64-bit systems) describing a quicklist.</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true"></a><span class="co"> * &#39;count&#39; is the number of total entries.</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true"></a><span class="co"> * &#39;len&#39; is the number of quicklist nodes.</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true"></a><span class="co"> * &#39;compress&#39; is: -1 if compression disabled, otherwise it&#39;s the number</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true"></a><span class="co"> *                of quicklistNodes to leave uncompressed at ends of quicklist.</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true"></a><span class="co"> * &#39;fill&#39; is the user-requested (or default) fill factor.</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true"></a><span class="co"> * &#39;bookmakrs are an optional feature that is used by realloc this struct,</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true"></a><span class="co"> *      so that they don&#39;t consume memory when not used. */</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true"></a><span class="kw">typedef</span> <span class="kw">struct</span> quicklist {</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true"></a>    quicklistNode *head;</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true"></a>    quicklistNode *tail;</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">long</span> count;        <span class="co">/* total count of all entries in all ziplists */</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">long</span> len;          <span class="co">/* number of quicklistNodes */</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true"></a>    <span class="dt">int</span> fill : QL_FILL_BITS;              <span class="co">/* fill factor for individual nodes */</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> compress : QL_COMP_BITS; <span class="co">/* depth of end nodes not to compress;0=off */</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> bookmark_count: QL_BM_BITS;</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true"></a>    quicklistBookmark bookmarks[];</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true"></a>} quicklist;</span></code></pre></div>
+<h3 id="要点">要点</h3>
 <footer>
     <style>
         a#backtop{

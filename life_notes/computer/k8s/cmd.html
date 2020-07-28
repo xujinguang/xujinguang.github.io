@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>README</title>
+  <title>cmd</title>
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -17,7 +17,7 @@
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
-  <base href="../../"> <meta http-equiv="Content-Type" content="text/html" charset="utf-8"> <link rel="stylesheet" type="text/css" href="css/page.css"> <link rel="stylesheet" type="text/css" href="css/gen.css"> <link rel="shortcut icon" href="image/yuan.ico" type="image/x-icon">
+  <base href="../../../"> <meta http-equiv="Content-Type" content="text/html" charset="utf-8"> <link rel="stylesheet" type="text/css" href="css/page.css"> <link rel="stylesheet" type="text/css" href="css/gen.css"> <link rel="shortcut icon" href="image/yuan.ico" type="image/x-icon">
 </head>
 <body>
     <div class="blog-header">
@@ -35,20 +35,12 @@
         <hr id="down"/>
     </div>
     <div class="blog-body">
-<a id="retindex" href="life_notes/computer/index.html">返回目录</a>
-<h2 id="计算机技术分类">计算机技术分类</h2>
-<p>KM</p>
-<ol type="1">
-<li>C++的关键特性和原理、TCP/IP协议栈、内存管理、进程调度；</li>
-<li>实现I/O多路复用，如Ractor模式，以及实现RPC框架；</li>
-<li>数据库的索引、隔离级别、多版本控制、事务、备份与恢复、同步机制等原理和实现；</li>
-<li>分布式事务模型（X/Open DTP）；</li>
-<li>数据一致性算法，如paxos、raft等；</li>
-<li>高可用技术方案；</li>
-<li>redis等架构原理；</li>
-<li>各种缓存机制；</li>
-<li>任意高并发、高可用、海量存储的系统架构设计；</li>
-</ol>
+<a id="retindex" href="life_notes/computer/k8s/index.html">返回目录</a>
+<h2 id="k8s命令集">K8S命令集</h2>
+<pre class="shell"><code>export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath=&#39;{.status.loadBalancer.ingress[0].ip}&#39;)
+export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath=&#39;{.spec.ports[?(@.name==&quot;http2&quot;)].port}&#39;)
+export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
+curl -s &quot;http://${GATEWAY_URL}/productpage&quot;</code></pre>
 <footer>
     <style>
         a#backtop{

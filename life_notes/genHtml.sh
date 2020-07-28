@@ -3,7 +3,7 @@
 #$2-目标目录 取目录名为相对路径起始点
 set +x
 if [ $# != 2 ] ; then
-	echo "genHtml.sh element 拷贝到 同一个目录下，执行"
+	echo "genHtml.sh markdown笔记 转 html"
 	echo "./genHtml.sh src dest"
 	exit
 fi

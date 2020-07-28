@@ -99,7 +99,7 @@
     <div class="blog-body">
 <a id="retindex" href="life_notes/computer/k8s/index.html">返回目录</a>
 <h2 id="常见问题">常见问题</h2>
-<h3 id="pod长期处于pending">Pod长期处于Pending</h3>
+<h3 id="pod长期处于pending">1. Pod长期处于Pending</h3>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="ex">kubectrl</span> describe pod/node xxx</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="ex">Events</span>:</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>  <span class="ex">Type</span>     Reason            Age               From               Message</span>
@@ -126,6 +126,120 @@
 <li>重启polite</li>
 </ol>
 <p>原因是proxy访问polite不通。</p>
+<h3 id="pod无法创建">2.Pod无法创建</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co"># kubectl get deployment</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="ex">NAME</span>             READY   UP-TO-DATE   AVAILABLE   AGE</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="ex">details-v1</span>       0/1     0            0           4h6m</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="ex">productpage-v1</span>   0/1     0            0           4h6m</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="ex">ratings-v1</span>       0/1     0            0           4h6m</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="ex">reviews-v1</span>       0/1     0            0           4h6m</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="ex">reviews-v2</span>       0/1     0            0           4h6m</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a><span class="ex">reviews-v3</span>       0/1     0            0           4h6m</span></code></pre></div>
+<pre class="shell"><code># kubectl get deployment details-v1 -o yaml
+status:
+  conditions:
+  - lastTransitionTime: &quot;2020-07-20T03:52:59Z&quot;
+    lastUpdateTime: &quot;2020-07-20T03:52:59Z&quot;
+    message: Deployment does not have minimum availability.
+    reason: MinimumReplicasUnavailable
+    status: &quot;False&quot;
+    type: Available
+  - lastTransitionTime: &quot;2020-07-20T03:52:59Z&quot;
+    lastUpdateTime: &quot;2020-07-20T03:52:59Z&quot;
+    message: &#39;admission webhook &quot;sidecar-injector.istio.io&quot; denied the request: template:
+      inject:140:7: executing &quot;inject&quot; at &lt;gt .ProxyConfig.Concurrency 0&gt;: error calling
+      gt: invalid type for comparison&#39;
+    reason: FailedCreate
+    status: &quot;True&quot;
+    type: ReplicaFailure
+  - lastTransitionTime: &quot;2020-07-20T04:03:00Z&quot;
+    lastUpdateTime: &quot;2020-07-20T04:03:00Z&quot;
+    message: ReplicaSet &quot;details-v1-78db589446&quot; has timed out progressing.
+    reason: ProgressDeadlineExceeded
+    status: &quot;False&quot;
+    type: Progressing
+  observedGeneration: 1
+  unavailableReplicas: 1</code></pre>
+<p>查看是否开始</p>
+<pre class="shell"><code># kubectl get namespace -L istio-injection
+bookinfo          Active   124d   enabled
+default           Active   125d   enabled
+istio-system      Active   12d    disabled</code></pre>
+<p>获取</p>
+<pre class="shell"><code>#kubectl get mutatingwebhookconfiguration istio-sidecar-injector -o yaml
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {&quot;apiVersion&quot;:&quot;admissionregistration.k8s.io/v1beta1&quot;,&quot;kind&quot;:&quot;MutatingWebhookConfiguration&quot;,&quot;metadata&quot;:{&quot;annotations&quot;:{},&quot;labels&quot;:{&quot;app&quot;:&quot;sidecar-injector&quot;,&quot;install.operator.istio.io/owning-resource&quot;:&quot;installed-state&quot;,&quot;install.operator.istio.io/owning-resource-namespace&quot;:&quot;istio-system&quot;,&quot;istio.io/rev&quot;:&quot;default&quot;,&quot;operator.istio.io/component&quot;:&quot;Pilot&quot;,&quot;operator.istio.io/managed&quot;:&quot;Reconcile&quot;,&quot;operator.istio.io/version&quot;:&quot;1.6.3&quot;,&quot;release&quot;:&quot;istio&quot;},&quot;name&quot;:&quot;istio-sidecar-injector&quot;},&quot;webhooks&quot;:[{&quot;clientConfig&quot;:{&quot;caBundle&quot;:&quot;&quot;,&quot;service&quot;:{&quot;name&quot;:&quot;istiod&quot;,&quot;namespace&quot;:&quot;istio-system&quot;,&quot;path&quot;:&quot;/inject&quot;}},&quot;failurePolicy&quot;:&quot;Fail&quot;,&quot;name&quot;:&quot;sidecar-injector.istio.io&quot;,&quot;namespaceSelector&quot;:{&quot;matchLabels&quot;:{&quot;istio-injection&quot;:&quot;enabled&quot;}},&quot;rules&quot;:[{&quot;apiGroups&quot;:[&quot;&quot;],&quot;apiVersions&quot;:[&quot;v1&quot;],&quot;operations&quot;:[&quot;CREATE&quot;],&quot;resources&quot;:[&quot;pods&quot;]}],&quot;sideEffects&quot;:&quot;None&quot;}]}
+  creationTimestamp: &quot;2020-04-29T01:30:22Z&quot;
+  generation: 11
+  labels:
+    app: sidecar-injector
+    install.operator.istio.io/owning-resource: installed-state
+    install.operator.istio.io/owning-resource-namespace: istio-system
+    istio.io/rev: default
+    operator.istio.io/component: Pilot
+    operator.istio.io/managed: Reconcile
+    operator.istio.io/version: 1.6.3
+    release: istio
+  name: istio-sidecar-injector
+  resourceVersion: &quot;7942709016&quot;
+  selfLink: /apis/admissionregistration.k8s.io/v1/mutatingwebhookconfigurations/istio-sidecar-injector
+  uid: 676f2599-f9fc-4fbf-8729-d368d3dd735b
+webhooks:
+- admissionReviewVersions:
+  - v1beta1
+  clientConfig:
+    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMzVENDQWNXZ0F3SUJBZ0lRUzBZWUdZVGVBcW9ydEVsenFZNHA5ekFOQmdrcWhraUc5dzBCQVFzRkFEQVkKTVJZd0ZBWURWUVFLRXcxamJIVnpkR1Z5TG14dlkyRnNNQjRYRFRJd01EY3dPREEzTkRJek5sb1hEVE13TURjdwpOakEzTkRJek5sb3dHREVXTUJRR0ExVUVDaE1OWTJ4MWMzUmxjaTVzYjJOaGJEQ0NBU0l3RFFZSktvWklodmNOCkFRRUJCUUFEZ2dFUEFEQ0NBUW9DZ2dFQkFNZDF1Q3l0YzNJM01iMmxBWTloVUw2b2UwNTZPMkZ4c1FwSVV5YU8KaCs4dkFhSnZZT3dxUkNKbjVDZHBLQ0Faem9LeVhKbkxvdVVlaWV3VUV4N2czVVN3djlZblFkT2xWMWUvR1VhMQpLaHcwRHhCRWIxdlExQ3BUTGdkRHdsMTBmcVh0cE1aTnZtY09hdmJwamxodlAxSUNHMktjQVlJRXkybEJtMUVSCjdjdjFHbGgraE1jdHFzeDV4c1lvcTNXaWUxYzQ3TWxCVkVlaDM5VUcwdEVtQXpMSEVuTDF5bzFhRHVIVHRuN2QKendHN21Na1hBN2c1anRVWmFCeHlxSWpORUV2dFRHb3UxbEYvZ0E2eHhjVkFyRlA0VWpKSWZpTmFlVnE4di9nMgpEZytSMG5wSjlwek9DV1dZQ3lXaU50SVZNSmNvbEs4N0VsWHVIYWFlQzc2VWJNa0NBd0VBQWFNak1DRXdEZ1lEClZSMFBBUUgvQkFRREFnSUVNQThHQTFVZEV3RUIvd1FGTUFNQkFmOHdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUIKQUdLbG5QTUtZbWUwV0lDM0pGeUFBY0k4b0FtRlFMNzVaQWsrbDk2WWw4Vk1ZTUI3VDlteFFSaTZ2czVZbElZeQp1ZDFqNTNEYzB5NVBjTU9UdzZXYzF0QkdqL1U0alArSm5DT1U3SXRwVTRPWmlZd3o2OEJvZGFJalVYWVJWVGpaClBVWk5ZZDA0aW5IMDJCQ1k5em9TaHdLaW1jSnE0bUlGWW9NRTN6WXRYdEY5Ry8zNTRiNG9tU1A1bzEzRXRUVk8KQUZTc0FxRWdiNGhoQURwUWt0TU01RE1iVHp6OWhQakNlREswTXRWQUt0dVNiTE5kVG1uazd1eHB5N3ZuQThLMgpTcEVNZlA4YmtDdGp6Q3NhRzFKOE80ZEJ5czByeXk3RWhrWHk2L1FVenVUVXlTYlp2WkhFZWlKelhmZVhlbFlXClNrRStjYnZ5WHdWQmVqdm1ObndXNERBPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+    service:
+      name: istiod
+      namespace: istio-system
+      path: /inject
+      port: 443
+  failurePolicy: Fail
+  matchPolicy: Exact
+  name: sidecar-injector.istio.io
+  namespaceSelector:
+    matchLabels:
+      istio-injection: enabled
+  objectSelector: {}
+  reinvocationPolicy: Never
+  rules:
+  - apiGroups:
+    - &quot;&quot;
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    resources:
+    - pods
+    scope: &#39;*&#39;
+  sideEffects: None
+  timeoutSeconds: 30</code></pre>
+<p>获取配置</p>
+<pre class="shell"><code># kubectl get cm istio-sidecar-injector -o yaml -n istio-system
+      {{- if gt .ProxyConfig.Concurrency 0 }}
+        - --concurrency
+        - &quot;{{ .ProxyConfig.Concurrency }}&quot;
+      {{- end -}}</code></pre>
+<p>这里执行失败了</p>
+<p><a href="https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/#ProxyConfig">ProxyConfig</a></p>
+<blockquote>
+<p>concurrency - The number of worker threads to run. Default value is number of cores on the machine.</p>
+</blockquote>
+<p>目前删除这几句可以回复正常，问题在于为何拿不到配置?</p>
+<pre class="shell"><code># kubectl get cm istio -o yaml -n istio-system
+apiVersion: v1
+data:
+  mesh: |-
+    accessLogEncoding: TEXT
+    accessLogFile: /dev/stdout
+    accessLogFormat: &quot;&quot;
+    defaultConfig:
+      concurrency: 2</code></pre>
+<p><a href="https://istio.io/latest/docs/ops/common-problems/injection/">常见 inject 问题</a></p>
 <footer>
     <style>
         a#backtop{
