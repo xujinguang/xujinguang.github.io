@@ -31,8 +31,8 @@ button#active{
 }
 
 .nav{
-	width: 60%;
-    min-width:800px;
+	width: 65%;
+    min-width:860px;
     height:auto;
     min-height:800px;
 	margin:0 auto;
@@ -227,27 +227,48 @@ div#link-nav {
 .nav footer a:hover {
     color:white;
 }
-
+/*
 .blog-header{
 	padding:0px 100px 0px 100px;
-    height:40px;
+    height:60px;
 	background:#00aeae;
-	width: 48%;
+	width: 50%;
+	min-width: 600px;
+	margin:0 auto;
+}
+*/
+
+.blog-header{
+	padding:10px 100px 0px 100px;
+    height:40px;
+	background:white;
+	width: 50%;
 	min-width: 600px;
 	margin:0 auto;
 }
 
-.blog-nav {
+.blog-nav{
+	padding:10px 100px 0px 100px;
+    //height:40px;
 	background:white;
-	padding-left:5px; 
-	padding-right:5px;
-	width: 60%;
-	min-width: 800px;
+	width: 50%;
+	min-width: 600px;
 	margin:0 auto;
 }
 
+/*
+.blog-nav {
+	background:white;
+	padding:0px 5px 0px 5px;
+	//padding-left:5px;
+	//padding-right:5px;
+	width: 50%;
+	min-width: 600px;
+	margin:0 auto;
+}
+*/
 .blog-nav button#first{
-	margin-left:100px;
+	margin-left:50px;
 }
 
 
@@ -271,7 +292,7 @@ div#link-nav {
 .blog-body{
 	padding:60px 100px 60px 100px;
 	background:white;
-	width: 48%;
+	width: 50%;
 	min-width: 600px;
 	margin:0 auto;
 	height:auto;
