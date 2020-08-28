@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Kafkacat手册</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <base href="../../../"> <meta http-equiv="Content-Type" content="text/html" charset="utf-8"> <link rel="stylesheet" type="text/css" href="css/page.css"> <link rel="stylesheet" type="text/css" href="css/gen.css"> <link rel="shortcut icon" href="image/yuan.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="blog-header">
+    </div>
+    <div class="blog-nav">
+        <hr id="up"/>
+        <button id="first" onclick="window.location.href='index.html'">首 页
+        </button><button   onclick="window.location.href='blog.html'">博 客
+        </button><button   onclick="window.location.href='read.html'">读 书
+        </button><button   onclick="window.location.href='science.html'">科 学
+        </button><button   onclick="window.location.href='literature.html'">文 哲
+        </button><button   onclick="window.location.href='scope.html'">视 野
+        </button><button  id="active" onclick="window.location.href='life_notes/index.html'">笔 记
+        </button><button  onclick="window.location.href='index.html'">首 领</button>
+        <hr id="down"/>
+    </div>
+    <div class="blog-body">
+<a id="retindex" href="life_notes/computer/kafka/index.html">返回目录</a>
+<header id="title-block-header">
+<h1 class="title">Kafkacat手册</h1>
+</header>
+<h2 id="kafkacat手册">Kafkacat手册</h2>
+<h3 id="介绍">0.介绍</h3>
+<p>kafka官方的一堆脚本用来验证操作kafka消息很好用，但是无法查看kafka消息的header。查了一下使用kafkacat可以，而且操作也十分方便。</p>
+<p>kafkacat - 生产和消费分别通过stdin，stdout输入输出，主要用来调试查阅消息。十分快速小巧的工具。</p>
+<h3 id="下载">1.下载</h3>
+<p>【<a href="https://github.com/edenhill/kafkacat">Kafkacat GitHub</a>】的<a href="https://github.com/edenhill/kafkacat/releases">release</a>下载最新源码到机器上</p>
+<pre class="shell"><code>wget https://github.com/edenhill/kafkacat/archive/1.6.0.tar.gz -O kafkacat_1.6.0.tar.gz</code></pre>
+<h3 id="编译">2.编译</h3>
+<pre class="shell"><code>tar -xvf kafkacat_1.6.0.tar.gz
+#进入源码
+./configure
+make</code></pre>
+<p>依赖项</p>
+<pre class="shell"><code>yum install gcc -y
+yum install librdkafka-dev -y</code></pre>
+<h3 id="使用简介">3.使用简介</h3>
+<h4 id="kafkacat的基础参数">3.0 kafkacat的基础参数</h4>
+<ul>
+<li>-P <strong>P</strong>roduce data</li>
+<li>-C = <strong>C</strong>onsume data</li>
+<li>-L = <strong>L</strong>ist metadata</li>
+<li>-Q = <strong>Q</strong>uery</li>
+<li>-b = <strong>b</strong>roker</li>
+<li>-t = <strong>t</strong>opic</li>
+</ul>
+<h4 id="生产者">3.1 生产者</h4>
+<pre class="shell"><code>kafkacat -b 172.18.0.16:9092 -t status-sync -P -H cookie=status -H type=request -K:
+message:{&quot;hello&quot;:&quot;kafka&quot;}</code></pre>
+<ul>
+<li>-H = <strong>H</strong>eader，多个header需要重复使用-H参数</li>
+<li>-K = <strong>K</strong>eyValue，添加消息kv对</li>
+<li>-l 从文件获取消息内容</li>
+<li>-z =<strong>z</strong>ip，指定消息压缩格式： snappy, gzip and lz4.</li>
+<li>-G = <strong>G</strong>roup 指定消费组或者加入已存在的消费组</li>
+</ul>
+<p>header不是必须的。</p>
+<pre class="shell"><code># 从文件获得消息内容,并采用gzip压缩消息
+kafkacat -b 172.18.0.16:9092 -t status-sync -P  -K: -l data.txt -z gzip</code></pre>
+<h4 id="消费者">3.2 消费者</h4>
+<pre class="shell"><code>kafkacat -b 172.18.0.16:9092 -t status-sync  -C -c1 -o 7425</code></pre>
+<ul>
+<li>-c1 消费的消息个数，c后面指定消息的个数，如果topic里的消息不足指定的个数，则会阻塞等待</li>
+<li>-o = <strong>o</strong>ffset 指定消费的偏移量
+<ul>
+<li>正值 - 从起始偏移</li>
+<li>负值 - 从末尾逆向偏移</li>
+<li>关键字 - beginning / end</li>
+<li>起始时间戳 - s@start_timestamp</li>
+<li>结束时间戳 - e@end_timestamp</li>
+</ul></li>
+<li>-f = <strong>f</strong>ormat 格式化输出
+<ul>
+<li>Topic (%t),</li>
+<li>partition (%p)</li>
+<li>offset (%o)</li>
+<li>timestamp (%T)</li>
+<li>message key (%k)</li>
+<li>message value (%s)</li>
+<li>message headers (%h)</li>
+<li>key length (%K)</li>
+<li>value length (%S)</li>
+</ul></li>
+</ul>
+<pre class="shell"><code># 从末尾阻塞等待新的消息到来，并格式化输出
+kafkacat -b 172.18.0.16:9092 -t status-sync  -C -o end -f &#39;\nKey (%K bytes): %k
+  Value (%S bytes): %s
+  Timestamp: %T
+  Partition: %p
+  Offset: %o
+  Headers: %h\n&#39;</code></pre>
+<h4 id="其他">3.3 其他</h4>
+<pre class="shell"><code>#query
+kafkacat -b localhost:9092 -Q -t topic1:1:1588534509794
+#list metadata
+#display the current state of the Kafka cluster and its topics and partitions
+kafkacat -L -b localhost:9092 -t topic1</code></pre>
+<p>更多使用方式参考【<a href="https://github.com/edenhill/kafkacat#examples">官方示例</a>】</p>
+<footer>
+    <style>
+        a#backtop{
+            margin-right:120px;
+            font-size:18px;
+            margin-bottom:30px;
+        }
+    </style>
+    <a id="backtop" style="position:fixed;right:0;bottom:0">返回页顶</a>
+    <script>
+        backtop.onclick = function(){
+            scrollTo(0,0);
+        }
+    </script>
+</footer>
+</div>
+</body>
+</html>

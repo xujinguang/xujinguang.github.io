@@ -1,3 +1,38 @@
 .blog-nav button#first{
-	margin-left:0px;
+	margin-left:60px;
+}
+
+.sourceCode pre {
+	margin:0px;
+	background:#232629;
+	font-family: "Times";
+	padding: 20px 30px 20px 30px;
+}
+
+.sourceCode code {
+	padding: 0px;
+	font-size: 14px;
+    font-family: "Monaco", "Consolas";
+	font-weight:100;
+}
+
+table td {
+	font-family: "Times", "黑体";
+	font-size: 15px;
+}
+
+a#retindex {
+	float:right;
+}
+
+.blog-body h1 {
+	text-align: center;
+}
+.blog-body h2 {
+	font-family:"黑体";
+	padding:0px;
+	margin:0px;
+	font-size:28px;
+	font-weight:700;
+	text-align: left;
 }

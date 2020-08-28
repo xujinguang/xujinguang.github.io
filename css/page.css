@@ -1,5 +1,5 @@
 body{
-	background:lightgray;
+	//background:lightgray; //页面两边颜色
     margin-top:0px;
 }
 
@@ -31,7 +31,7 @@ button#active{
 }
 
 .nav{
-	width: 65%;
+	width: 75%; //页面主宽度
     min-width:860px;
     height:auto;
     min-height:800px;
@@ -104,11 +104,13 @@ button#active{
 
 .nav hr#up {
 	border-top:1px dashed black;
+	width: 85%;
 }
 
 .nav hr#down {
 	border-bottom:1px dashed black;
-    margin-bottom:15px;
+	margin-bottom:15px;
+	width: 95%;
 }
 
 .nav button#first{
@@ -307,20 +309,19 @@ div#link-nav {
 	font-size: 15px;
 }
 
-
 .blog-body pre {
-	margin-left:auto;
-	margin-right: auto;
+	//margin-left:30px;
+	//margin-right: 30px;
 	background:lightgoldenrodyellow;
-	width: 100%;
-	padding:10px 10px 10px 10px;
+	font-family: "Times";
+	padding:10px 30px 10px 30px; 
 }
 
 .blog-body code {
-	padding:5px 15px 5px 15px;
-    font-family: "Times";
-    font-size: 12px;
-    font-weight:100;
+	font-size: 14px;
+    font-family: "Monaco", "Consolas";
+	font-weight:100;
+	padding: 20px 30px 20px 0px;
 }
 
 .blog-body ol, ul{
@@ -414,13 +415,6 @@ div#link-nav {
 	float: right;
 }
 
-.blog-body code{
-	font-size:16px;
-	font-style:oblique;
-	font-family: "Times";
-	padding:0px 5px 0px 5px;
-	font-weight:300;
-}
 
 .blog-body span#back-top{
 	margin-left:30px;

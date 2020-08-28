@@ -5,6 +5,7 @@ set +x
 if [ $# != 2 ] ; then
 	echo "genHtml.sh markdown笔记 转 html"
 	echo "./genHtml.sh src dest"
+	echo "./genHtml.sh  xxx/life_notes xxx/xujinguang.github.io/life_notes/"
 	exit
 fi
 project=`basename $(pwd $2)`
@@ -38,12 +39,12 @@ function transfile()
             mkdir -p "$2/$file" 
 			#生成它的索引文件
 			curridx="$1/$file/index.md"
-			echo "## $file" > $curridx
+			##echo "## $file" > $curridx
 			cat ./element/index.css >> $curridx
-			echo -e "\n|目录|日期|" >> $curridx 
+			echo -e "\n|||" >> $curridx 
 			echo "|----|----|" >> $curridx
 			#添加返回上一层
-			echo "|[返回上一层]($4/index.html)||" >> $curridx 
+			echo "|[《-返回上一层]($4/index.html)||" >> $curridx 
 			#NR>1很关键， 因为ls会有个统计行数
 			ls -l "$1/$file/" | awk 'NR>1' | awk '{print $6,$7,$9}'| while read MON DAY FILE;
 			do
@@ -77,9 +78,11 @@ function transfile()
 			echo $header > tmp_header
 
 			#索引 - 必须大写字母
+			title=$filename
 			if [ "$filename" == "index" ];then
 				beforebody="./element/nav-header.html"
 				afterbody="./element/nav-tail.html"
+				title=""
 			else
 				beforebody="./element/body-header.html"
 				cat $beforebody > tmp_body
@@ -91,8 +94,8 @@ function transfile()
 
 			#echo $beforebody 
 			pandoc -f `getfiletype ${filetype}` -t "html" "$1/$file" -o "$2/${filename}.html" -s\
-			--include-before-body="$beforebody" --include-after-body="$afterbody"\
-			--include-in-header=./tmp_header --metadata title=""
+			--highlight-style=breezeDark --include-before-body="$beforebody" --include-after-body="$afterbody"\
+			--include-in-header=./tmp_header --metadata title="$title"
 
 			if [ "$filename" == "index" ];then
 				rm "$1/$file"
@@ -105,12 +108,12 @@ function transfile()
 function workspace()
 {
 	curridx="$1/index.md"
-	echo "## $4" > $curridx
+	#echo "## $4" > $curridx
 	cat ./element/index.css >> $curridx
-	echo -e "\n|目录|日期|" >> $curridx 
+	echo -e "\n|||" >> $curridx 
 	echo "|----|----|" >> $curridx
 	#添加返回上一层
-	echo "|[ 返回上一层](index.html)||" >> $curridx 
+	echo "|[《-返回上一层](index.html)||" >> $curridx 
 	#NR>1很关键， 因为ls会有个统计行数
 	ls -l "$1/" | awk 'NR>1' | awk '{print $6,$7,$9}'| while read MON DAY FILE;
 	do

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>分布式存储系统</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <base href="../../../"> <meta http-equiv="Content-Type" content="text/html" charset="utf-8"> <link rel="stylesheet" type="text/css" href="css/page.css"> <link rel="stylesheet" type="text/css" href="css/gen.css"> <link rel="shortcut icon" href="image/yuan.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="blog-header">
+    </div>
+    <div class="blog-nav">
+        <hr id="up"/>
+        <button id="first" onclick="window.location.href='index.html'">首 页
+        </button><button   onclick="window.location.href='blog.html'">博 客
+        </button><button   onclick="window.location.href='read.html'">读 书
+        </button><button   onclick="window.location.href='science.html'">科 学
+        </button><button   onclick="window.location.href='literature.html'">文 哲
+        </button><button   onclick="window.location.href='scope.html'">视 野
+        </button><button  id="active" onclick="window.location.href='life_notes/index.html'">笔 记
+        </button><button  onclick="window.location.href='index.html'">首 领</button>
+        <hr id="down"/>
+    </div>
+    <div class="blog-body">
+<a id="retindex" href="life_notes/computer/db/index.html">返回目录</a>
+<header id="title-block-header">
+<h1 class="title">分布式存储系统</h1>
+</header>
+<h2 id="分布式存储系统">分布式存储系统</h2>
+<h3 id="系统结构">系统结构</h3>
+<p>SMP的架构特点：所有资源都是共享的，CPU/内存/IO</p>
+<p>存储系统的性能瓶颈在IO</p>
+<p>网络拓扑：接入层，汇聚层和核心层。</p>
+<h3 id="单机存储引擎">单机存储引擎</h3>
+<h2 id="第三章分布式系统">第三章分布式系统</h2>
+<p>###分布式系统的问题</p>
+<p>数据要均匀的分部在多个存储点-&gt;存储成本，数据一致性。</p>
+<p>同样的数据，要存储多个副本，保证数据安全和高可用性，三思片刻，发现这是地球上万事万物通用的真理，比如钥匙三只起，生命绝大多数采用双链DNA。解决单点数据损害而导致数据不可用。直接副作用就是存储变成原来的好几倍，比如1TB数据，三副本，就是变成3TB。存储这些数据需要磁盘，磁盘需要花钱。所以存储成本直接就上来了。</p>
+<p>数据存在多副本，如果对数据有修改。不能只修改一处，要修改保证多个副本都同样的修改。如果有的修改了，有的没有修改，就是数据不一致性。为什么会存在有的修改有的没有修改呢？因为这样问题的后果就是主节点数据一旦不可用，副本的数据和主副本不一致，那么它很难成为候选者来成为主副本。这样的系统的可用性是无法保证的。比如，你银行账户上有100块钱，这个数据存储三份，分别在不同的节点上。如果你往自己账号上存入或者取出一定金额之后，如果只修改主副本，没有及时同步副本，在此期间主副本数据crash，此时就是剩下两个副本还是原来的100块。如此，不是你损失就是银行损失。这是不可接受的。所以要避免这种情况发生。保证多副本数据一致性。</p>
+<ol type="1">
+<li>存储成本 - 采用廉价的PC机降低存储成本，但是故障率会偏高，然后通过上层软件保证</li>
+<li>数据一致性 - Raft算法和两阶段提交协议</li>
+</ol>
+<h3 id="基本概念">3.1 基本概念</h3>
+<h4 id="异常">异常</h4>
+<p>分布式系统特点很多个节点通过网络连接。两个组成元素节点和网络都是不可靠的。也就是所谓异常</p>
+<ol type="1">
+<li>服务宕机 - 掉电，内存错误，程序crash</li>
+<li>网络异常 - 不可达，丢包，串包，延时</li>
+<li>磁盘故障 - 磁道损害，数据错误</li>
+<li>超时 - 分布式三态：成功，失败和超时。解决超时的解决办法就是设计操作的幂等性。</li>
+</ol>
+<h4 id="一致性">一致性</h4>
+<ol type="1">
+<li>强一致性 - 所有数据副本更新完成才算成功</li>
+<li>弱一致性 - 部分数据副处于不一致状态</li>
+<li>最终一致性 - 弱一致性的一种特例，存在一个窗口期副本处于不一致性，最终会达到一致性。
+<ol type="1">
+<li>读写一致性</li>
+<li>会话一致性</li>
+<li>单调读</li>
+<li>单调写</li>
+<li>副本一致性</li>
+<li>更新顺序一致性</li>
+</ol></li>
+</ol>
+<h4 id="衡量指标">衡量指标</h4>
+<ol type="1">
+<li>性能 - 吞吐量和系统响应能力， QPS、TPS</li>
+<li>可用性 - 几个9</li>
+<li>一致性</li>
+<li>可扩展性 - 最理想的是线性扩展</li>
+</ol>
+<h3 id="性能分析">3.2 性能分析</h3>
+<p>性能分析的目的是为了后续的系统优化提供依据。这是重点，对比顺序操作和并发操作的性能差别。</p>
+<h3 id="数据分布">3.3 数据分布</h3>
+<ol type="1">
+<li>哈希分布 - 一致性哈希</li>
+<li>顺序分布</li>
+</ol>
+<h4 id="哈希分布">哈希分布</h4>
+<p>问题：</p>
+<ol type="1">
+<li>如何找到一个均匀的哈希函数 —— 尽量而为</li>
+<li>如何解决大用户数据集中 ——手动拆分</li>
+<li>扩展节点时如何数据迁移以及避免数据迁移 - 一致性哈希</li>
+</ol>
+<h3 id="复制">3.4 复制</h3>
+<p>指多个副本之间的的数据同步。同步方式包括</p>
+<ol type="1">
+<li>同步复制</li>
+<li>异步复制</li>
+</ol>
+<p>它们的区别是是否等待副本同步完成才算成功，主副本是一定要求成功的。而副本的个数也同时有要求，比如0个，n个，全部。</p>
+<p>在分布式系统中一致性和可用性是矛盾的。</p>
+<footer>
+    <style>
+        a#backtop{
+            margin-right:120px;
+            font-size:18px;
+            margin-bottom:30px;
+        }
+    </style>
+    <a id="backtop" style="position:fixed;right:0;bottom:0">返回页顶</a>
+    <script>
+        backtop.onclick = function(){
+            scrollTo(0,0);
+        }
+    </script>
+</footer>
+</div>
+</body>
+</html>

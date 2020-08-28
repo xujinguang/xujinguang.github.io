@@ -12,4 +12,10 @@ table td:nth-of-type(1) a {
     font-weight:400;
     text-transform: capitalize;
 }
+table td:nth-of-type(2) {
+    width: 15%;
+    text-align:right;
+    padding:0px;
+    padding-right:10px;
+}
 </style>

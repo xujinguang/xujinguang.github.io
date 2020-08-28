@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Wasm构建及使用</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        background-color: #232629;
+        color: #7a7c7d;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #7a7c7d;  padding-left: 4px; }
+    div.sourceCode
+      { color: #cfcfc2; background-color: #232629; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #cfcfc2; } /* Normal */
+    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
+    code span.an { color: #3f8058; } /* Annotation */
+    code span.at { color: #2980b9; } /* Attribute */
+    code span.bn { color: #f67400; } /* BaseN */
+    code span.bu { color: #7f8c8d; } /* BuiltIn */
+    code span.cf { color: #fdbc4b; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #3daee9; } /* Char */
+    code span.cn { color: #27aeae; font-weight: bold; } /* Constant */
+    code span.co { color: #7a7c7d; } /* Comment */
+    code span.cv { color: #7f8c8d; } /* CommentVar */
+    code span.do { color: #a43340; } /* Documentation */
+    code span.dt { color: #2980b9; } /* DataType */
+    code span.dv { color: #f67400; } /* DecVal */
+    code span.er { color: #da4453; text-decoration: underline; } /* Error */
+    code span.ex { color: #0099ff; font-weight: bold; } /* Extension */
+    code span.fl { color: #f67400; } /* Float */
+    code span.fu { color: #8e44ad; } /* Function */
+    code span.im { color: #27ae60; } /* Import */
+    code span.in { color: #c45b00; } /* Information */
+    code span.kw { color: #cfcfc2; font-weight: bold; } /* Keyword */
+    code span.op { color: #cfcfc2; } /* Operator */
+    code span.ot { color: #27ae60; } /* Other */
+    code span.pp { color: #27ae60; } /* Preprocessor */
+    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
+    code span.sc { color: #3daee9; } /* SpecialChar */
+    code span.ss { color: #da4453; } /* SpecialString */
+    code span.st { color: #f44f4f; } /* String */
+    code span.va { color: #27aeae; } /* Variable */
+    code span.vs { color: #da4453; } /* VerbatimString */
+    code span.wa { color: #da4453; } /* Warning */
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <base href="../../../"> <meta http-equiv="Content-Type" content="text/html" charset="utf-8"> <link rel="stylesheet" type="text/css" href="css/page.css"> <link rel="stylesheet" type="text/css" href="css/gen.css"> <link rel="shortcut icon" href="image/yuan.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="blog-header">
+    </div>
+    <div class="blog-nav">
+        <hr id="up"/>
+        <button id="first" onclick="window.location.href='index.html'">首 页
+        </button><button   onclick="window.location.href='blog.html'">博 客
+        </button><button   onclick="window.location.href='read.html'">读 书
+        </button><button   onclick="window.location.href='science.html'">科 学
+        </button><button   onclick="window.location.href='literature.html'">文 哲
+        </button><button   onclick="window.location.href='scope.html'">视 野
+        </button><button  id="active" onclick="window.location.href='life_notes/index.html'">笔 记
+        </button><button  onclick="window.location.href='index.html'">首 领</button>
+        <hr id="down"/>
+    </div>
+    <div class="blog-body">
+<a id="retindex" href="life_notes/computer/istio/index.html">返回目录</a>
+<header id="title-block-header">
+<h1 class="title">Wasm构建及使用</h1>
+</header>
+<h2 id="wasm构建及使用2">Wasm构建及使用2</h2>
+<p>这篇文章是上一篇文章的补充。上一篇文章阐述了wasm的构建和使用是通过wasme工具搞的，而没有使用istio原生态方式。原因就是觉得wasme工具的思想和设计比较合理的。它借鉴了Docker的构建分发思想，以及插件在节点的缓存处理，这对用户都是比较友好的。但是这个东西冷却下来了，维护人员已经很久没有更新了，而且有些问题尚未修复，看来还需要时间慢慢成长。避免依赖，本文就是要补全手动安装wasm这一块。自己动手丰衣足食。</p>
+<p>其实也不复杂。只需要将wasme封装成自动化的东西换成自己手撸即可。内容包括：</p>
+<ol type="1">
+<li>使用sdk构建wasm</li>
+<li>编写EnvoyFilter配置文件</li>
+<li>手动分发wasm文件</li>
+<li>注册插件</li>
+<li>重启pod</li>
+</ol>
+<h3 id="sdk构建wasm">1. SDK构建wasm</h3>
+<p>这个就不赘述了，参考这两篇文章。</p>
+<ol type="1">
+<li><a href="https://emscripten.org/docs/getting_started/downloads.html">emsdk安装与使用</a></li>
+<li><a href="https://hub.docker.com/r/emscripten/emsdk">emsdk Docker 镜像及其使用</a></li>
+</ol>
+<p>根据自己喜好选择使用安装还是Docker镜像。个人推荐使用docker镜像。构建命令上面链接文档里面都有说明。</p>
+<p>同时还有第三种方式，在线IDE</p>
+<ol type="1">
+<li>在线IDE <a href="https://webassembly.studio/">webassembly studio</a></li>
+<li>在线体验 <a href="https://mbebenita.github.io/WasmExplorer/">WebAssembly Explorer</a></li>
+</ol>
+<p>由于构建Envoy的插件而不是web的插件。因此，第三种方式不方便添加依赖库。因为不论选择哪种方式吧，成功构建xxx.wasm即可。</p>
+<h3 id="编写envoyfilter配置文件">2. 编写EnvoyFilter配置文件</h3>
+<p>避免直接从理论到实践的难理解性，先从实践开始，然后到理论，最后再回到实践中去。这样路线最容易理解。所以上先上代码。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> networking.istio.io/v1alpha3</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> EnvoyFilter</span><span class="co"> #istio的CRD API资源类型</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> filter-example</span><span class="co"> #filter资源名称</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="at">  </span><span class="fu">namespace</span><span class="kw">:</span><span class="at"> istio-system</span><span class="co"> #所属的ns</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="fu">spec</span><span class="kw">:</span><span class="co"> #描述状态</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="at">  </span><span class="fu">configPatches</span><span class="kw">:</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">applyTo</span><span class="kw">:</span><span class="at"> HTTP_FILTER </span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="co">  #Envoy支持的地方包括：LISTENER、FILTER_CHAIN、NETWORK_FILTER、HTTP_FILTER、</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="co">  # ROUTE_CONFIGURATION、VIRTUAL_HOST、HTTP_ROUTE、CLUSTER</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="at">    </span><span class="fu">match</span><span class="kw">:</span><span class="co"> # 匹配条件，包括：context，proxy，listener，routeConfiguration，cluster</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="at">      </span><span class="fu">context</span><span class="kw">:</span><span class="at"> GATEWAY </span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a><span class="co">      #支持网关上下文GATEWAY，边车进入流量SIDECAR_INBOUND，边车出站流量SIDECAR_OUTBOUND以及ANY</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a><span class="at">      </span><span class="fu">listener</span><span class="kw">:</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a><span class="at">        </span><span class="fu">filterChain</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a><span class="at">          </span><span class="fu">filter</span><span class="kw">:</span><span class="co"> #名称匹配 envoy的 http_connection_manager 下的 router</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a><span class="at">            </span><span class="fu">name</span><span class="kw">:</span><span class="at"> envoy.http_connection_manager</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true"></a><span class="at">            </span><span class="fu">subFilter</span><span class="kw">:</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true"></a><span class="at">              </span><span class="fu">name</span><span class="kw">:</span><span class="at"> envoy.router</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true"></a><span class="at">    </span><span class="fu">patch</span><span class="kw">:</span><span class="co"> # Patch specifies how the selected object should be modified</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true"></a><span class="at">      </span><span class="fu">operation</span><span class="kw">:</span><span class="at"> INSERT_BEFORE</span><span class="co"> #如何将 patch 应用于所选配置（上面configPatch)</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true"></a><span class="co">      #MERGE, ADD,REMOVE,INSERT_BEFORE,INSERT_AFTER,INSERT_FIRST</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true"></a><span class="at">      </span><span class="fu">value</span><span class="kw">:</span><span class="co"> #这个对象就是 Envoy插件的配置内容</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true"></a><span class="at">        </span><span class="fu">typed_config</span><span class="kw">:</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true"></a><span class="at">          </span><span class="fu">&#39;@type&#39;</span><span class="kw">:</span><span class="at"> type.googleapis.com/udpa.type.v1.TypedStruct</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true"></a><span class="at">          </span><span class="fu">type_url</span><span class="kw">:</span><span class="at"> type.googleapis.com/envoy.extensions.filters.http.wasm.v3.Wasm</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true"></a><span class="at">          </span><span class="fu">value</span><span class="kw">:</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true"></a><span class="at">            </span><span class="fu">config</span><span class="kw">:</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true"></a><span class="at">              </span><span class="fu">name</span><span class="kw">:</span><span class="at"> myfilter</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true"></a><span class="at">              </span><span class="fu">root_id</span><span class="kw">:</span><span class="at"> myfilter</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true"></a><span class="at">              </span><span class="fu">vm_config</span><span class="kw">:</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true"></a><span class="at">                </span><span class="fu">code</span><span class="kw">:</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true"></a><span class="at">                  </span><span class="fu">local</span><span class="kw">:</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true"></a><span class="at">                    </span><span class="fu">filename</span><span class="kw">:</span><span class="at"> /data/wasm-filter/_wasm_test.wasm</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true"></a><span class="at">                </span><span class="fu">runtime</span><span class="kw">:</span><span class="at"> envoy.wasm.runtime.v8</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true"></a><span class="at">                </span><span class="fu">vm_id</span><span class="kw">:</span><span class="at"> myfilter</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true"></a><span class="at">              </span><span class="fu">configuration</span><span class="kw">:</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true"></a><span class="at">                </span><span class="fu">&#39;@type&#39;</span><span class="kw">:</span><span class="at"> type.googleapis.com/google.protobuf.StringValue</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true"></a><span class="fu">                value</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true"></a>                    {</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true"></a>                        &quot;key&quot;: value</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true"></a>                    }</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true"></a><span class="at">        </span><span class="fu">name</span><span class="kw">:</span><span class="at"> envoy.filters.http.wasm</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true"></a><span class="at">  </span><span class="fu">workloadSelector</span><span class="kw">:</span><span class="co"> #指定此资源应用的工作负载</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true"></a><span class="at">    </span><span class="fu">labels</span><span class="kw">:</span><span class="co"> #通过标签选择负载</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true"></a><span class="at">      </span><span class="fu">app</span><span class="kw">:</span><span class="at"> istio-ingressgateway</span></span></code></pre></div>
+<p>说明几点：</p>
+<ol type="1">
+<li>EnvoyFilter 是istio提供的CRD，用于自定义 Istio Pilot 生成的Envoy的配置</li>
+<li>用于修改特定字段的值，添加特定的过滤器，甚至添加全新的监听器、集群等</li>
+<li>小心使用，不正确的配置可能会破坏整个网格的稳定</li>
+<li>当多个 EnvoyFilters 绑定到给定名称空间中的相同工作负载时，所有patch将按创建时间顺序处理。如果多个 EnvoyFilter 配置之间发生冲突，行为未定义。</li>
+<li>如果对系统中所有工作负载应用 EnvoyFilter， 则不要指定 workloadSelector</li>
+</ol>
+<p><a href="https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/filter/filter">Envoy Filters</a></p>
+<p>其中patch.value字段是envoy的配置内容了。它的定义参考<a href="https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#config-filter-network-http-connection-manager-v2-httpfilter">这里</a>，它包括三个成员name，config和typed_config，其中后面两个成员都是一个对象结构，typed_config 的具体内容要看具体的过滤器。config和typed_config只能设置其中一个。</p>
+<h4 id="crd资源定义">2.1 CRD资源定义</h4>
+<pre class="shell"><code># kubectl get crd envoyfilters.networking.istio.io -o yaml</code></pre>
+<p>这个文件比较大，不粘贴这里了。它是EnvoyFilter CRD的定义文件。yaml层级结构看着不是很舒服，换成json会好一些。从中可以发现，patch只定义到了value之后就没有再定义了其结构了</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="er">&quot;patch&quot;:</span><span class="fu">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>  <span class="dt">&quot;description&quot;</span><span class="fu">:</span><span class="st">&quot;The patch to apply along with the operation.&quot;</span><span class="fu">,</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>  <span class="dt">&quot;properties&quot;</span><span class="fu">:{</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>    <span class="dt">&quot;operation&quot;</span><span class="fu">:{</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>      <span class="dt">&quot;description&quot;</span><span class="fu">:</span><span class="st">&quot;Determines how the patch should be applied.&quot;</span><span class="fu">,</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>      <span class="dt">&quot;enum&quot;</span><span class="fu">:</span><span class="ot">[</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>        <span class="st">&quot;INVALID&quot;</span><span class="ot">,</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>        <span class="st">&quot;MERGE&quot;</span><span class="ot">,</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>        <span class="st">&quot;ADD&quot;</span><span class="ot">,</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>        <span class="st">&quot;REMOVE&quot;</span><span class="ot">,</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>        <span class="st">&quot;INSERT_BEFORE&quot;</span><span class="ot">,</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a>        <span class="st">&quot;INSERT_AFTER&quot;</span><span class="ot">,</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a>        <span class="st">&quot;INSERT_FIRST&quot;</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a>      <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span><span class="st">&quot;string&quot;</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a>    <span class="fu">},</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a>    <span class="dt">&quot;value&quot;</span><span class="fu">:{</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a>      <span class="dt">&quot;description&quot;</span><span class="fu">:</span><span class="st">&quot;The JSON config of the object being patched.&quot;</span><span class="fu">,</span> <span class="er">//here</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span><span class="st">&quot;object&quot;</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true"></a>    <span class="fu">}</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true"></a>  <span class="fu">},</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true"></a>  <span class="dt">&quot;type&quot;</span><span class="fu">:</span><span class="st">&quot;object&quot;</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true"></a><span class="fu">}</span></span></code></pre></div>
+<p>那么value结构难道自由发挥不成？当然不是，上面已经提到它要根据具体的过滤器而定。这个借口定义在envoy的相关proto文件里。已wasm为例，就是在api/envoy/extensions/wasm/v3/wasm.proto中</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="ex">kubectl</span> get envoyfilter auth-wasm -n istio-system -o yaml</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="ex">istioctl</span> pc listener istio-ingressgateway-689dd678b4-bmsxp  --address 0.0.0.0 --port 15001 -o json</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="ex">kubectl</span> scale deployment/istio-ingressgateway --replicas=0 -n istio-system</span></code></pre></div>
+<h2 id="探索">探索</h2>
+<p>1.7 网关端口变更 https://istio.io/latest/news/releases/1.7.x/announcing-1.7/upgrade-notes/</p>
+<pre class="shell"><code>2020-08-26T10:41:49.596907Z     debug   envoy wasm      WasmVm created envoy.wasm.runtime.null now active
+2020-08-26T10:41:49.596918Z     debug   envoy wasm      Thread-Local Wasm created 12 now active
+2020-08-26T10:41:49.640016Z     debug   envoy wasm      WasmVm created envoy.wasm.runtime.v8 now active
+2020-08-26T10:41:49.640434Z     debug   envoy wasm      Base Wasm created 13 now active
+2020-08-26T10:41:49.821640Z     trace   envoy wasm      Failed to load Wasm module due to a missing import: env.proxy_continue_stream
+2020-08-26T10:41:49.821726Z     error   envoy wasm      Wasm VM failed Wasm module is missing malloc function.
+2020-08-26T10:41:49.821739Z     error   envoy wasm      Wasm VM failed Failed to initialize Wasm code
+2020-08-26T10:41:49.821745Z     debug   envoy wasm      ~Wasm 12 remaining active
+2020-08-26T10:41:49.827734Z     debug   envoy wasm      ~WasmVm envoy.wasm.runtime.v8 12 remaining active
+2020-08-26T10:41:49.827865Z     trace   envoy wasm      Unable to create Wasm
+2020-08-26T10:41:49.877958Z     debug   envoy init      init manager RDS local-init-manager http.80 destroyed
+2020-08-26T10:41:49.877987Z     debug   envoy init      target RdsRouteConfigSubscription local-init-target http.80 destroyed
+2020-08-26T10:41:49.877991Z     debug   envoy init      RDS local-init-watcher http.80 destroyed</code></pre>
+<footer>
+    <style>
+        a#backtop{
+            margin-right:120px;
+            font-size:18px;
+            margin-bottom:30px;
+        }
+    </style>
+    <a id="backtop" style="position:fixed;right:0;bottom:0">返回页顶</a>
+    <script>
+        backtop.onclick = function(){
+            scrollTo(0,0);
+        }
+    </script>
+</footer>
+</div>
+</body>
+</html>

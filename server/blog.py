@@ -15,7 +15,7 @@ TEMPLATE = '''<html lang="zh-cn">
     <title>%s</title>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="../css/page.css">
-    <link rel="stylesheet" type="text/css" href="../css/code-styles.css">
+    <link rel="stylesheet" type="text/css" href="../css/sublime.css">
     <script src="../js/highlight.min.js"></script>
     <script >hljs.initHighlightingOnLoad();</script>  
     <link rel="shortcut icon" href="../image/yuan.ico" type="image/x-icon"/>
