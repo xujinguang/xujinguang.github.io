@@ -9,6 +9,7 @@ curr_id = 0
 def decode_value(data, blog):
     i = data.find("\r\n\r\n")
     body = data[i + 4:]
+    print body
     print len(body)
     values = body.split('_&')
     for value in values: 

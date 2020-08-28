@@ -1,2 +1,2 @@
-/server/blog.conf
-/server/blog.pyc
+server/*.conf
+server/*.pyc
