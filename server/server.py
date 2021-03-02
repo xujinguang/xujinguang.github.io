@@ -12,7 +12,7 @@ def decode_value(data, blog):
     print body
     print len(body)
     values = body.split('_&')
-    for value in values: .
+    for value in values:
         kv = value.split('_=')
         #print len(kv)
         blog[kv[0]] = kv[1]
