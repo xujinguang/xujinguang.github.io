@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import sqlite3
-import ConfigParser
+import configparser
 import datetime
 import io
 import sys
@@ -75,11 +75,11 @@ today = datetime.date.today()
 curr_id = 0
 
 def DEBUG(log):
-    #print log
+    #print (log)
     pass
 
 def read_conf(blog_conf):
-    conf = ConfigParser.ConfigParser()
+    conf = configparser.ConfigParser()
     conf.read('blog.ini')
     blog_conf['db_path'] = conf.get('BLOG', 'db_path')
     blog_conf['html_path'] = conf.get('BLOG', 'html_path')
@@ -300,8 +300,8 @@ def get_blog_content(cursor, html_dict):
 def select_blogs(cursor):
     global today
     global curr_id
-    print today
-    print curr_id
+    print (today)
+    print (curr_id)
     sql = ""
     if curr_id != 0:
         sql = '''
@@ -343,7 +343,7 @@ def select_blogs(cursor):
             order by time
             asc    
         ''' % today
-    print sql
+    print (sql)
     cursor.execute(sql)
     blogs = cursor.fetchall()
     return blogs
@@ -439,7 +439,7 @@ def update_type_html(conf, html_dict):
                     body = content.replace(src, txt)
                 else:
                     body = content.replace(src, other_rep % (href, title, curr_html['date']))
-                print body
+                print (body)
                 html.close()
             with io.open(html_file, 'wb') as html:
                 html.write(body)
@@ -484,7 +484,7 @@ def update_banner(conf, html_dict):
     with io.open(conf['html_path'][0:-5] + 'index.html', 'rb') as html:
         content = html.read().encode('utf-8')
         body = re.sub(pattarn, rep.encode('utf-8'), content)
-        #print body
+        #print (body)
         html.close()
     with io.open(conf['html_path'][0:-5] + 'index.html', 'wb') as html:
         html.write(body)
@@ -552,7 +552,7 @@ def output_all_html(conf, all_html):
         all_class_index += class_index_str % ((class_name,) * 3 + (all_record,))
     all_index_html = INDEX_TEMPLATE % (all_index, all_class_index)
 
-    #print all_index_html
+    #print (all_index_html)
     with io.open(conf['html_path'][0:-5] + 'all_index.html', 'wb') as html:
         html.write(all_index_html)
         html.close()
@@ -567,15 +567,15 @@ def test():
 
     #type_name = []
     #get_blog_type_name(cursor, type_name)
-    #print type_name[2]
+    #print (type_name[2])
     #class_name = {}
     #get_blog_class_name(cursor, class_name)
-    #print class_name[7][8]
-    #print class_name[7][0]
+    #print (class_name[7][8])
+    #print (class_name[7][0])
 
     all_html = {}
     #get_all_html(cursor, all_html)
-    #print all_html
+    #print (all_html)
 
     #output_all_html(conf, all_html)
     update_banner(conf, all_html)
@@ -587,14 +587,14 @@ def gen_blog():
     sys.setdefaultencoding('utf8')  
     global today
     if len(sys.argv) == 2:
-        print sys.argv[0], sys.argv[1]
+        print (sys.argv[0], sys.argv[1])
         today = sys.argv[1]
 
     #初始化blog.conf
     conf = {}
     read_conf(conf)
-    print conf['db_path']
-    print conf['html_path']
+    print (conf['db_path'])
+    print (conf['html_path'])
 
     conn = sqlite3.connect(conf['db_path'])
     cursor = conn.cursor()
@@ -604,7 +604,7 @@ def gen_blog():
 
     #按照格式拼接文件名:日期-分类-学科-编号.html
     set_file_name(cursor, html_dict)
-    #print html_dict
+    #print (html_dict)
     #return
 
     #获取上一篇的文章,用于下文的set_prev_next_html
@@ -616,7 +616,7 @@ def gen_blog():
 
     #获取html的body
     get_blog_content(cursor, html_dict)
-    #print html_dict
+    #print (html_dict)
 
     #生成文章文件
     output_html(conf, html_dict)
@@ -632,7 +632,7 @@ def gen_blog():
 
     all_html = {}
     get_all_html(cursor, all_html)
-    #print all_html
+    #print (all_html)
     output_all_html(conf, all_html)
 
     conn.close()

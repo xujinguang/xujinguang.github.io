@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import sqlite3
-import ConfigParser
+import configparser
 import datetime
 import io
 import sys
@@ -79,7 +79,7 @@ def DEBUG(log):
     pass
 
 def read_conf(blog_conf):
-    conf = ConfigParser.ConfigParser()
+    conf = configparser.ConfigParser()
     conf.read('blog.conf')
     blog_conf['db_path'] = conf.get('BLOG', 'db_path')
     blog_conf['html_path'] = conf.get('BLOG', 'html_path')

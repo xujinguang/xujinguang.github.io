@@ -1,7 +1,7 @@
 #!/urs/bin/python
 # -*- coding: UTF-8 -*-
 
-import SocketServer
+import socketserver
 import urllib
 from blog import *
 
@@ -9,17 +9,17 @@ curr_id = 0
 def decode_value(data, blog):
     i = data.find("\r\n\r\n")
     body = data[i + 4:]
-    print len(body)
-    #print body
+    print (len(body))
+    #print (body)
     values = body.split('_&')
     for value in values: 
         kv = value.split('_=')
-        print len(kv)
+        print (len(kv))
         if len(kv) != 2:
             return False
-        print str(kv)
+        print (str(kv))
         blog[kv[0]] = kv[1]
-    print blog
+    print (blog)
     return True
 
 def list_blog(conn, blog):
@@ -38,7 +38,7 @@ def save_blog(conn, blog):
     content = blog['_blog_'].replace("<p><img", '''<p id="img"><img''').replace("'", '\'\'')
     if blog['_class_'] == '17' and blog['_subclass_'] == '2':
         content = blog['_blog_'].replace("<p>", '''<p id="poem">''')
-    #print sql %content
+    #print (sql %content)
     cursor.execute(sql % content)
     conn.commit()
     content_id = cursor.lastrowid;
@@ -87,7 +87,7 @@ def process(data):
     #return 0
 
     read_conf(conf)
-    print conf['db_path']
+    print (conf['db_path'])
     conn = sqlite3.connect(conf['db_path'])
     ret = 0
     if blog['op'] == '0':
@@ -102,17 +102,17 @@ def process(data):
 
     if blog['op'] == '1':
         today = datetime.date.today()
-        print 'cur', today
+        print ('cur', today)
         init_blog(today, curr_id)
         gen_blog()
     return ret 
 
 
-class MyTCPHandler(SocketServer.BaseRequestHandler):
+class MyTCPHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
         self.data = self.request.recv(65000).strip()
-        print self.data
+        print (self.data)
 
         ret = process(self.data)
         #ret = 0
@@ -127,7 +127,7 @@ if __name__ == "__main__":
     HOST, PORT = "127.0.0.1", 8080 
     #HOST, PORT = "192.168.1.2", 8080 
 
-    server = SocketServer.TCPServer((HOST, PORT), MyTCPHandler)
+    server = socketserver.TCPServer((HOST, PORT), MyTCPHandler)
 
     # Activate the server; this will keep running until you
     # interrupt the program with Ctrl-C

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-import SocketServer
+import socketserver
 import urllib
 from blog import *
 
@@ -9,14 +9,14 @@ curr_id = 0
 def decode_value(data, blog):
     i = data.find("\r\n\r\n")
     body = data[i + 4:]
-    print body
-    print len(body)
+    print (body)
+    print (len(body))
     values = body.split('_&')
     for value in values:
         kv = value.split('_=')
-        #print len(kv)
+        #print (len(kv))
         blog[kv[0]] = kv[1]
-    print blog
+    print (blog)
 
 def list_blog(conn, blog):
     return 0 
@@ -33,7 +33,7 @@ def save_blog(conn, blog):
     content = blog['_blog_'].replace("<p><img", '''<p id="img"><img''').replace("'", '\'\'')
     if blog['_class_'] == '17' and blog['_subclass_'] == '2':
         content = blog['_blog_'].replace("<p>", '''<p id="poem">''')
-    #print sql %content
+    #print (sql %content)
     cursor.execute(sql % content)
     conn.commit()
     content_id = cursor.lastrowid;
@@ -94,17 +94,17 @@ def process(data):
 
     if blog['op'] == '1':
         today = datetime.date.today()
-        print 'cur', today
+        print ('cur', today)
         init_blog(today, curr_id)
         gen_blog()
     return ret 
 
 
-class MyTCPHandler(SocketServer.BaseRequestHandler):
+class MyTCPHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
         self.data = self.request.recv(65535).strip()
-        print self.data
+        print (self.data)
         ret = process(self.data)
         #ret = 0
         status = "HTTP/1.1 200 OK\r\n"
@@ -118,7 +118,7 @@ if __name__ == "__main__":
     HOST, PORT = "localhost", 8080 
     #HOST, PORT = "192.168.1.2", 8080 
 
-    server = SocketServer.TCPServer((HOST, PORT), MyTCPHandler)
+    server = socketserver.TCPServer((HOST, PORT), MyTCPHandler)
 
     # Activate the server; this will keep running until you
     # interrupt the program with Ctrl-C
