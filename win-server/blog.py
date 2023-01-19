@@ -120,7 +120,7 @@ def get_blog_class_name(cursor, class_name):
     '''
     cursor.execute(sql)
     for row in cursor.fetchall():
-        if not class_name.has_key(row[0]):
+        if row[0] not in class_name.keys():
             class_name[row[0]] = {}
         class_name[row[0]][row[1]] = row[2]
 
@@ -131,7 +131,9 @@ def get_last_html(cursor, last_html):
             html
         from
             html_tb
-        group by type
+        where id in (
+            select max(id) from html_tb group by type
+        )
         order by type asc 
     '''
     cursor.execute(sql)
@@ -194,7 +196,7 @@ def set_file_name(cursor, html_dict):
     DEBUG(html_id)
         
     for i in html_dict.keys():
-        if not html_id.has_key(i):
+        if i not in html_id.keys():
             html_id[i] = 0
         for j in range(len(html_dict[i])):
             html_dict[i][j]['file_name'] += '_' + str(html_id[i]) + '.html'
@@ -212,11 +214,14 @@ def adjust_last_html(conf, last_html, next_html):
     src = "<span id=\"next-blog\"><a href=\"\">"
     rep = "<span id=\"next-blog\"><a href=\"%s\">"
     with io.open(conf['html_path'] + last_html, 'rb') as html:
-        content = html.read().encode('utf-8')
+        content = html.read().decode('utf-8')
         body = content.replace(src, rep % next_html)
         html.close()
+    if not len(body):
+        raise
+    #print(body)
     with io.open(conf['html_path'] + last_html, 'wb') as html:
-        html.write(body)
+        html.write(body.encode('utf-8'))
         html.close()
 
 def set_prev_next_html(cursor, conf, html_dict, last_html):
@@ -273,7 +278,7 @@ def insert_html_tb(conn, html_dict):
 def format_content(content):
     body = ""
     rep = '</p>\n'
-    pattarn = r'<\/\p>'
+    pattarn = r'<\/p>'
     body = re.sub(pattarn, rep, content)
     rep = '../'
     pattarn = r'\/run\/media\/work\/xujinguang\/blog\/xujinguang.github.io\/'
@@ -343,7 +348,7 @@ def select_blogs(cursor):
             order by time
             asc    
         ''' % today
-    print (sql)
+    DEBUG(sql)
     cursor.execute(sql)
     blogs = cursor.fetchall()
     return blogs
@@ -388,24 +393,24 @@ def get_blogs(cursor, conf, html_dict):
         curr_html['type_name'] = type_name[i]
         curr_html['class'] = j
         curr_html['subclass'] = k 
-        title = blog[TITLE].encode('utf-8')
+        title = blog[TITLE]
         curr_html['title'] = title
-        curr_html['html_title'] = str(type_name[i]) + '-' + title
+        curr_html['html_title'] = type_name[i] + '-' + title
         curr_html['nav'] = nav[i]
-        curr_html['subtitle'] = blog[SUBTITLE].encode('utf-8')
-        curr_html['date'] = blog[DATE].encode('utf-8')
-        curr_html['abstruct'] = blog[ABSTRUCT].encode('utf-8')
+        curr_html['subtitle'] = blog[SUBTITLE]
+        curr_html['date'] = blog[DATE]
+        curr_html['abstruct'] = blog[ABSTRUCT]
         if k != 0:
             file_name = today + '_' + type_name[i] + '_' + class_name[j][0] + '_' + class_name[j][k]
         else:
             file_name = today + '_' + type_name[i] + '_' + class_name[j][0] 
         curr_html['file_name'] = file_name
         curr_html['content_id'] = blog[CONTENT_ID] 
-        curr_html['sign'] = blog[SIGN].encode('utf-8')
+        curr_html['sign'] = blog[SIGN]
         curr_html['prev_html'] = ""
         curr_html['next_html'] = ""
         
-        if not html_dict.has_key(i):
+        if i not in html_dict.keys():
             html_dict[i] = []
         html_dict[i].append(curr_html)
 
@@ -431,18 +436,18 @@ def update_type_html(conf, html_dict):
             body = ""
             html_file = conf['html_path'][0:-5] + curr_html['type_name'] + '.html'
             with io.open(html_file, 'rb') as html:
-                content = html.read().encode('utf-8')
+                content = html.read().decode('utf-8')
                 href = str('./blog/' + curr_html['file_name'])
-                title = '《'.encode('utf-8') + curr_html['title'] + '》'.encode('utf-8')
+                title = '《' + curr_html['title'] + '》'
                 if(curr_html['type'] == 2):
                     txt = read_rep % (href, title, href, curr_html['abstruct'], curr_html['date'])
                     body = content.replace(src, txt)
                 else:
                     body = content.replace(src, other_rep % (href, title, curr_html['date']))
-                print (body)
+                DEBUG(body)
                 html.close()
             with io.open(html_file, 'wb') as html:
-                html.write(body)
+                html.write(body.encode('utf-8'))
                 html.close()
 
 def output_html(conf, html_dict):
@@ -453,7 +458,7 @@ def output_html(conf, html_dict):
             DEBUG(curr_html['file_name'])
             DEBUG(curr_html['content'])
             #参数列表，第一个需要有都好，使用+拼接
-            content = format_content(curr_html['content'])
+            content = format_content(curr_html['content'].decode('utf-8'))
             param = (str(curr_html['html_title']),) + curr_html['nav'] + (curr_html['title'],
                         curr_html['subtitle'],
                         str(content),
@@ -462,7 +467,7 @@ def output_html(conf, html_dict):
                         str(curr_html['next_html']))
             text = TEMPLATE % param
             DEBUG(text)
-            html.write(text)
+            html.write(text.encode('utf-8'))
             html.close()
 
 def update_banner(conf, html_dict):
@@ -482,12 +487,12 @@ def update_banner(conf, html_dict):
     pattarn = r'\<marquee.*\>'
     rep = '''<marquee scrollamount="3" onMouseOut="this.start()" onMouseOver="this.stop()">最新动态：%s</marquee>''' % href
     with io.open(conf['html_path'][0:-5] + 'index.html', 'rb') as html:
-        content = html.read().encode('utf-8')
-        body = re.sub(pattarn, rep.encode('utf-8'), content)
-        #print (body)
+        content = html.read().decode('utf-8')
+        body = re.sub(pattarn, rep, content)
+        DEBUG (body)
         html.close()
     with io.open(conf['html_path'][0:-5] + 'index.html', 'wb') as html:
-        html.write(body)
+        html.write(body.encode('utf-8'))
         html.close()
     
 
@@ -519,7 +524,7 @@ def get_all_html(cursor, all_html):
     cursor.execute(sql)
     for row in cursor.fetchall():
         curr_class_name =  class_name[row[1]][row[2]]
-        if not all_html.has_key(curr_class_name):
+        if curr_class_name not in all_html.keys():
             all_html[curr_class_name] = [] 
         record = (row[0].split(' ')[0], row[3], row[4])
         all_html[curr_class_name].append(record)
@@ -547,19 +552,17 @@ def output_all_html(conf, all_html):
         records = all_html[class_name]
         all_record = ""
         for record in records:
-            title = '《'.encode('utf-8') + record[1] + '》'.encode('utf-8')
+            title = '《' + record[1] + '》'
             all_record += record_str % (str(record[2]), title, str(record[0]))
         all_class_index += class_index_str % ((class_name,) * 3 + (all_record,))
     all_index_html = INDEX_TEMPLATE % (all_index, all_class_index)
 
     #print (all_index_html)
     with io.open(conf['html_path'][0:-5] + 'all_index.html', 'wb') as html:
-        html.write(all_index_html)
+        html.write(all_index_html.encode('utf-8'))
         html.close()
 
 def test():
-    reload(sys)  
-    sys.setdefaultencoding('utf8')  
     conf = {}
     read_conf(conf)
     conn = sqlite3.connect(conf['db_path'])
@@ -583,8 +586,6 @@ def test():
     conn.close()
     
 def gen_blog():
-    reload(sys)  
-    sys.setdefaultencoding('utf8')  
     global today
     if len(sys.argv) == 2:
         print (sys.argv[0], sys.argv[1])
@@ -601,16 +602,16 @@ def gen_blog():
 
     html_dict = {}
     get_blogs(cursor, conf, html_dict)
-
     #按照格式拼接文件名:日期-分类-学科-编号.html
     set_file_name(cursor, html_dict)
-    #print (html_dict)
+    DEBUG(html_dict)
     #return
 
     #获取上一篇的文章,用于下文的set_prev_next_html
     last_html = {}
     get_last_html(cursor, last_html)
-
+    DEBUG(last_html) 
+    
     #链接各个博客
     set_prev_next_html(cursor, conf, html_dict, last_html)
 

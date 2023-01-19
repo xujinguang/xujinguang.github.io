@@ -7,9 +7,9 @@ from blog import *
 
 curr_id = 0
 def decode_value(data, blog):
-    i = data.find("\r\n\r\n")
+    i = data.find('\r\n\r\n')
     body = data[i + 4:]
-    print (len(body))
+    #print (len(body))
     #print (body)
     values = body.split('_&')
     for value in values: 
@@ -19,7 +19,7 @@ def decode_value(data, blog):
             return False
         print (str(kv))
         blog[kv[0]] = kv[1]
-    print (blog)
+    #print (blog)
     return True
 
 def list_blog(conn, blog):
@@ -87,7 +87,7 @@ def process(data):
     #return 0
 
     read_conf(conf)
-    print (conf['db_path'])
+    #print (conf['db_path'])
     conn = sqlite3.connect(conf['db_path'])
     ret = 0
     if blog['op'] == '0':
@@ -112,16 +112,16 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
         self.data = self.request.recv(65000).strip()
-        print (self.data)
+        #print (self.data)
 
-        ret = process(self.data)
+        ret = process(self.data.decode("utf-8"))
         #ret = 0
         status = "HTTP/1.1 200 OK\r\n"
         content_type = "content-type:text/xml; charset=utf-8\r\n"
         origin = "Access-Control-Allow-Origin:*\r\n"
         body = "\r\nret=%s\r\n"% ret
         response = status + content_type + origin + body
-        self.request.sendall(response)
+        self.request.sendall(bytes(response, 'utf-8'))
 
 if __name__ == "__main__":
     HOST, PORT = "127.0.0.1", 8080 
